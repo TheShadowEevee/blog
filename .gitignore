@@ -25,7 +25,4 @@ pnpm-debug.log*
 package-lock.json
 bun.lockb
 yarn.lock
-
-# ide
-.idea
-*.iml
+pnpm-lock.yaml
