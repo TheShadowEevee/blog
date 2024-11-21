@@ -5,7 +5,7 @@ description: "Renaming Proxmox Cluster Nodes (or: How not to run a Cluster)"
 --image:
 tags: [proxmox, homelab]
 category: "Homelab"
-draft: true
+draft: false
 ---
 :::warning[Draft Post]
 This post is still a draft! Some content may change, be added, or be removed.
