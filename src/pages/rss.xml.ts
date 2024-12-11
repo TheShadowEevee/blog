@@ -12,9 +12,9 @@ export async function GET(context: APIContext) {
 
   return rss({
     xmlns: {
-      dc: `http://purl.org/dc/elements/1.1/`,
-      content: `http://purl.org/rss/1.0/modules/content/`,
-      atom: `http://www.w3.org/2005/Atom`,
+      dc: 'http://purl.org/dc/elements/1.1/',
+      content: 'http://purl.org/rss/1.0/modules/content/',
+      atom: 'http://www.w3.org/2005/Atom',
     },
     title: siteConfig.title,
     description: siteConfig.subtitle || 'No description',
@@ -32,8 +32,8 @@ export async function GET(context: APIContext) {
     }),
     customData:
       `<language>${siteConfig.lang}</language>` +
-      `<lastBuildDate>${blog[0]!.data.published.toUTCString()}</lastBuildDate>` +
+      `<lastBuildDate>${blog[0]?.data.published.toUTCString()}</lastBuildDate>` +
       `<atom:link href="${context.site}rss.xml" rel="self" type="application/rss+xml"/>` +
-      `<pubDate>${blog[0]!.data.published.toUTCString()}</pubDate>`,
+      `<pubDate>${blog[0]?.data.published.toUTCString()}</pubDate>`,
   })
 }
