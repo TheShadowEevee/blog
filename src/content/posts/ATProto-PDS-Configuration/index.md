@@ -5,7 +5,7 @@ description: "Self-Hosting ATProto PDS Notes"
 --image:
 tags: [ATProto, Bluesky, Homelab]
 category: "ATProto"
-draft: true
+draft: false
 ---
 :::warning[Draft Post]
 This post is still a draft! Some content may change, be added, or be removed.
