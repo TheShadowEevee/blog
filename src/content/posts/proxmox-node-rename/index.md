@@ -7,12 +7,6 @@ tags: [proxmox, homelab]
 category: "Homelab"
 draft: false
 ---
-:::warning[Draft Post]
-This post is still a draft! Some content may change, be added, or be removed.
-
-Todo:
-  - Conclusion
-:::
 
 :::note[Renaming Instructions]
 Are you here for the instructions? [Click here to skip ahead!](#instructions-changing-a-hostname-on-an-active-node)
@@ -53,7 +47,7 @@ After *fifteen minutes*, the servers connected back to my Tailscale network, and
 Another reboot, and the core of the problem became evident. There were now *four* nodes listed in the Server View. The newly renamed servers [`kanako-server`](https://en.touhouwiki.net/wiki/Kanako_Yasaka) and [`suwako-server`](https://en.touhouwiki.net/wiki/Suwako_Moriya) were there, but they listed no LXC containers. There should have been 7 containers, so this was concerning. Also displayed was `Moriya-PVE1` and `Moriya-PVE2`, the old names. The LXC containers were found under those nodes, and all were offline as the non-existant nodes couldn't be found. Uh oh.
 
 ## Investigating
-I promptly began searching for solutions. I had about an hour to research, as it was 4pm, and I was joining a group of friends at 5pm to move an industrial robot arm that had just been picked up from the freight company.
+I promptly began searching for solutions. I had already spent a lot of time troubleshooting, and the group of people that had gone with the U-Haul were already on their way back.
 
 My research was conclusive... I should reinstall my server and restore my containers from backups. In a seperate incident that same day, I had made my backups inaccessible as I switched to a new storage system. So I didn't *have* backups. Oops.
 
@@ -121,7 +115,7 @@ If you need to recover a node that you already renamed, try changing the hostnam
 </details>
 
 ## Conclusion
-The clear moral here is to listen to warnings, especially when given by multiple sources. I was clearly warned by the documentation and multiple forum posts, however I opted to do it anyway, as I consider my homelab a breakable environment.
+The clear moral here is to listen to warnings, especially when given by multiple sources. I was clearly warned by the documentation and multiple forum posts, however I opted to do it anyway, as I consider my homelab a breakable environment. Proxmox is certainly good at what it does, but it also cares a lot about it's state. Messing with configurations Proxmox expects not to change was as bad of an idea as I was warned, but luckily I was determined to make it work. 
 
 ## References
 [<sup>[1]</sup> spirit - Stopping all proxmox services on a node](https://forum.proxmox.com/threads/stopping-all-proxmox-services-on-a-node.34318/post-168154)
