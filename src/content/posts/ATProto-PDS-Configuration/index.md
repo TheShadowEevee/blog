@@ -7,18 +7,15 @@ tags: [ATProto, Bluesky, Homelab]
 category: "ATProto"
 draft: false
 ---
-:::warning[Draft Post]
-This post is still a draft! Some content may change, be added, or be removed.
-:::
 
-Recently I've started using [Bluesky](https://bsky.social/about), a decentralized social media platform built on the [AT Protocol](https://atproto.com). One of the more technological pulls is the ability to host your own Personal Data Server, or PDS. To quote the AT Protocol Glossary:
->### PDS (Personal Data Server)
+Recently I've started using [Bluesky](https://bsky.social/about), a decentralized social media platform built on the [AT Protocol](https://atproto.com). When I was first looking into Bluesky, something that attracted my interest was the ability to host your own Personal Data Server, or PDS. To quote the AT Protocol Glossary:
+> <H3>PDS (Personal Data Server)</H3>
 >
 >A PDS, or Personal Data Server, is a server that hosts a user. A PDS will always store the user's data repo and signing keys. It may also assign the user a handle and a DID. Many PDSes will host multiple users.
 >
 >A PDS communicates with AppViews to run applications. A PDS doesn't typically run any applications itself, though it will have general account management interfaces such as the OAuth login screen. PDSes actively sync their data repos with Relays.
 
-All of that boils down to "This is where your user account and associated information is stored". I personally host a private PDS at [https://konpeki.solutions](https://konpeki.solutions) - my Bluesky handle is `@theshadoweevee.konpeki.solutions`. This is entirely local! Any time someone access my profile or a post, a request is sent to the domain `https://theshadoweevee.konpeki.solutions`.
+All of that boils down to "This is where your user account and associated information is stored". I personally host a private PDS at [konpeki.solutions](https://konpeki.solutions) - my Bluesky handle is `@theshadoweevee.konpeki.solutions`. This is entirely local! Any time someone access my profile or a post, a request is sent to the domain `https://theshadoweevee.konpeki.solutions`.
 
 A lot more goes into this that I haven't touched on (like the [Firehose](https://docs.bsky.app/docs/advanced-guides/firehose)) but I'll stop here for now. It's time to complain a bit.
 
