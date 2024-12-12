@@ -1,5 +1,6 @@
 # About
-Description Here!
+
+An actual about description will be available here at a later date.
 
 <details><summary>Click here to view a list of site credits</summary>
 
@@ -12,6 +13,36 @@ Description Here!
 > ::github{repo="withastro/astro"}
 
 > ### Sources of images used in this site
+> - [AxoBlu](https://bsky.app/profile/axoblu.konpeki.solutions)
 > - [Unsplash](https://unsplash.com/)
+
+</details>
+
+<details><summary>Analytics Disclaimer</summary>
+
+All data collected is non-identifiable. If you have specific questions about the below statements, email [privacy@shad.moe](mailto:privacy@shad.moe).
+
+### Vercel Analytics
+This site uses [Vercel Analytics](https://vercel.com/docs/analytics). No personal data is stored, and user sessions expire after twenty four hours. For more information, see the Vercel Analytics [Privacy and Compliance](https://vercel.com/docs/analytics/privacy-policy) Documentation.
+
+Vercel Analytics is used to monitor number of visitors, and popular posts on the blog. Accessible data includes:
+- Path Visited
+- Referrer
+- Country of Origin
+- Device (Desktop, Mobile, etc.)
+- Operating System (Listed as Windows, iOS, etc.)
+
+### Cloudflare Analytics
+This site uses [Cloudflare DNS Analytics](https://developers.cloudflare.com/dns/additional-options/analytics/). Collected personal data is limited to the IP Address of the connecting device.
+
+Cloudflare DNS Analytics is used to monitor number of visitors across `*.shad.moe`. Accessible data includes:
+- Query name
+- Query type (same as DNS record type)
+- Response code
+- Responding Cloudflare Data center
+- Source IP
+- Destination IP
+- Protocol
+- IP version
 
 </details>
