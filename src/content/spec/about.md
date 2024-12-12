@@ -2,7 +2,7 @@
 
 An actual about description will be available here at a later date.
 
-<details><summary>Click here to view a list of site credits</summary>
+<details><summary>Credits</summary>
 
 >### Theme
 >This site uses the Fuwari theme (based on Astro)
