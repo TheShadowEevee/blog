@@ -1,6 +1,6 @@
 ---
 title: "Renaming an Active Node in a Proxmox Cluster"
-published: 2024-11-21
+published: 2024-12-11
 description: "Renaming Proxmox Cluster Nodes (or: How not to run a Cluster)"
 --image:
 tags: [proxmox, homelab]
