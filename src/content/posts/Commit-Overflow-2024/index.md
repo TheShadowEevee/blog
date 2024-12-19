@@ -25,6 +25,8 @@ This annoyed me, as I don't like Copilot much, so my project for the day became 
 
 View it at: https://git.shad.moe/Konpeki-Solutions/Github-Copilot-Blocker
 
-:::note[To Add]
-Github Before/After Images
-:::
+#### Before
+![Before Image](./GhCopi-Before.png)
+
+#### After
+![After Image](./GhCopi-After.png)
