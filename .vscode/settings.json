@@ -21,8 +21,5 @@
   "frontMatter.dashboard.openOnStart": false,
   "[markdown]": {
     "editor.defaultFormatter": "yzhang.markdown-all-in-one"
-  },
-  "[astro]": {
-    "editor.defaultFormatter": "astro-build.astro-vscode"
   }
 }

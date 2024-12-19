@@ -18,13 +18,12 @@ This description to be extended later
 
 The format of this post will be a daily update log of my work, similar to what is being submitted to my Commit Overflow thread.
 
----
-
-## December 18<sup>th</sup>
+### December 18th: Day 1, Streak 1
 While looking for inspiration to start Commit Overflow, I was going to take a look at my website. However, I was interrupted by a little icon on my GitHub homepage. Turns out, GitHub Copilot Free was announced a mere six hours before I began working.
 
 This annoyed me, as I don't like Copilot much, so my project for the day became the creation of a Firefox Add-on that blocks certain Copilot related requests on `https://github.com` and `https://github.githubassets.com`, as well as removed some elements from the DOM related to Copilot.
 
+<<<<<<< HEAD
 See: [Github-Copilot-Blocker on Gitea](https://git.shad.moe/Konpeki-Solutions/Github-Copilot-Blocker)
 
 #### Before
@@ -177,3 +176,10 @@ Further progress was made in completing the Grow with Google Cybersecurity Certi
 Further progress was made in completing the Grow with Google Cybersecurity Certificate coursework. Module 7 of 8, "Automate Cybersecurity Tasks with Python", was completed. 
 
 ---
+=======
+View it at: https://git.shad.moe/Konpeki-Solutions/Github-Copilot-Blocker
+
+:::note[To Add]
+Github Before/After Images
+:::
+>>>>>>> 87ad4e7 (Add initial Commit Overflow post)
