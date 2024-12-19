@@ -18,7 +18,10 @@ This description to be extended later
 
 The format of this post will be a daily update log of my work, similar to what is being submitted to my Commit Overflow thread.
 
-### December 18th: Day 1, Streak 1
+---
+
+## December 18<sup>th</sup>
+#### Day 1, Streak 1
 While looking for inspiration to start Commit Overflow, I was going to take a look at my website. However, I was interrupted by a little icon on my GitHub homepage. Turns out, GitHub Copilot Free was announced a mere six hours before I began working.
 
 This annoyed me, as I don't like Copilot much, so my project for the day became the creation of a Firefox Add-on that blocks certain Copilot related requests on `https://github.com` and `https://github.githubassets.com`, as well as removed some elements from the DOM related to Copilot.
@@ -30,3 +33,11 @@ View it at: https://git.shad.moe/Konpeki-Solutions/Github-Copilot-Blocker
 
 #### After
 ![After Image](./GhCopi-After.png)
+
+---
+
+## December 19<sup>th</sup>
+#### Day 2, Streak 2
+Picking up from the previous day, Github Copilot Blocker received Chromium browser support. This was basically plug-and-play as the code is quite simple to begin with. All that needed to be done was packaging a .crx and updating the Readme.
+
+See: [Commit Comparison](https://git.shad.moe/Konpeki-Solutions/Github-Copilot-Blocker/compare/fec2e87b09..9d16ac8294)
