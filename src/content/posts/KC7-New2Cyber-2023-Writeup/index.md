@@ -4,7 +4,7 @@ published: 2023-03-16
 description: "KC7 New2Cyber 2023 Writeup"
 --image: 
 tags: ["kc7", "writeup", "ctf"]
-category: "CTFs"
+category: "Events"
 draft: false
 ---
 
