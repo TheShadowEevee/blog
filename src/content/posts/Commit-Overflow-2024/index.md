@@ -179,7 +179,8 @@ Further progress was made in completing the Grow with Google Cybersecurity Certi
 =======
 View it at: https://git.shad.moe/Konpeki-Solutions/Github-Copilot-Blocker
 
-:::note[To Add]
-Github Before/After Images
-:::
->>>>>>> 87ad4e7 (Add initial Commit Overflow post)
+#### Before
+![Before Image](./GhCopi-Before.png)
+
+#### After
+![After Image](./GhCopi-After.png)
