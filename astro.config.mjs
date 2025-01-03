@@ -66,7 +66,6 @@ export default defineConfig({
       id: "6bae5cfe-012e-48cf-8b3e-d96b0518ab72",
       endpointUrl: "https://umami.shad.moe",
       hostUrl: "https://umami.shad.moe",
-      trackerScriptName: "umami.js",
     }),
   ],
   markdown: {
