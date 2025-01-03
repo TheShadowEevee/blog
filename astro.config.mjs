@@ -18,19 +18,19 @@ import { GithubCardComponent } from "./src/plugins/rehype-component-github-card.
 import { parseDirectiveNode } from "./src/plugins/remark-directive-rehype.js";
 import { remarkExcerpt } from "./src/plugins/remark-excerpt.js";
 import { remarkReadingTime } from "./src/plugins/remark-reading-time.mjs";
-import { externalAnchorPlugin } from './src/plugins/external-anchor.mjs'
+import { externalAnchorPlugin } from "./src/plugins/external-anchor.mjs";
+
+import umami from "@yeskunall/astro-umami";
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://blog.shad.moe/',
-  base: '/',
-  trailingSlash: 'ignore',
+  site: "https://blog.shad.moe/",
+  base: "/",
+  trailingSlash: "ignore",
   integrations: [
-    tailwind(
-        {
-          nesting: true,
-        }
-    ),
+    tailwind({
+      nesting: true,
+    }),
     swup({
       theme: false,
       animationClass: "transition-swup-", // see https://swup.js.org/options/#animationselector
@@ -61,6 +61,12 @@ export default defineConfig({
       Action: {
         Passed: async () => true, // https://github.com/PlayForm/Compress/issues/376
       },
+    }),
+    umami({
+      id: "6bae5cfe-012e-48cf-8b3e-d96b0518ab72",
+      endpointUrl: "https://umami.shad.moe",
+      hostUrl: "https://umami.shad.moe",
+      trackerScriptName: "umami.js",
     }),
   ],
   markdown: {
