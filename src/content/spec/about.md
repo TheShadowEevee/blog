@@ -22,10 +22,10 @@ An actual about description will be available here at a later date.
 
 All data collected is non-identifiable. If you have specific questions about the below statements, email [privacy@shad.moe](mailto:privacy@shad.moe).
 
-### Vercel Analytics
-This site uses [Vercel Analytics](https://vercel.com/docs/analytics). No personal data is stored, and user sessions expire after twenty four hours. For more information, see the Vercel Analytics [Privacy and Compliance](https://vercel.com/docs/analytics/privacy-policy) Documentation.
+### Umami Analytics
+This site uses [Umami Analytics](https://umami.is/docs). No identifying data is stored.
 
-Vercel Analytics is used to monitor number of visitors, and popular posts on the blog. Accessible data includes:
+Umami Analytics is used to monitor number of visitors, and popular posts on the blog. Accessible data includes:
 - Path Visited
 - Referrer
 - Country of Origin
