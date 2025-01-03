@@ -1,24 +1,26 @@
-import sitemap from '@astrojs/sitemap'
-import svelte from '@astrojs/svelte'
-import tailwind from '@astrojs/tailwind'
-import swup from '@swup/astro'
-import Compress from 'astro-compress'
-import icon from 'astro-icon'
-import { defineConfig } from 'astro/config'
-import Color from 'colorjs.io'
-import rehypeAutolinkHeadings from 'rehype-autolink-headings'
-import rehypeComponents from 'rehype-components' /* Render the custom directive content */
-import rehypeKatex from 'rehype-katex'
-import rehypeSlug from 'rehype-slug'
-import remarkDirective from 'remark-directive' /* Handle directives */
-import remarkGithubAdmonitionsToDirectives from 'remark-github-admonitions-to-directives'
-import remarkMath from 'remark-math'
-import { AdmonitionComponent } from './src/plugins/rehype-component-admonition.mjs'
-import { GithubCardComponent } from './src/plugins/rehype-component-github-card.mjs'
-import { parseDirectiveNode } from './src/plugins/remark-directive-rehype.js'
-import { remarkExcerpt } from './src/plugins/remark-excerpt.js'
-import { remarkReadingTime } from './src/plugins/remark-reading-time.mjs'
-import { externalAnchorPlugin } from './src/plugins/external-anchor.mjs'
+import sitemap from "@astrojs/sitemap";
+import svelte from "@astrojs/svelte";
+import tailwind from "@astrojs/tailwind";
+import swup from "@swup/astro";
+import Compress from "astro-compress";
+import icon from "astro-icon";
+import { defineConfig } from "astro/config";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypeComponents from "rehype-components"; /* Render the custom directive content */
+import rehypeKatex from "rehype-katex";
+import rehypeSlug from "rehype-slug";
+import remarkDirective from "remark-directive"; /* Handle directives */
+import remarkGithubAdmonitionsToDirectives from "remark-github-admonitions-to-directives";
+import remarkMath from "remark-math";
+import remarkSectionize from "remark-sectionize";
+import { AdmonitionComponent } from "./src/plugins/rehype-component-admonition.mjs";
+import { GithubCardComponent } from "./src/plugins/rehype-component-github-card.mjs";
+import { parseDirectiveNode } from "./src/plugins/remark-directive-rehype.js";
+import { remarkExcerpt } from "./src/plugins/remark-excerpt.js";
+import { remarkReadingTime } from "./src/plugins/remark-reading-time.mjs";
+import { externalAnchorPlugin } from "./src/plugins/external-anchor.mjs";
+
+import umami from "@yeskunall/astro-umami";
 
 const oklchToHex = str => {
   const DEFAULT_HUE = 295
@@ -32,11 +34,13 @@ const oklchToHex = str => {
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://blog.shad.moe/',
-  base: '/',
-  trailingSlash: 'ignore',
+  site: "https://blog.shad.moe/",
+  base: "/",
+  trailingSlash: "ignore",
   integrations: [
-    tailwind(),
+    tailwind({
+      nesting: true,
+    }),
     swup({
       theme: false,
       animationClass: 'transition-swup-',   // see https://swup.js.org/options/#animationselector
@@ -67,6 +71,12 @@ export default defineConfig({
       Action: {
         Passed: async () => true, // https://github.com/PlayForm/Compress/issues/376
       },
+    }),
+    umami({
+      id: "6bae5cfe-012e-48cf-8b3e-d96b0518ab72",
+      endpointUrl: "https://umami.shad.moe",
+      hostUrl: "https://umami.shad.moe",
+      trackerScriptName: "umami.js",
     }),
   ],
   markdown: {
