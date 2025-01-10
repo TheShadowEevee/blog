@@ -1,0 +1,313 @@
+---
+export const prerender = false;
+
+import path from "node:path";
+import { getCollection } from "astro:content";
+import License from "@components/misc/License.astro";
+import Markdown from "@components/misc/Markdown.astro";
+import I18nKey from "@i18n/i18nKey";
+import { i18n } from "@i18n/translation";
+import MainGridLayout from "@layouts/MainGridLayout.astro";
+import { getDir, getPostUrlBySlug } from "@utils/url-utils";
+import { Icon } from "astro-icon/components";
+import { licenseConfig } from "src/config";
+import PostMetadata from "../../components/PostMeta.astro";
+import ImageWrapper from "../../components/misc/ImageWrapper.astro";
+import { profileConfig, siteConfig } from "../../config";
+import { formatDateToYYYYMMDD } from "../../utils/date-utils";
+import { parse, type MarkdownPost, type Post } from "@/utils/parser";
+import { Debug } from "astro:components";
+import { effect } from "astro:schema";
+
+// //const { entry } = Astro.props
+// const { Content, headings } = await blogPost?.render()
+
+// const { remarkPluginFrontmatter } = await blogPost?.render()
+
+/*const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.title,
+  description: post.description || post.title,
+  keywords: post.tags,
+  author: {
+    '@type': 'Person',
+    name: profileConfig.name,
+    url: Astro.site,
+  },
+  datePublished: formatDateToYYYYMMDD(post.published),
+  inLanguage: (post.lang ? post.lang.replace('_', '-') : siteConfig.lang.replace('_', '-')),
+  // TODO include cover image here
+}*/
+
+interface Profile {
+  avatar: string;
+  banner: string;
+  displayName: string;
+  did: string;
+  handle: string;
+  description: string;
+  pds: string;
+}
+
+async function safeFetch(url: string) {
+  const response = await fetch(url);
+  if (!response.ok)
+    throw new Error(response.status + ":" + response.statusText);
+  return await response.json();
+}
+
+async function getProfile(): Promise<Profile> {
+  const fetchProfile = await safeFetch(
+    `https://public.api.bsky.app/xrpc/app.bsky.actor.getProfile?actor=theshadoweevee.konpeki.solutions`
+  );
+  //const fetchProfile = await safeFetch(`https://public.api.bsky.app/xrpc/app.bsky.actor.getProfile?actor=${PUBLIC_HANDLE}`)
+  let split = fetchProfile["did"].split(":");
+  let diddoc;
+  if (split[0] === "did") {
+    if (split[1] === "plc") {
+      diddoc = await safeFetch(`https://plc.directory/${fetchProfile["did"]}`);
+    } else if (split[1] === "web") {
+      diddoc = await safeFetch("https://" + split[2] + "/.well-known/did.json");
+    } else {
+      throw new Error("Invalid DID, Not blessed method");
+    }
+  } else {
+    throw new Error("Invalid DID, malformed");
+  }
+  let pdsurl;
+  for (let service of diddoc["service"]) {
+    if (service["id"] === "#atproto_pds") {
+      pdsurl = service["serviceEndpoint"];
+    }
+  }
+  if (!pdsurl) {
+    throw new Error("DID lacks #atproto_pds service");
+  }
+  return {
+    avatar: fetchProfile["avatar"],
+    banner: fetchProfile["banner"],
+    displayName: fetchProfile["displayName"],
+    did: fetchProfile["did"],
+    handle: fetchProfile["handle"],
+    description: fetchProfile["description"],
+    pds: pdsurl,
+  };
+}
+
+let profile: Profile;
+let posts: Map<string, Post>;
+profile = await getProfile();
+const rawResponse = await fetch(
+  `${profile.pds}/xrpc/com.atproto.repo.listRecords?repo=${profile.did}&collection=com.whtwnd.blog.entry`
+);
+const response = await rawResponse.json();
+let mdposts: Map<string, MarkdownPost> = new Map();
+for (let data of response["records"]) {
+  const matches = data["uri"].split("/");
+  const rkey = matches[matches.length - 1];
+  const record = data["value"];
+  if (
+    matches &&
+    matches.length === 5 &&
+    record &&
+    (record["visibility"] === "public" || !record["visibility"])
+  ) {
+    mdposts.set(rkey, {
+      title: record["title"],
+      createdAt: new Date(record["createdAt"]),
+      mdcontent: record["content"],
+      rkey,
+    });
+  }
+  posts = await parse(mdposts)
+}
+
+let blogPost: Post | undefined = undefined;
+if (posts.has(Astro.params.rkey) || posts.has(posts.title?.toLowerCase().replace(/ /g, '-').replace(/[^a-zA-Z0-9]/g,''))) {
+    blogPost = posts.get(Astro.params.rkey) as Post;
+} else {
+    for (let v of posts.values()) {
+        console.log(v.title?.toLowerCase().replace(/ /g, '-').replace(/[^a-zA-Z0-9-]/g,''))
+        console.log(Astro.params.rkey)
+        if (v.title?.toLowerCase().replace(/ /g, '-').replace(/[^a-zA-Z0-9]/g,'') == Astro.params.rkey?.toLowerCase().replace(/ /g, '-').replace(/[^a-zA-Z0-9]/g,'')) {
+            blogPost = posts.get(v.rkey) as Post;
+            break
+        }
+    }
+}
+---
+
+<MainGridLayout
+  banner={blogPost?.image}
+  title={blogPost?.title}
+  description={blogPost?.description}
+  lang={blogPost?.lang}
+  setOGTypeArticle={true}
+>
+  <script
+    is:inline
+    slot="head"
+    type="application/ld+json"
+    set:html={"JSON.stringify(jsonLd)"}
+  />
+  <div
+    class="flex w-full rounded-[var(--radius-large)] overflow-hidden relative mb-4"
+  >
+    <div
+      id="post-container"
+      class:list={[
+        "card-base z-10 px-6 md:px-9 pt-6 pb-4 relative w-full ",
+        {},
+      ]}
+    >
+      <!-- word count and reading time -->
+      <div
+        class="flex flex-row text-black/30 dark:text-white/30 gap-5 mb-3 transition onload-animation"
+      >
+        <div class="flex flex-row items-center">
+          <div
+            class="transition h-6 w-6 rounded-md bg-black/5 dark:bg-white/10 text-black/50 dark:text-white/50 flex items-center justify-center mr-2"
+          >
+            <Icon name="material-symbols:notes-rounded" />
+          </div>
+        </div>
+        <div class="flex flex-row items-center">
+          <div
+            class="transition h-6 w-6 rounded-md bg-black/5 dark:bg-white/10 text-black/50 dark:text-white/50 flex items-center justify-center mr-2"
+          >
+            <Icon name="material-symbols:schedule-outline-rounded" />
+          </div>
+        </div>
+      </div>
+
+      <!-- title -->
+      <div class="relative onload-animation">
+        <div
+          data-pagefind-body
+          data-pagefind-weight="10"
+          data-pagefind-meta="title"
+          class="transition w-full block font-bold mb-3
+                    text-3xl md:text-[2.25rem]/[2.75rem]
+                    text-black/90 dark:text-white/90
+                    md:before:w-1 before:h-5 before:rounded-md before:bg-[var(--primary)]
+                    before:absolute before:top-[0.75rem] before:left-[-1.125rem]"
+        >
+          {blogPost?.title}
+        </div>
+      </div>
+
+      <!-- metadata -->
+      <div class="onload-animation">
+        <PostMetadata
+          class="mb-5"
+          published={blogPost?.published}
+          tags={blogPost?.tags}
+          category={blogPost?.category}
+        />
+        {
+          !blogPost?.image && (
+            <div class="border-[var(--line-divider)] border-dashed border-b-[1px] mb-5" />
+          )
+        }
+      </div>
+
+      <!-- always show cover as long as it has one -->
+
+      {
+        blogPost?.image && (
+          <ImageWrapper
+            id="post-cover"
+            src={blogPost?.image}
+            basePath={path.join("content/posts/", getDir(entry.id))}
+            class="mb-8 rounded-xl banner-container onload-animation"
+          />
+        )
+      }
+
+      <Markdown class="mb-6 markdown-content onload-animation">
+        <p set:html={blogPost?.content} />
+      </Markdown>
+
+      {
+        licenseConfig.enable && (
+          <License
+            title={blogPost?.title}
+            slug={blogPost?.slug}
+            pubDate={blogPost?.published}
+            class="mb-6 rounded-xl license-container onload-animation"
+          />
+        )
+      }
+    </div>
+  </div>
+
+  <div
+    class="flex flex-col md:flex-row justify-between mb-4 gap-4 overflow-hidden w-full"
+  >
+    <a
+      href={blogPost?.nextSlug ? getPostUrlBySlug(blogPost?.nextSlug) : "#"}
+      class:list={[
+        "w-full font-bold overflow-hidden active:scale-95",
+        { "pointer-events-none": !blogPost?.nextSlug },
+      ]}
+    >
+      {
+        blogPost?.nextSlug && (
+          <div class="btn-card rounded-2xl w-full h-[3.75rem] max-w-full px-4 flex items-center justify-start gap-4">
+            <Icon
+              name="material-symbols:chevron-left-rounded"
+              class="text-[2rem] text-[var(--primary)]"
+            />
+            <div class="overflow-hidden transition overflow-ellipsis whitespace-nowrap max-w-[calc(100%_-_3rem)] text-black/75 dark:text-white/75">
+              {blogPost?.nextTitle}
+            </div>
+          </div>
+        )
+      }
+    </a>
+
+    <a
+      href={blogPost?.prevSlug ? getPostUrlBySlug(blogPost?.prevSlug) : "#"}
+      class:list={[
+        "w-full font-bold overflow-hidden active:scale-95",
+        { "pointer-events-none": !blogPost?.prevSlug },
+      ]}
+    >
+      {
+        blogPost?.prevSlug && (
+          <div class="btn-card rounded-2xl w-full h-[3.75rem] max-w-full px-4 flex items-center justify-end gap-4">
+            <div class="overflow-hidden transition overflow-ellipsis whitespace-nowrap max-w-[calc(100%_-_3rem)] text-black/75 dark:text-white/75">
+              {blogPost?.prevTitle}
+            </div>
+            <Icon
+              name="material-symbols:chevron-right-rounded"
+              class="text-[2rem] text-[var(--primary)]"
+            />
+          </div>
+        )
+      }
+    </a>
+  </div>
+</MainGridLayout>
+
+<style is:global>
+  #post-container :nth-child(1) {
+    animation-delay: calc(var(--content-delay) + 0ms);
+  }
+  #post-container :nth-child(2) {
+    animation-delay: calc(var(--content-delay) + 50ms);
+  }
+  #post-container :nth-child(3) {
+    animation-delay: calc(var(--content-delay) + 100ms);
+  }
+  #post-container :nth-child(4) {
+    animation-delay: calc(var(--content-delay) + 175ms);
+  }
+  #post-container :nth-child(5) {
+    animation-delay: calc(var(--content-delay) + 250ms);
+  }
+  #post-container :nth-child(6) {
+    animation-delay: calc(var(--content-delay) + 325ms);
+  }
+</style>
