@@ -26,8 +26,8 @@ export function AdmonitionComponent(properties, children, type) {
 		label.tagName = "div"; // Change the tag <p> to <div>
 	}
 
-	return h("blockquote", { class: `admonition bdm-${type}` }, [
-		h("span", { class: "bdm-title" }, label ? label : type.toUpperCase()),
-		...children,
-	]);
+  return h(`blockquote`, { class: `admonition bdm-${type}` }, [
+    h('span', { class: `bdm-title` }, label ? label : type.toUpperCase()),
+    ...children,
+  ])
 }
