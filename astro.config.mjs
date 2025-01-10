@@ -19,8 +19,6 @@ import { remarkExcerpt } from './src/plugins/remark-excerpt.js'
 import { remarkReadingTime } from './src/plugins/remark-reading-time.mjs'
 import { externalAnchorPlugin } from './src/plugins/external-anchor.js'
 
-import umami from "@yeskunall/astro-umami";
-
 const oklchToHex = str => {
   const DEFAULT_HUE = 295
   const regex = /-?\d+(\.\d+)?/g

@@ -128,20 +128,21 @@ if (posts.has(Astro.params.rkey) || posts.has(posts.title?.toLowerCase().replace
     blogPost = posts.get(Astro.params.rkey) as Post;
 } else {
     for (let v of posts.values()) {
+        console.log(v.title?.toLowerCase().replace(/ /g, '-').replace(/[^a-zA-Z0-9-]/g,''))
+        console.log(Astro.params.rkey)
         if (v.title?.toLowerCase().replace(/ /g, '-').replace(/[^a-zA-Z0-9]/g,'') == Astro.params.rkey?.toLowerCase().replace(/ /g, '-').replace(/[^a-zA-Z0-9]/g,'')) {
             blogPost = posts.get(v.rkey) as Post;
             break
         }
     }
 }
-
-
 ---
 
 <MainGridLayout
+  banner={blogPost?.image}
   title={blogPost?.title}
-  description={blogPost?.extendedData?.description}
-  lang={blogPost?.extendedData?.lang ?? "en"}
+  description={blogPost?.description}
+  lang={blogPost?.lang}
   setOGTypeArticle={true}
 >
   <script
@@ -200,11 +201,29 @@ if (posts.has(Astro.params.rkey) || posts.has(posts.title?.toLowerCase().replace
       <div class="onload-animation">
         <PostMetadata
           class="mb-5"
-          published={blogPost?.createdAt ?? new Date(0)}
-          tags={blogPost?.extendedData?.tags ?? []}
-          category={blogPost?.extendedData?.category ?? ""}
+          published={blogPost?.published}
+          tags={blogPost?.tags}
+          category={blogPost?.category}
         />
+        {
+          !blogPost?.image && (
+            <div class="border-[var(--line-divider)] border-dashed border-b-[1px] mb-5" />
+          )
+        }
       </div>
+
+      <!-- always show cover as long as it has one -->
+
+      {
+        blogPost?.image && (
+          <ImageWrapper
+            id="post-cover"
+            src={blogPost?.image}
+            basePath={path.join("content/posts/", getDir(entry.id))}
+            class="mb-8 rounded-xl banner-container onload-animation"
+          />
+        )
+      }
 
       <Markdown class="mb-6 markdown-content onload-animation">
         <p set:html={blogPost?.content} />
@@ -213,9 +232,9 @@ if (posts.has(Astro.params.rkey) || posts.has(posts.title?.toLowerCase().replace
       {
         licenseConfig.enable && (
           <License
-            title={blogPost?.title ?? "Post does not exist"}
-            slug={blogPost?.rkey ?? ""}
-            pubDate={blogPost?.createdAt ?? new Date(0)}
+            title={blogPost?.title}
+            slug={blogPost?.slug}
+            pubDate={blogPost?.published}
             class="mb-6 rounded-xl license-container onload-animation"
           />
         )
@@ -227,21 +246,21 @@ if (posts.has(Astro.params.rkey) || posts.has(posts.title?.toLowerCase().replace
     class="flex flex-col md:flex-row justify-between mb-4 gap-4 overflow-hidden w-full"
   >
     <a
-      href={blogPost?.nextPost?.slug ? getPostUrlBySlug(blogPost?.nextPost?.slug) : "#"}
+      href={blogPost?.nextSlug ? getPostUrlBySlug(blogPost?.nextSlug) : "#"}
       class:list={[
         "w-full font-bold overflow-hidden active:scale-95",
-        { "pointer-events-none": !blogPost?.nextPost?.slug },
+        { "pointer-events-none": !blogPost?.nextSlug },
       ]}
     >
       {
-        blogPost?.nextPost?.slug && (
+        blogPost?.nextSlug && (
           <div class="btn-card rounded-2xl w-full h-[3.75rem] max-w-full px-4 flex items-center justify-start gap-4">
             <Icon
               name="material-symbols:chevron-left-rounded"
               class="text-[2rem] text-[var(--primary)]"
             />
             <div class="overflow-hidden transition overflow-ellipsis whitespace-nowrap max-w-[calc(100%_-_3rem)] text-black/75 dark:text-white/75">
-              {blogPost?.nextPost?.title}
+              {blogPost?.nextTitle}
             </div>
           </div>
         )
@@ -249,17 +268,17 @@ if (posts.has(Astro.params.rkey) || posts.has(posts.title?.toLowerCase().replace
     </a>
 
     <a
-      href={blogPost?.prevPost?.slug ? getPostUrlBySlug(blogPost?.prevPost?.slug) : "#"}
+      href={blogPost?.prevSlug ? getPostUrlBySlug(blogPost?.prevSlug) : "#"}
       class:list={[
         "w-full font-bold overflow-hidden active:scale-95",
-        { "pointer-events-none": !blogPost?.prevPost?.slug },
+        { "pointer-events-none": !blogPost?.prevSlug },
       ]}
     >
       {
-        blogPost?.prevPost?.slug && (
+        blogPost?.prevSlug && (
           <div class="btn-card rounded-2xl w-full h-[3.75rem] max-w-full px-4 flex items-center justify-end gap-4">
             <div class="overflow-hidden transition overflow-ellipsis whitespace-nowrap max-w-[calc(100%_-_3rem)] text-black/75 dark:text-white/75">
-              {blogPost?.prevPost?.title}
+              {blogPost?.prevTitle}
             </div>
             <Icon
               name="material-symbols:chevron-right-rounded"

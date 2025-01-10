@@ -125,13 +125,6 @@ importers:
       remark-directive-rehype:
         specifier: ^0.4.2
         version: 0.4.2
-      remark-github-admonitions-to-directives:
-        specifier: ^1.0.5
-        version: 1.0.5
-      remark-math:
-        specifier: ^6.0.0
-        version: 6.0.0
-      remark-sectionize:
       remark-excerpt:
         specifier: 1.0.0-beta.1
         version: 1.0.0-beta.1
@@ -2939,6 +2932,9 @@ packages:
   hast-util-sanitize@5.0.2:
     resolution: {integrity: sha512-3yTWghByc50aGS7JlGhk61SPenfE/p1oaFeNwkOOyrscaOkMGrcW9+Cy/QAIOBpZxP1yqDIzFMR0+Np0i0+usg==}
 
+  hast-util-sanitize@5.0.2:
+    resolution: {integrity: sha512-3yTWghByc50aGS7JlGhk61SPenfE/p1oaFeNwkOOyrscaOkMGrcW9+Cy/QAIOBpZxP1yqDIzFMR0+Np0i0+usg==}
+
   hast-util-to-html@9.0.3:
     resolution: {integrity: sha512-M17uBDzMJ9RPCqLMO92gNNUDuBSq10a25SDBI08iCCxmorf4Yy6sYHK57n9WAbRAAaU+DuR4W6GN9K4DFZesYg==}
 
@@ -4336,6 +4332,10 @@ packages:
 
   remark-directive@3.0.1:
     resolution: {integrity: sha512-gwglrEQEZcZYgVyG1tQuA+h58EZfq5CSULw7J90AFuCTyib1thgHPoqQ+h9iFvU6R+vnZ5oNFQR5QKgGpk741A==}
+
+  remark-excerpt@1.0.0-beta.1:
+    resolution: {integrity: sha512-dgTCsHoYlBoVlY6ykXkXwBq1yxsVnkXTM4VX0d1dbYkY0esmlwGzSe2Vbx2ClH2xGqYcmGD6HU8ISkK0ZP66Lg==}
+    engines: {node: '>=8.6.0', yarn: '>=1.0.0'}
 
   remark-excerpt@1.0.0-beta.1:
     resolution: {integrity: sha512-dgTCsHoYlBoVlY6ykXkXwBq1yxsVnkXTM4VX0d1dbYkY0esmlwGzSe2Vbx2ClH2xGqYcmGD6HU8ISkK0ZP66Lg==}
