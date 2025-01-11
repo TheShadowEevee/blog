@@ -5,8 +5,8 @@ import swup from '@swup/astro'
 import Compress from 'astro-compress'
 import icon from 'astro-icon'
 import { defineConfig } from 'astro/config'
-
 import umami from "@yeskunall/astro-umami";
+import vercel from "@astrojs/vercel/serverless";
 
 // https://astro.build/config
 export default defineConfig({
@@ -14,6 +14,7 @@ export default defineConfig({
   base: '/',
   output: 'hybrid',
   trailingSlash: 'ignore',
+
   integrations: [
     tailwind({
       nesting: true,
@@ -55,6 +56,7 @@ export default defineConfig({
       hostUrl: "https://umami.shad.moe",
     }),
   ],
+
   vite: {
     build: {
       rollupOptions: {
@@ -71,4 +73,6 @@ export default defineConfig({
       },
     },
   },
+
+  adapter: vercel(),
 });
