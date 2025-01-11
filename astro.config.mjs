@@ -5,7 +5,6 @@ import swup from '@swup/astro'
 import Compress from 'astro-compress'
 import icon from 'astro-icon'
 import { defineConfig } from 'astro/config'
-import Color from 'colorjs.io'
 
 const oklchToHex = str => {
   const DEFAULT_HUE = 295

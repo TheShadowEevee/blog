@@ -32,7 +32,7 @@ const className = Astro.props.class;
         >
             <Icon name="material-symbols:calendar-today-outline-rounded" class="text-xl"></Icon>
         </div>
-        <span class="text-50 text-sm font-medium">{formatDateToYYYYMMDD(published)}</span>
+        <span class="text-50 text-sm font-medium">{formatDateToYYYYMMDD(new Date(published))}</span>
     </div>
 
     <!-- update date -->
