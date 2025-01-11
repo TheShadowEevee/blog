@@ -22,6 +22,9 @@ import { unified } from "unified";
 import type { Node } from "unist";
 import type { Root, Element } from "hast";
 import type { Plugin } from "unified";
+import type { VFile } from "node_modules/rehype-raw/lib";
+import I18nKey from "@i18n/i18nKey";
+import { i18n } from "@i18n/translation";
 
 export interface Profile {
   avatar: string;
@@ -41,12 +44,12 @@ export interface Ogp {
 }
 
 export interface Post {
-  title: string;
-  rkey: string;
-  createdAt: Date;
-  content: string; // content parsed to html
-  visibility: boolean;
-  ogp: Ogp;
+  title?: string;
+  rkey?: string;
+  createdAt?: Date;
+  content?: string | VFile; // content parsed to html
+  visibility?: boolean;
+  ogp?: Ogp;
   extendedData?: PostExtended;
   nextPost?: PostRef;
   prevPost?: PostRef;
@@ -60,9 +63,17 @@ export interface MarkdownPost {
   mdcontent: string; // markdown content
   visibility: string;
   ogp: Ogp;
+  data: any;
 }
 
-interface PostExtended {
+export interface ReadingTime {
+  text: number;
+  minutes: number;
+  time: number;
+  words: number;
+}
+
+export interface PostExtended {
   title?: string;
   published?: string;
   updated?: Date;
@@ -71,6 +82,7 @@ interface PostExtended {
   tags?: string[];
   category?: string;
   lang?: string;
+  readingTime?: ReadingTime;
   nextSlug?: string;
   nextTitle?: string;
   prevSlug?: string;
@@ -82,11 +94,11 @@ interface PostRef {
   slug?: string;
 }
 
-interface PostList {
-    slug: string;
-    body: string;
-    data: PostExtended;
-    lastUpdate: Date;
+export interface PostList {
+  slug?: string;
+  body?: string | VFile;
+  data?: PostExtended;
+  lastUpdate?: Date;
 }
 
 // WhiteWind's own custom schema:
@@ -282,11 +294,12 @@ export async function getPosts() {
         rkey,
         visibility: record["visibility"],
         ogp: record["ogp"],
+        data: "",
       });
     }
     posts = await parse(mdposts);
   }
-  return posts
+  return posts;
 }
 
 export function getPost(posts: Map<string, Post>, rkey: string) {
@@ -313,12 +326,12 @@ export function getPost(posts: Map<string, Post>, rkey: string) {
           .replace(/ /g, "-")
           .replace(/[^a-zA-Z0-9]/g, "")
       ) {
-        blogPost = posts.get(v.rkey) as Post;
+        blogPost = posts.get(v.rkey ?? "") as Post;
         break;
       }
     }
   }
-  return blogPost
+  return blogPost;
 }
 
 export async function parse(mdposts: Map<string, MarkdownPost>) {
@@ -328,74 +341,80 @@ export async function parse(mdposts: Map<string, MarkdownPost>) {
       title: post.title,
       rkey: post.rkey,
       createdAt: post.createdAt,
-      content: String(
-        await unified()
-          .use(remarkParse, { fragment: true }) // Parse the MD
-          .use(remarkGfm) // Parse GH specific MD
-          .use(remarkMath)
-          .use(remarkReadingTime)
-          //.use(remarkExcerpt)
-          .use(remarkGithubAdmonitionsToDirectives)
-          .use(remarkDirective)
-          .use(parseDirectiveNode)
-          //.use(externalAnchorPlugin) // See https://tomoviktor.com/posts/astro-external-anchor/
-          .use(remarkRehype, { allowDangerousHtml: true }) // Convert to HTML
-          .use(rehypeRaw) // Parse HTML that exists as raw text leftover from MD parse
-          .use(rehypeUpgradeImage)
-          .use(rehypeSanitize, customSchema as Schema) // Sanitize the HTML
-          .use(rehypeStringify) // Stringify
-          .use(rehypeKatex)
-          .use(rehypeSlug)
-          //.use(rehypeComponents, {
-          //    components: {
-          //        github: GithubCardComponent,
-          //        note: (x, y) => AdmonitionComponent(x, y, 'note'),
-          //        tip: (x, y) => AdmonitionComponent(x, y, 'tip'),
-          //        important: (x, y) => AdmonitionComponent(x, y, 'important'),
-          //        caution: (x, y) => AdmonitionComponent(x, y, 'caution'),
-          //        warning: (x, y) => AdmonitionComponent(x, y, 'warning'),
-          //    },
-          //})
-          .use(rehypeAutolinkHeadings, {
-            behavior: "append",
+      content: await unified()
+        .use(remarkParse, { fragment: true }) // Parse the MD
+        .use(remarkGfm) // Parse GH specific MD
+        .use(remarkMath)
+        .use(remarkReadingTime)
+        //.use(remarkExcerpt)
+        .use(remarkGithubAdmonitionsToDirectives)
+        .use(remarkDirective)
+        .use(parseDirectiveNode)
+        //.use(externalAnchorPlugin) // See https://tomoviktor.com/posts/astro-external-anchor/
+        .use(remarkRehype, { allowDangerousHtml: true }) // Convert to HTML
+        .use(rehypeRaw) // Parse HTML that exists as raw text leftover from MD parse
+        .use(rehypeUpgradeImage)
+        .use(rehypeSanitize, customSchema as Schema) // Sanitize the HTML
+        .use(rehypeStringify) // Stringify
+        .use(rehypeKatex)
+        .use(rehypeSlug)
+        //.use(rehypeComponents, {
+        //    components: {
+        //        github: GithubCardComponent,
+        //        note: (x, y) => AdmonitionComponent(x, y, 'note'),
+        //        tip: (x, y) => AdmonitionComponent(x, y, 'tip'),
+        //        important: (x, y) => AdmonitionComponent(x, y, 'important'),
+        //        caution: (x, y) => AdmonitionComponent(x, y, 'caution'),
+        //        warning: (x, y) => AdmonitionComponent(x, y, 'warning'),
+        //    },
+        //})
+        .use(rehypeAutolinkHeadings, {
+          behavior: "append",
+          properties: {
+            className: ["anchor"],
+          },
+          content: {
+            type: "element",
+            tagName: "span",
             properties: {
-              className: ["anchor"],
+              className: ["anchor-icon"],
+              "data-pagefind-ignore": true,
             },
-            content: {
-              type: "element",
-              tagName: "span",
-              properties: {
-                className: ["anchor-icon"],
-                "data-pagefind-ignore": true,
+            children: [
+              {
+                type: "text",
+                value: "#",
               },
-              children: [
-                {
-                  type: "text",
-                  value: "#",
-                },
-              ],
-            },
-          })
-          .process(post.mdcontent)
-      ),
+            ],
+          },
+        })
+        .process(post.mdcontent),
       visibility: post.visibility != "author",
       ogp: post.ogp,
       extendedData: {
-          title: post.title,
-          published: parseExtendedValue(post.mdcontent)?.published,
-          updated: checkUpdated(
-              parseExtendedValue(post.mdcontent)?.published,
-              post.createdAt
-          ),
-          description: parseExtendedValue(post.mdcontent)?.description,
-          image: parseExtendedValue(post.mdcontent)?.image,
-          tags: parseExtendedValue(post.mdcontent)?.tags,
-          category: parseExtendedValue(post.mdcontent)?.category,
-          lang: "en",
-          nextSlug: "",
-          nextTitle: "",
-          prevSlug: "",
-          prevTitle: ""
+        title: post.title,
+        published: parseExtendedValue(post.mdcontent)?.published,
+        updated: checkUpdated(
+          parseExtendedValue(post.mdcontent)?.published,
+          post.createdAt
+        ),
+        description: parseExtendedValue(post.mdcontent)?.description,
+        image: parseExtendedValue(post.mdcontent)?.image,
+        tags: parseExtendedValue(post.mdcontent)?.tags,
+        category:
+          parseExtendedValue(post.mdcontent)?.category ??
+          i18n(I18nKey.uncategorized),
+        readingTime: {
+          text: 0,
+          minutes: 0,
+          time: 0,
+          words: 0,
+        },
+        lang: "en",
+        nextSlug: "",
+        nextTitle: "",
+        prevSlug: "",
+        prevTitle: "",
       },
       nextPost: {
         title: undefined,
@@ -406,49 +425,99 @@ export async function parse(mdposts: Map<string, MarkdownPost>) {
         slug: undefined,
       },
     });
+    posts.set(rkey, {
+      content: String(posts.get(rkey)?.content),
+      extendedData: {
+        title: posts.get(rkey)?.extendedData?.title,
+        published: posts.get(rkey)?.extendedData?.published,
+        updated: posts.get(rkey)?.extendedData?.updated,
+        description: posts.get(rkey)?.extendedData?.description,
+        image: posts.get(rkey)?.extendedData?.image,
+        tags: posts.get(rkey)?.extendedData?.tags,
+        category: posts.get(rkey)?.extendedData?.category,
+        readingTime: posts.get(rkey)?.content?.data.readingTime,
+        lang: posts.get(rkey)?.extendedData?.lang,
+        nextSlug: posts.get(rkey)?.extendedData?.nextSlug,
+        nextTitle: posts.get(rkey)?.extendedData?.nextTitle,
+        prevSlug: posts.get(rkey)?.extendedData?.prevSlug,
+        prevTitle: posts.get(rkey)?.extendedData?.prevTitle,
+      },
+    });
+    //console.log(posts.get(rkey)?.content.data)
   }
   return posts;
 }
 
-export function getAllTags(mdposts: Map<string, Post>) {
-  //let tags: Map<string, string[]> = new Map();
-  let tags: string[] = new Array()
-  for (let [rkey, post] of mdposts) {
+export async function getAllTags() {
+  let postList = await getPosts();
+  let tags: string[] = new Array();
+  for (let [_, post] of postList) {
     for (let tag of post.extendedData?.tags ?? []) {
-        tags.push(tag)
+      tags.push(tag);
     }
   }
   return tags;
 }
 
 export async function getSortedPosts() {
-    let postList = await getPosts()
-    let posts: PostList[] = new Array()
-    for (let [rkey, post] of postList) {
-        posts.push({
-            slug: rkey,
-            body: post.content,
-            data: post.extendedData ?? {},
-            lastUpdate: post.createdAt
-        })
+  let postList = await getPosts();
+  let posts: PostList[] = new Array();
+  for (let [rkey, post] of postList) {
+    posts.push({
+      slug: rkey,
+      body: post.content,
+      data: post.extendedData ?? {},
+      lastUpdate: post.createdAt,
+    });
+  }
+
+  const sorted = posts.sort(
+    (a: { data: PostExtended }, b: { data: PostExtended }) => {
+      const dateA = new Date(a.data.published ?? 0);
+      const dateB = new Date(b.data.published ?? 0);
+      return dateA > dateB ? -1 : 1;
     }
-    
-      const sorted = posts.sort(
-        (a: { data: PostExtended }, b: { data: PostExtended }) => {
-          const dateA = new Date(a.data.published ?? 0)
-          const dateB = new Date(b.data.published ?? 0)
-          return dateA > dateB ? -1 : 1
-        },
-      )
-    
-      for (let i = 1; i < sorted.length; i++) {
-        sorted[i].data.nextSlug = sorted[i - 1].slug
-        sorted[i].data.nextTitle = sorted[i - 1].data.title ?? ""
-      }
-      for (let i = 0; i < sorted.length - 1; i++) {
-        sorted[i].data.prevSlug = sorted[i + 1].slug
-        sorted[i].data.prevTitle = sorted[i + 1].data.title ?? ""
-      }
-    
-      return sorted
+  );
+
+  for (let i = 1; i < sorted.length; i++) {
+    sorted[i].data.nextSlug = sorted[i - 1].slug;
+    sorted[i].data.nextTitle = sorted[i - 1].data.title ?? "";
+  }
+  for (let i = 0; i < sorted.length - 1; i++) {
+    sorted[i].data.prevSlug = sorted[i + 1].slug;
+    sorted[i].data.prevTitle = sorted[i + 1].data.title ?? "";
+  }
+
+  return sorted;
+}
+
+export type Category = {
+  name: string;
+  count: number;
+};
+
+export async function getCategoryList(): Promise<Category[]> {
+  const count: { [key: string]: number } = {};
+  let postList = await getPosts();
+
+  for (let [_, post] of postList) {
+    if (!post.extendedData?.category) {
+      const ucKey = i18n(I18nKey.uncategorized);
+      count[ucKey] = count[ucKey] ? count[ucKey] + 1 : 1;
+    } else {
+      count[post.extendedData?.category] = count[post.extendedData?.category]
+        ? count[post.extendedData?.category] + 1
+        : 1;
+    }
+  }
+
+  const lst = Object.keys(count).sort((a, b) => {
+    return a.toLowerCase().localeCompare(b.toLowerCase());
+  });
+
+  const ret: Category[] = [];
+  for (const c of lst) {
+    ret.push({ name: c, count: count[c] });
+  }
+  return ret;
 }
