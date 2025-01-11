@@ -4,7 +4,9 @@ import PostPage from '../components/PostPage.astro'
 import Pagination from '../components/control/Pagination.astro'
 import { PAGE_SIZE } from '../constants/constants'
 import MainGridLayout from '../layouts/MainGridLayout.astro'
-import { getSortedPosts } from '../utils/content-utils'
+//import { getSortedPosts } from '../utils/content-utils'
+import Content from 'node_modules/photoswipe/dist/types/slide/content'
+import { getSortedPosts } from '@utils/parser'
 
 export const getStaticPaths = (async ({ paginate }) => {
   const allBlogPosts = await getSortedPosts()

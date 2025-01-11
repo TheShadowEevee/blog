@@ -1,141 +1,50 @@
 ---
 export const prerender = false;
 
-import path from "node:path";
-import { getCollection } from "astro:content";
 import License from "@components/misc/License.astro";
 import Markdown from "@components/misc/Markdown.astro";
-import I18nKey from "@i18n/i18nKey";
-import { i18n } from "@i18n/translation";
 import MainGridLayout from "@layouts/MainGridLayout.astro";
-import { getDir, getPostUrlBySlug } from "@utils/url-utils";
+import { getPostUrlBySlug } from "@utils/url-utils";
 import { Icon } from "astro-icon/components";
 import { licenseConfig } from "src/config";
 import PostMetadata from "../../components/PostMeta.astro";
 import ImageWrapper from "../../components/misc/ImageWrapper.astro";
 import { profileConfig, siteConfig } from "../../config";
 import { formatDateToYYYYMMDD } from "../../utils/date-utils";
-import { parse, type MarkdownPost, type Post } from "@/utils/parser";
-import { Debug } from "astro:components";
-import { effect } from "astro:schema";
+import {
+	getPost,
+	getPosts,
+  getProfile,
+  parse,
+  type MarkdownPost,
+  type Post,
+  type Profile,
+} from "@/utils/parser";
 
-// //const { entry } = Astro.props
-// const { Content, headings } = await blogPost?.render()
+let allPosts: Map<string, Post> | undefined = await getPosts()
+let blogPost: Post | undefined = undefined
 
-// const { remarkPluginFrontmatter } = await blogPost?.render()
+if (allPosts) {
+  blogPost = getPost(allPosts, Astro.params.rkey ?? "")
+}
 
-/*const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'BlogPosting',
-  headline: post.title,
-  description: post.description || post.title,
-  keywords: post.tags,
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: blogPost?.title,
+  description: blogPost?.extendedData?.description || blogPost?.title,
+  keywords: blogPost?.extendedData?.tags ?? [],
   author: {
-    '@type': 'Person',
+    "@type": "Person",
     name: profileConfig.name,
     url: Astro.site,
   },
-  datePublished: formatDateToYYYYMMDD(post.published),
-  inLanguage: (post.lang ? post.lang.replace('_', '-') : siteConfig.lang.replace('_', '-')),
+  datePublished: formatDateToYYYYMMDD(blogPost?.createdAt ?? new Date(0)),
+  inLanguage: blogPost?.extendedData?.lang
+    ? blogPost?.extendedData?.lang?.replace("_", "-")
+    : siteConfig.lang.replace("_", "-"),
   // TODO include cover image here
-}*/
-
-interface Profile {
-  avatar: string;
-  banner: string;
-  displayName: string;
-  did: string;
-  handle: string;
-  description: string;
-  pds: string;
-}
-
-async function safeFetch(url: string) {
-  const response = await fetch(url);
-  if (!response.ok)
-    throw new Error(response.status + ":" + response.statusText);
-  return await response.json();
-}
-
-async function getProfile(): Promise<Profile> {
-  const fetchProfile = await safeFetch(
-    `https://public.api.bsky.app/xrpc/app.bsky.actor.getProfile?actor=theshadoweevee.konpeki.solutions`
-  );
-  //const fetchProfile = await safeFetch(`https://public.api.bsky.app/xrpc/app.bsky.actor.getProfile?actor=${PUBLIC_HANDLE}`)
-  let split = fetchProfile["did"].split(":");
-  let diddoc;
-  if (split[0] === "did") {
-    if (split[1] === "plc") {
-      diddoc = await safeFetch(`https://plc.directory/${fetchProfile["did"]}`);
-    } else if (split[1] === "web") {
-      diddoc = await safeFetch("https://" + split[2] + "/.well-known/did.json");
-    } else {
-      throw new Error("Invalid DID, Not blessed method");
-    }
-  } else {
-    throw new Error("Invalid DID, malformed");
-  }
-  let pdsurl;
-  for (let service of diddoc["service"]) {
-    if (service["id"] === "#atproto_pds") {
-      pdsurl = service["serviceEndpoint"];
-    }
-  }
-  if (!pdsurl) {
-    throw new Error("DID lacks #atproto_pds service");
-  }
-  return {
-    avatar: fetchProfile["avatar"],
-    banner: fetchProfile["banner"],
-    displayName: fetchProfile["displayName"],
-    did: fetchProfile["did"],
-    handle: fetchProfile["handle"],
-    description: fetchProfile["description"],
-    pds: pdsurl,
-  };
-}
-
-let profile: Profile;
-let posts: Map<string, Post>;
-profile = await getProfile();
-const rawResponse = await fetch(
-  `${profile.pds}/xrpc/com.atproto.repo.listRecords?repo=${profile.did}&collection=com.whtwnd.blog.entry`
-);
-const response = await rawResponse.json();
-let mdposts: Map<string, MarkdownPost> = new Map();
-for (let data of response["records"]) {
-  const matches = data["uri"].split("/");
-  const rkey = matches[matches.length - 1];
-  const record = data["value"];
-  if (
-    matches &&
-    matches.length === 5 &&
-    record &&
-    (record["visibility"] === "public" || !record["visibility"])
-  ) {
-    mdposts.set(rkey, {
-      title: record["title"],
-      createdAt: new Date(record["createdAt"]),
-      mdcontent: record["content"],
-      rkey,
-    });
-  }
-  posts = await parse(mdposts)
-}
-
-let blogPost: Post | undefined = undefined;
-if (posts.has(Astro.params.rkey) || posts.has(posts.title?.toLowerCase().replace(/ /g, '-').replace(/[^a-zA-Z0-9]/g,''))) {
-    blogPost = posts.get(Astro.params.rkey) as Post;
-} else {
-    for (let v of posts.values()) {
-        if (v.title?.toLowerCase().replace(/ /g, '-').replace(/[^a-zA-Z0-9]/g,'') == Astro.params.rkey?.toLowerCase().replace(/ /g, '-').replace(/[^a-zA-Z0-9]/g,'')) {
-            blogPost = posts.get(v.rkey) as Post;
-            break
-        }
-    }
-}
-
-
+};
 ---
 
 <MainGridLayout
@@ -148,7 +57,7 @@ if (posts.has(Astro.params.rkey) || posts.has(posts.title?.toLowerCase().replace
     is:inline
     slot="head"
     type="application/ld+json"
-    set:html={"JSON.stringify(jsonLd)"}
+    set:html={JSON.stringify(jsonLd)}
   />
   <div
     class="flex w-full rounded-[var(--radius-large)] overflow-hidden relative mb-4"
@@ -214,7 +123,6 @@ if (posts.has(Astro.params.rkey) || posts.has(posts.title?.toLowerCase().replace
         licenseConfig.enable && (
           <License
             title={blogPost?.title ?? "Post does not exist"}
-            slug={blogPost?.rkey ?? ""}
             pubDate={blogPost?.createdAt ?? new Date(0)}
             class="mb-6 rounded-xl license-container onload-animation"
           />
@@ -227,7 +135,9 @@ if (posts.has(Astro.params.rkey) || posts.has(posts.title?.toLowerCase().replace
     class="flex flex-col md:flex-row justify-between mb-4 gap-4 overflow-hidden w-full"
   >
     <a
-      href={blogPost?.nextPost?.slug ? getPostUrlBySlug(blogPost?.nextPost?.slug) : "#"}
+      href={blogPost?.nextPost?.slug
+        ? getPostUrlBySlug(blogPost?.nextPost?.slug)
+        : "#"}
       class:list={[
         "w-full font-bold overflow-hidden active:scale-95",
         { "pointer-events-none": !blogPost?.nextPost?.slug },
@@ -249,7 +159,9 @@ if (posts.has(Astro.params.rkey) || posts.has(posts.title?.toLowerCase().replace
     </a>
 
     <a
-      href={blogPost?.prevPost?.slug ? getPostUrlBySlug(blogPost?.prevPost?.slug) : "#"}
+      href={blogPost?.prevPost?.slug
+        ? getPostUrlBySlug(blogPost?.prevPost?.slug)
+        : "#"}
       class:list={[
         "w-full font-bold overflow-hidden active:scale-95",
         { "pointer-events-none": !blogPost?.prevPost?.slug },
