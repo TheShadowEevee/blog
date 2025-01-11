@@ -3,7 +3,7 @@ import type { BlogPostData } from '@/types/config'
 import I18nKey from '@i18n/i18nKey'
 import { i18n } from '@i18n/translation'
 
-export async function getSortedPosts(): Promise<
+/*export async function getSortedPosts(): Promise<
   { body: string, data: BlogPostData; slug: string }[]
 > {
   const allBlogPosts = (await getCollection('posts', ({ data }) => {
@@ -28,9 +28,9 @@ export async function getSortedPosts(): Promise<
   }
 
   return sorted
-}
+}*/
 
-export type Tag = {
+/*export type Tag = {
   name: string
   count: number
 }
@@ -54,9 +54,9 @@ export async function getTagList(): Promise<Tag[]> {
   })
 
   return keys.map(key => ({ name: key, count: countMap[key] }))
-}
+}*/
 
-export type Category = {
+/*export type Category = {
   name: string
   count: number
 }
@@ -86,4 +86,4 @@ export async function getCategoryList(): Promise<Category[]> {
     ret.push({ name: c, count: count[c] })
   }
   return ret
-}
+}*/
