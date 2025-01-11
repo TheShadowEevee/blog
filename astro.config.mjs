@@ -5,19 +5,6 @@ import swup from '@swup/astro'
 import Compress from 'astro-compress'
 import icon from 'astro-icon'
 import { defineConfig } from 'astro/config'
-import rehypeAutolinkHeadings from 'rehype-autolink-headings'
-import rehypeComponents from 'rehype-components' /* Render the custom directive content */
-import rehypeKatex from 'rehype-katex'
-import rehypeSlug from 'rehype-slug'
-import remarkDirective from 'remark-directive' /* Handle directives */
-import remarkGithubAdmonitionsToDirectives from 'remark-github-admonitions-to-directives'
-import remarkMath from 'remark-math'
-import { AdmonitionComponent } from './src/plugins/rehype-component-admonition.mjs'
-import { GithubCardComponent } from './src/plugins/rehype-component-github-card.mjs'
-import { parseDirectiveNode } from './src/plugins/remark-directive-rehype.js'
-import { remarkExcerpt } from './src/plugins/remark-excerpt.js'
-import { remarkReadingTime } from './src/plugins/remark-reading-time.mjs'
-import { externalAnchorPlugin } from './src/plugins/external-anchor.js'
 
 import umami from "@yeskunall/astro-umami";
 
