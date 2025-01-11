@@ -20,6 +20,7 @@
     "@astrojs/sitemap": "^3.2.1",
     "@astrojs/svelte": "^6.0.1",
     "@astrojs/tailwind": "^5.1.2",
+    "@astrojs/vercel": "^8.0.1",
     "@fontsource-variable/jetbrains-mono": "^5.1.1",
     "@fontsource/roboto": "^5.1.0",
     "@iconify-json/fa6-brands": "^1.2.1",
