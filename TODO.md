@@ -10,4 +10,4 @@
 - [X] Break Content Functions back out into content-utils.ts
 - [ ] Clean Up Old / Commented Out code
 - [ ] Many type errors in parser.ts
-- [ ] Update Footer / Credits to include ATmosphere
+- [X] Update Footer / Credits to include ATmosphere
