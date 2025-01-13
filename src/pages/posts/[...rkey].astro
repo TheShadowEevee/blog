@@ -11,15 +11,10 @@ import PostMetadata from "../../components/PostMeta.astro";
 import ImageWrapper from "../../components/misc/ImageWrapper.astro";
 import { profileConfig, siteConfig } from "../../config";
 import { formatDateToYYYYMMDD } from "../../utils/date-utils";
-import {
-	getPost,
-	getPosts,
-  getProfile,
-  parse,
-  type MarkdownPost,
-  type Post,
-  type Profile,
-} from "@/utils/parser";
+import { type Post, getPosts, getPost } from "@utils/content-utils";
+import { i18n } from "@i18n/translation";
+import I18nKey from "@i18n/i18nKey";
+
 
 let allPosts: Map<string, Post> | undefined = await getPosts()
 let blogPost: Post | undefined = undefined
@@ -80,6 +75,7 @@ const jsonLd = {
           >
             <Icon name="material-symbols:notes-rounded" />
           </div>
+          <div class="text-sm">{blogPost?.extendedData?.readingTime?.words} {" " + i18n(I18nKey.wordsCount)}</div>
         </div>
         <div class="flex flex-row items-center">
           <div
@@ -87,6 +83,7 @@ const jsonLd = {
           >
             <Icon name="material-symbols:schedule-outline-rounded" />
           </div>
+          <div class="text-sm">{Math.round(blogPost?.extendedData?.readingTime?.minutes as number)} {" " + i18n(I18nKey.minutesCount)}</div>
         </div>
       </div>
 
@@ -110,9 +107,9 @@ const jsonLd = {
       <div class="onload-animation">
         <PostMetadata
           class="mb-5"
-          published={blogPost?.published}
-          tags={blogPost?.tags}
-          category={blogPost?.category}
+          published={new Date(blogPost?.extendedData?.published ?? 0)}
+          tags={blogPost?.extendedData?.tags ?? []}
+          category={blogPost?.extendedData?.category ?? ""}
         />
         {
           !blogPost?.image && (

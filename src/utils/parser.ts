@@ -5,7 +5,7 @@ import remarkRehype from "remark-rehype";
 import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import rehypeRaw from "rehype-raw";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
-import rehypeComponents from "rehype-components"; /* Render the custom directive content */
+//import rehypeComponents from "rehype-components"; /* Render the custom directive content */
 import rehypeKatex from "rehype-katex";
 import rehypeSlug from "rehype-slug";
 import remarkDirective from "remark-directive"; /* Handle directives */
@@ -16,6 +16,7 @@ import remarkMath from "remark-math";
 import parseDirectiveNode from "remark-directive-rehype";
 //import remarkExcerpt from 'remark-excerpt'
 import remarkReadingTime from "remark-reading-time";
+import remarkHeadings from "@vcarl/remark-headings";
 //import externalAnchorPlugin from '@/plugins/external-anchor.js'
 import type { Schema } from "../../node_modules/rehype-sanitize/lib";
 import { unified } from "unified";
@@ -25,81 +26,7 @@ import type { Plugin } from "unified";
 import type { VFile } from "node_modules/rehype-raw/lib";
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
-
-export interface Profile {
-  avatar: string;
-  banner: string;
-  displayName: string;
-  did: string;
-  handle: string;
-  description: string;
-  pds: string;
-}
-
-export interface Ogp {
-  url: string;
-  width?: number;
-  height?: number;
-  [k: string]: unknown;
-}
-
-export interface Post {
-  title?: string;
-  rkey?: string;
-  createdAt?: Date;
-  content?: string | VFile; // content parsed to html
-  visibility?: boolean;
-  ogp?: Ogp;
-  extendedData?: PostExtended;
-  nextPost?: PostRef;
-  prevPost?: PostRef;
-  readingTime?: string;
-}
-
-export interface MarkdownPost {
-  title: string;
-  rkey: string;
-  createdAt: Date;
-  mdcontent: string; // markdown content
-  visibility: string;
-  ogp: Ogp;
-  data: any;
-}
-
-export interface ReadingTime {
-  text: number;
-  minutes: number;
-  time: number;
-  words: number;
-}
-
-export interface PostExtended {
-  title?: string;
-  published?: string;
-  updated?: Date;
-  description?: string;
-  image?: string;
-  tags?: string[];
-  category?: string;
-  lang?: string;
-  readingTime?: ReadingTime;
-  nextSlug?: string;
-  nextTitle?: string;
-  prevSlug?: string;
-  prevTitle?: string;
-}
-
-interface PostRef {
-  title?: string;
-  slug?: string;
-}
-
-export interface PostList {
-  slug?: string;
-  body?: string | VFile;
-  data?: PostExtended;
-  lastUpdate?: Date;
-}
+import { checkUpdated, parseExtendedValue, type Headings, type MarkdownPost, type Post, type ReadingTime } from "./content-utils";
 
 // WhiteWind's own custom schema:
 // https://github.com/whtwnd/whitewind-blog/blob/7eb8d4623eea617fd562b93d66a0e235323a2f9a/frontend/src/services/DocProvider.tsx#L122
@@ -191,148 +118,6 @@ const rehypeUpgradeImage: Plugin<any, Root, Node> = () => {
     }
   }
 
-async function safeFetch(url: string) {
-  const response = await fetch(url);
-  if (!response.ok)
-    throw new Error(response.status + ":" + response.statusText);
-  return await response.json();
-}
-
-function parseExtendedValue(content: string) {
-  if (content) {
-    let values = content.match(
-      new RegExp(
-        "<!-- ### ADDITIONAL DATA FIELD ### " +
-          "(.*)" +
-          " ### https://blog.shad.moe ### --->"
-      )
-    );
-
-    if (values) {
-      return JSON.parse(values[1].replaceAll("'", '"'));
-    } else {
-      return "";
-    }
-  }
-}
-
-function checkUpdated(published: string, latest: Date) {
-  if (published) {
-    if (
-      new Date(published).getDate().toString() +
-        new Date(published).getFullYear().toString() !=
-      latest.getDate().toString() + latest.getFullYear().toString()
-    ) {
-      return latest;
-    } else {
-      return undefined;
-    }
-  }
-}
-
-export async function getProfile(): Promise<Profile> {
-  const fetchProfile = await safeFetch(
-    `https://public.api.bsky.app/xrpc/app.bsky.actor.getProfile?actor=theshadoweevee.konpeki.solutions`
-  );
-  //const fetchProfile = await safeFetch(`https://public.api.bsky.app/xrpc/app.bsky.actor.getProfile?actor=${PUBLIC_HANDLE}`)
-  let split = fetchProfile["did"].split(":");
-  let diddoc;
-  if (split[0] === "did") {
-    if (split[1] === "plc") {
-      diddoc = await safeFetch(`https://plc.directory/${fetchProfile["did"]}`);
-    } else if (split[1] === "web") {
-      diddoc = await safeFetch("https://" + split[2] + "/.well-known/did.json");
-    } else {
-      throw new Error("Invalid DID, Not blessed method");
-    }
-  } else {
-    throw new Error("Invalid DID, malformed");
-  }
-  let pdsurl;
-  for (let service of diddoc["service"]) {
-    if (service["id"] === "#atproto_pds") {
-      pdsurl = service["serviceEndpoint"];
-    }
-  }
-  if (!pdsurl) {
-    throw new Error("DID lacks #atproto_pds service");
-  }
-  return {
-    avatar: fetchProfile["avatar"],
-    banner: fetchProfile["banner"],
-    displayName: fetchProfile["displayName"],
-    did: fetchProfile["did"],
-    handle: fetchProfile["handle"],
-    description: fetchProfile["description"],
-    pds: pdsurl,
-  };
-}
-
-export async function getPosts() {
-  let profile: Profile;
-  let posts: Map<string, Post>;
-  profile = await getProfile();
-  const rawResponse = await fetch(
-    `${profile.pds}/xrpc/com.atproto.repo.listRecords?repo=${profile.did}&collection=com.whtwnd.blog.entry`
-  );
-  const response = await rawResponse.json();
-  let mdposts: Map<string, MarkdownPost> = new Map();
-  for (let data of response["records"]) {
-    const matches = data["uri"].split("/");
-    const rkey = matches[matches.length - 1];
-    const record = data["value"];
-    if (
-      matches &&
-      matches.length === 5 &&
-      record &&
-      (record["visibility"] === "public" || !record["visibility"])
-    ) {
-      mdposts.set(rkey, {
-        title: record["title"],
-        createdAt: new Date(record["createdAt"]),
-        mdcontent: record["content"],
-        rkey,
-        visibility: record["visibility"],
-        ogp: record["ogp"],
-        data: "",
-      });
-    }
-    posts = await parse(mdposts);
-  }
-  return posts;
-}
-
-export function getPost(posts: Map<string, Post>, rkey: string) {
-  let blogPost: Post | undefined = undefined;
-  if (
-    posts.has(rkey ?? "") ||
-    posts.has(
-      blogPost?.title
-        ?.toLowerCase()
-        .replace(/ /g, "-")
-        .replace(/[^a-zA-Z0-9]/g, "") ?? ""
-    )
-  ) {
-    blogPost = posts.get(rkey ?? "") as Post;
-  } else {
-    for (let v of posts.values()) {
-      if (
-        v.title
-          ?.toLowerCase()
-          .replace(/ /g, "-")
-          .replace(/[^a-zA-Z0-9]/g, "") ==
-        rkey
-          ?.toLowerCase()
-          .replace(/ /g, "-")
-          .replace(/[^a-zA-Z0-9]/g, "")
-      ) {
-        blogPost = posts.get(v.rkey ?? "") as Post;
-        break;
-      }
-    }
-  }
-  return blogPost;
-}
 
 export async function parse(mdposts: Map<string, MarkdownPost>) {
   let posts: Map<string, Post> = new Map();
@@ -349,6 +134,7 @@ export async function parse(mdposts: Map<string, MarkdownPost>) {
         //.use(remarkExcerpt)
         .use(remarkGithubAdmonitionsToDirectives)
         .use(remarkDirective)
+        .use(remarkHeadings)
         .use(parseDirectiveNode)
         //.use(externalAnchorPlugin) // See https://tomoviktor.com/posts/astro-external-anchor/
         .use(remarkRehype, { allowDangerousHtml: true }) // Convert to HTML
@@ -410,6 +196,7 @@ export async function parse(mdposts: Map<string, MarkdownPost>) {
           time: 0,
           words: 0,
         },
+        headings: [],
         lang: "en",
         nextSlug: "",
         nextTitle: "",
@@ -435,7 +222,8 @@ export async function parse(mdposts: Map<string, MarkdownPost>) {
         image: posts.get(rkey)?.extendedData?.image,
         tags: posts.get(rkey)?.extendedData?.tags,
         category: posts.get(rkey)?.extendedData?.category,
-        readingTime: posts.get(rkey)?.content?.data.readingTime,
+        readingTime: (posts.get(rkey)?.content as VFile)?.data.readingTime as ReadingTime,
+        headings: (posts.get(rkey)?.content as VFile)?.data.headings as Headings[],
         lang: posts.get(rkey)?.extendedData?.lang,
         nextSlug: posts.get(rkey)?.extendedData?.nextSlug,
         nextTitle: posts.get(rkey)?.extendedData?.nextTitle,
@@ -443,81 +231,6 @@ export async function parse(mdposts: Map<string, MarkdownPost>) {
         prevTitle: posts.get(rkey)?.extendedData?.prevTitle,
       },
     });
-    //console.log(posts.get(rkey)?.content.data)
   }
   return posts;
-}
-
-export async function getAllTags() {
-  let postList = await getPosts();
-  let tags: string[] = new Array();
-  for (let [_, post] of postList) {
-    for (let tag of post.extendedData?.tags ?? []) {
-      tags.push(tag);
-    }
-  }
-  return tags;
-}
-
-export async function getSortedPosts() {
-  let postList = await getPosts();
-  let posts: PostList[] = new Array();
-  for (let [rkey, post] of postList) {
-    posts.push({
-      slug: rkey,
-      body: post.content,
-      data: post.extendedData ?? {},
-      lastUpdate: post.createdAt,
-    });
-  }
-
-  const sorted = posts.sort(
-    (a: { data: PostExtended }, b: { data: PostExtended }) => {
-      const dateA = new Date(a.data.published ?? 0);
-      const dateB = new Date(b.data.published ?? 0);
-      return dateA > dateB ? -1 : 1;
-    }
-  );
-
-  for (let i = 1; i < sorted.length; i++) {
-    sorted[i].data.nextSlug = sorted[i - 1].slug;
-    sorted[i].data.nextTitle = sorted[i - 1].data.title ?? "";
-  }
-  for (let i = 0; i < sorted.length - 1; i++) {
-    sorted[i].data.prevSlug = sorted[i + 1].slug;
-    sorted[i].data.prevTitle = sorted[i + 1].data.title ?? "";
-  }
-
-  return sorted;
-}
-
-export type Category = {
-  name: string;
-  count: number;
-};
-
-export async function getCategoryList(): Promise<Category[]> {
-  const count: { [key: string]: number } = {};
-  let postList = await getPosts();
-
-  for (let [_, post] of postList) {
-    if (!post.extendedData?.category) {
-      const ucKey = i18n(I18nKey.uncategorized);
-      count[ucKey] = count[ucKey] ? count[ucKey] + 1 : 1;
-    } else {
-      count[post.extendedData?.category] = count[post.extendedData?.category]
-        ? count[post.extendedData?.category] + 1
-        : 1;
-    }
-  }
-
-  const lst = Object.keys(count).sort((a, b) => {
-    return a.toLowerCase().localeCompare(b.toLowerCase());
-  });
-
-  const ret: Category[] = [];
-  for (const c of lst) {
-    ret.push({ name: c, count: count[c] });
-  }
-  return ret;
 }
