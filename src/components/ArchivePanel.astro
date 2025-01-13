@@ -2,9 +2,8 @@
 import { UNCATEGORIZED } from '@constants/constants'
 import I18nKey from '../i18n/i18nKey'
 import { i18n } from '../i18n/translation'
-//import { getSortedPosts } from '../utils/content-utils'
 import { getPostUrlBySlug } from '../utils/url-utils'
-import { getAllTags, getPosts } from '@utils/parser'
+import { getAllTags, getPosts } from '@utils/content-utils'
 
 interface Props {
   keyword?: string
@@ -61,7 +60,7 @@ const groups: { year: number; posts: typeof posts }[] = (() => {
 
 function formatDate(date: Date) {
   const month = (date.getMonth() + 1).toString().padStart(2, '0')
-  const day = date.getDate().toString().padStart(2, '0')
+  const day = (date.getDate() + 1).toString().padStart(2, '0')
   return `${month}-${day}`
 }
 
@@ -107,7 +106,7 @@ function formatTag(tag: string[]) {
                                 group-hover:translate-x-1 transition-all group-hover:text-[var(--primary)]
                                 text-75 pr-8 whitespace-nowrap overflow-ellipsis overflow-hidden"
                             >
-                                    {post.value.title}
+                                    {post.value.extendedData?.title}
                             </div>
                             <!-- tag list -->
                             <div class="hidden md:block md:w-[15%] text-left text-sm transition
