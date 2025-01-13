@@ -34,7 +34,7 @@ const jsonLd = {
     name: profileConfig.name,
     url: Astro.site,
   },
-  datePublished: formatDateToYYYYMMDD(blogPost?.createdAt ?? new Date(0)),
+  datePublished: formatDateToYYYYMMDD(new Date(blogPost?.extendedData?.published ?? 0)),
   inLanguage: blogPost?.extendedData?.lang
     ? blogPost?.extendedData?.lang?.replace("_", "-")
     : siteConfig.lang.replace("_", "-"),
@@ -119,8 +119,8 @@ const jsonLd = {
       {
         licenseConfig.enable && (
           <License
-            title={blogPost?.title ?? "Post does not exist"}
-            pubDate={blogPost?.createdAt ?? new Date(0)}
+            title={blogPost?.extendedData?.title ?? "Post does not exist"}
+            pubDate={new Date(blogPost?.extendedData?.published ?? 0)}
             class="mb-6 rounded-xl license-container onload-animation"
           />
         )
