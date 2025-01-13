@@ -8,6 +8,9 @@ An actual about description will be available here at a later date.
 >This site uses the Fuwari theme (based on Astro)
 >::github{repo="saicaca/fuwari"}
 
+>### Post Storage
+>Posts are stored and retrieved using the [AT Protocol](https://atproto.com/), using the [Whitewind](https://whtwnd.com/) schema.
+
 >### Libraries
 >
 > ::github{repo="withastro/astro"}
