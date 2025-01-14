@@ -1,4 +1,4 @@
-- [ ] Tag selection doesn't work in /archive
+- [X] Tag selection doesn't work in /archive
 - [X] Post Names / Data doesn't display in /archive
 - [X] Incorrect Publish Date on /archive
 - [X] Incorrect Publish Date on Post Views
