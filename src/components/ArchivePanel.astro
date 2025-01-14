@@ -10,10 +10,9 @@ interface Props {
   tags?: string[]
   categories?: string[]
 }
-const { categories } = Astro.props
+const { tags, categories } = Astro.props
 
 let postList = await getPosts()
-const tags = getAllTags()
 
 let posts = Array.from(postList, ([name, value]) => ({name, value}))
 
