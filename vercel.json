@@ -1,1 +1,5 @@
-{}
+{
+    "functions": {
+      "pages/posts/[...rkey].tsx": {}
+    }
+  }
