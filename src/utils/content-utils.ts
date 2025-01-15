@@ -1,9 +1,8 @@
-import { getCollection } from 'astro:content'
-import type { BlogPostData } from '@/types/config'
-import I18nKey from '@i18n/i18nKey'
-import { i18n } from '@i18n/translation'
-import type { VFile } from 'node_modules/rehype-raw/lib';
-import { parse } from './parser';
+import I18nKey from "@i18n/i18nKey";
+import { i18n } from "@i18n/translation";
+import type { VFile } from "node_modules/rehype-raw/lib";
+import { parse } from "./parser";
+import { public_handle } from "@/config";
 
 export interface Profile {
   avatar: string;
@@ -109,24 +108,22 @@ export async function getSortedPosts() {
     });
   }
 
-  const sorted = posts.sort(
-    (a: { data: PostExtended }, b: { data: PostExtended }) => {
-      const dateA = new Date(a.data.published ?? 0);
-      const dateB = new Date(b.data.published ?? 0);
-      return dateA > dateB ? -1 : 1;
-    }
-  );
+  posts.sort((a, b) => {
+    const dateA = new Date(a.data?.published ?? 0).getTime();
+    const dateB = new Date(b.data?.published ?? 0).getTime();
+    return dateB - dateA;
+  });
 
-  for (let i = 1; i < sorted.length; i++) {
-    sorted[i].data.nextSlug = sorted[i - 1].slug;
-    sorted[i].data.nextTitle = sorted[i - 1].data.title ?? "";
+  for (let i = 1; i < posts.length; i++) {
+    posts[i].data!.nextSlug = posts[i - 1].slug;
+    posts[i].data!.nextTitle = posts[i - 1].data?.title ?? "";
   }
-  for (let i = 0; i < sorted.length - 1; i++) {
-    sorted[i].data.prevSlug = sorted[i + 1].slug;
-    sorted[i].data.prevTitle = sorted[i + 1].data.title ?? "";
+  for (let i = 0; i < posts.length - 1; i++) {
+    posts[i].data!.prevSlug = posts[i + 1].slug;
+    posts[i].data!.prevTitle = posts[i + 1].data?.title ?? "";
   }
 
-  return sorted;
+  return posts;
 }
 
 export type Category = {
@@ -201,9 +198,8 @@ export function checkUpdated(published: string, latest: Date) {
 
 export async function getProfile(): Promise<Profile> {
   const fetchProfile = await safeFetch(
-    `https://public.api.bsky.app/xrpc/app.bsky.actor.getProfile?actor=theshadoweevee.konpeki.solutions`
+    `https://public.api.bsky.app/xrpc/app.bsky.actor.getProfile?actor=${public_handle}`
   );
-  //const fetchProfile = await safeFetch(`https://public.api.bsky.app/xrpc/app.bsky.actor.getProfile?actor=${PUBLIC_HANDLE}`)
   let split = fetchProfile["did"].split(":");
   let diddoc;
   if (split[0] === "did") {
@@ -268,37 +264,22 @@ export async function getPosts() {
     }
     posts = await parse(mdposts);
   }
+  // @ts-ignore : This is totally defined before use, if not womp womp
   return posts;
 }
 
 export function getPost(posts: Map<string, Post>, rkey: string) {
-  let blogPost: Post | undefined = undefined;
-  if (
-    posts.has(rkey ?? "") ||
-    posts.has(
-      blogPost?.title
+  let blogPost: Post | undefined;
+  posts.forEach((post, postRkey) => {
+    if (
+      postRkey == rkey ||
+      post.extendedData?.title
         ?.toLowerCase()
         .replace(/ /g, "-")
-        .replace(/[^a-zA-Z0-9]/g, "") ?? ""
-    )
-  ) {
-    blogPost = posts.get(rkey ?? "") as Post;
-  } else {
-    for (let v of posts.values()) {
-      if (
-        v.title
-          ?.toLowerCase()
-          .replace(/ /g, "-")
-          .replace(/[^a-zA-Z0-9]/g, "") ==
-        rkey
-          ?.toLowerCase()
-          .replace(/ /g, "-")
-          .replace(/[^a-zA-Z0-9]/g, "")
-      ) {
-        blogPost = posts.get(v.rkey ?? "") as Post;
-        break;
-      }
+        .replace(/[^a-zA-Z0-9\-]/g, "") == rkey
+    ) {
+      blogPost = posts.get(postRkey) as Post;
     }
-  }
+  });
   return blogPost;
 }

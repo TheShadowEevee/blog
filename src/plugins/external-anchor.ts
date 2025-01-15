@@ -1,24 +1,25 @@
-import { visit } from 'unist-util-visit';
-import type { Node } from 'unist'
-import type { Root, Element } from 'hast'
-import type { Plugin } from "unified";
+import { visit } from "unist-util-visit";
 
-const site = 'https://blog.shad.moe';
-const draft_site = 'vercel.app';
+const site = "https://blog.shad.moe";
+const draft_site = "vercel.app";
+const webring = "ring.purduehackers.com";
 
-const fixAnchors = (child: Node): void => {
-    if (child.type !== 'element') {
-        return
-    }
-    const elem = child as Element
-    console.log(elem.tagName)
-    if (elem.tagName === 'a') {
-      console.log("a")
-        // Ensure https
-        const src = elem.properties.src
-        if (/^(https?):\/\/[^\s/$.?#].[^\s]*$/i.test(elem.properties.href) && !elem.properties.href.includes(site) && !elem.properties.href.includes(draft_site)) {
-          elem.properties.target = '_blank';
+export function externalAnchorPlugin() {
+  return (tree: any, _: any) => {
+    visit(tree, "link", (node) => {
+      if (
+        /^(https?):\/\/[^\s/$.?#].[^\s]*$/i.test(node.url) &&
+        !node.url.includes(site) &&
+        !node.url.includes(draft_site)
+      ) {
+        if (!node.url.includes(webring)) {
+          node.data ??= {};
+          node.data.hProperties ??= {};
+          node.data.hProperties.target = "_blank";
         }
-    }
-    elem.children.forEach(child => fixAnchors(child))
+        node.data.hProperties.dataUmamiEvent = "outbound-link-click"; // Becomes data-umami-event
+        node.data.hProperties.dataUmamiEventUrl = `${node.url}`; // Becomes data-umami-event-url
+      }
+    });
+  };
 }

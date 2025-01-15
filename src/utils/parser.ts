@@ -2,23 +2,22 @@ import rehypeStringify from "rehype-stringify";
 import remarkParse from "remark-parse";
 import remarkGfm from "remark-gfm";
 import remarkRehype from "remark-rehype";
-import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
+//import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import rehypeRaw from "rehype-raw";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
-//import rehypeComponents from "rehype-components"; /* Render the custom directive content */
+import rehypeComponents from "rehype-components"; /* Render the custom directive content */
 import rehypeKatex from "rehype-katex";
 import rehypeSlug from "rehype-slug";
 import remarkDirective from "remark-directive"; /* Handle directives */
 import remarkGithubAdmonitionsToDirectives from "remark-github-admonitions-to-directives";
 import remarkMath from "remark-math";
-//import { AdmonitionComponent } from '@/plugins/rehype-component-admonition.mjs'
-//import { GithubCardComponent } from '@/plugins/rehype-component-github-card.mjs'
-import parseDirectiveNode from "remark-directive-rehype";
-//import remarkExcerpt from 'remark-excerpt'
+import { AdmonitionComponent } from "@/plugins/rehype-component-admonition";
+import { GithubCardComponent } from "@/plugins/rehype-component-github-card";
+import remarkSectionize from "remark-sectionize";
+import { parseDirectiveNode } from "@/plugins/remark-directive-rehype";
 import remarkReadingTime from "remark-reading-time";
 import remarkHeadings from "@vcarl/remark-headings";
-//import externalAnchorPlugin from '@/plugins/external-anchor.js'
-import type { Schema } from "../../node_modules/rehype-sanitize/lib";
+//import type { Schema } from "../../node_modules/rehype-sanitize/lib";
 import { unified } from "unified";
 import type { Node } from "unist";
 import type { Root, Element } from "hast";
@@ -26,48 +25,57 @@ import type { Plugin } from "unified";
 import type { VFile } from "node_modules/rehype-raw/lib";
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
-import { checkUpdated, parseExtendedValue, type Headings, type MarkdownPost, type Post, type ReadingTime } from "./content-utils";
+import {
+  checkUpdated,
+  parseExtendedValue,
+  type Headings,
+  type MarkdownPost,
+  type Post,
+  type ReadingTime,
+} from "./content-utils";
+import { externalAnchorPlugin } from "@/plugins/external-anchor";
 
+// Disabled as rehypeSanitize is disabled
 // WhiteWind's own custom schema:
 // https://github.com/whtwnd/whitewind-blog/blob/7eb8d4623eea617fd562b93d66a0e235323a2f9a/frontend/src/services/DocProvider.tsx#L122
-const customSchema = {
-  ...defaultSchema,
-  attributes: {
-    ...defaultSchema.attributes,
-    font: [...(defaultSchema.attributes?.font ?? []), "color"],
-    blockquote: [
-      ...(defaultSchema.attributes?.blockquote ?? []),
-      // bluesky
-      "className",
-      "dataBlueskyUri",
-      "dataBlueskyCid",
-      // instagram
-      "dataInstgrmCaptioned",
-      "dataInstgrmPermalink",
-      "dataInstgrmVersion",
-    ],
-    iframe: [
-      "width",
-      "height",
-      "title",
-      "frameborder",
-      "allow",
-      "referrerpolicy",
-      "allowfullscreen",
-      "style",
-      "seamless",
-      ["src", /https:\/\/(www.youtube.com|bandcamp.com)\/.*/],
-    ],
-    section: ["dataFootnotes", "className"],
-  },
-  tagNames: [
-    ...(defaultSchema.tagNames ?? []),
-    "font",
-    "mark",
-    "iframe",
-    "section",
-  ],
-};
+// const customSchema = {
+//   ...defaultSchema,
+//   attributes: {
+//     ...defaultSchema.attributes,
+//     font: [...(defaultSchema.attributes?.font ?? []), "color"],
+//     blockquote: [
+//       ...(defaultSchema.attributes?.blockquote ?? []),
+//       // bluesky
+//       "className",
+//       "dataBlueskyUri",
+//       "dataBlueskyCid",
+//       // instagram
+//       "dataInstgrmCaptioned",
+//       "dataInstgrmPermalink",
+//       "dataInstgrmVersion",
+//     ],
+//     iframe: [
+//       "width",
+//       "height",
+//       "title",
+//       "frameborder",
+//       "allow",
+//       "referrerpolicy",
+//       "allowfullscreen",
+//       "style",
+//       "seamless",
+//       ["src", /https:\/\/(www.youtube.com|bandcamp.com)\/.*/],
+//     ],
+//     section: ["dataFootnotes", "className"],
+//   },
+//   tagNames: [
+//     ...(defaultSchema.tagNames ?? []),
+//     "font",
+//     "mark",
+//     "iframe",
+//     "section",
+//   ],
+// };
 
 // Automatically enforce https on PDS images. Heavily inspired by WhiteWind's blob replacer:
 // https://github.com/whtwnd/whitewind-blog/blob/7eb8d4623eea617fd562b93d66a0e235323a2f9a/frontend/src/services/DocProvider.tsx#L90
@@ -93,32 +101,6 @@ const rehypeUpgradeImage: Plugin<any, Root, Node> = () => {
   };
 };
 
-//   const site = 'https://blog.shad.moe';
-//   const draft_site = 'vercel.app';
-
-//   const fixAnchors = (child: Node): void => {
-//       if (child.type !== 'element') {
-//           return
-//       }
-//       const elem = child as Element
-//       console.log(elem.tagName)
-//       if (elem.tagName === 'a') {
-//         console.log(elem.properties.src)
-//           const src = elem.properties.src
-//           if (/^(https?):\/\/[^\s/$.?#].[^\s]*$/i.test(elem.properties.href) && !elem.properties.href.includes(site) && !elem.properties.href.includes(draft_site)) {
-//             elem.properties.target = '_blank';
-//           }
-//       }
-//       elem.children.forEach(child => fixAnchors(child))
-//   }
-
-//   const externalAnchorPlugin: Plugin<any, Root, Node> = () => {
-//     return (tree) => {
-//       tree.children.forEach(child => fixAnchors(child))
-//     }
-//   }
-
-
 export async function parse(mdposts: Map<string, MarkdownPost>) {
   let posts: Map<string, Post> = new Map();
   for (let [rkey, post] of mdposts) {
@@ -130,30 +112,30 @@ export async function parse(mdposts: Map<string, MarkdownPost>) {
         .use(remarkParse, { fragment: true }) // Parse the MD
         .use(remarkGfm) // Parse GH specific MD
         .use(remarkMath)
-        .use(remarkReadingTime)
-        //.use(remarkExcerpt)
+        .use(remarkReadingTime, {}) // Empty second param to appease Typescript while leaving defaults
         .use(remarkGithubAdmonitionsToDirectives)
         .use(remarkDirective)
         .use(remarkHeadings)
+        .use(remarkSectionize)
         .use(parseDirectiveNode)
-        //.use(externalAnchorPlugin) // See https://tomoviktor.com/posts/astro-external-anchor/
+        .use(externalAnchorPlugin) // See https://tomoviktor.com/posts/astro-external-anchor/
         .use(remarkRehype, { allowDangerousHtml: true }) // Convert to HTML
+        //.use(rehypeSanitize, customSchema as Schema) // Sanitize the HTML || Honestly? This is good to have but causes some annoying issues. I trust the content I put out. I could update the Schema but that's a pain in itself.
         .use(rehypeRaw) // Parse HTML that exists as raw text leftover from MD parse
         .use(rehypeUpgradeImage)
-        .use(rehypeSanitize, customSchema as Schema) // Sanitize the HTML
-        .use(rehypeStringify) // Stringify
+        .use(rehypeStringify)
         .use(rehypeKatex)
         .use(rehypeSlug)
-        //.use(rehypeComponents, {
-        //    components: {
-        //        github: GithubCardComponent,
-        //        note: (x, y) => AdmonitionComponent(x, y, 'note'),
-        //        tip: (x, y) => AdmonitionComponent(x, y, 'tip'),
-        //        important: (x, y) => AdmonitionComponent(x, y, 'important'),
-        //        caution: (x, y) => AdmonitionComponent(x, y, 'caution'),
-        //        warning: (x, y) => AdmonitionComponent(x, y, 'warning'),
-        //    },
-        //})
+        .use(rehypeComponents, {
+          components: {
+            github: GithubCardComponent,
+            note: (x, y) => AdmonitionComponent(x, y, "note"),
+            tip: (x, y) => AdmonitionComponent(x, y, "tip"),
+            important: (x, y) => AdmonitionComponent(x, y, "important"),
+            caution: (x, y) => AdmonitionComponent(x, y, "caution"),
+            warning: (x, y) => AdmonitionComponent(x, y, "warning"),
+          },
+        })
         .use(rehypeAutolinkHeadings, {
           behavior: "append",
           properties: {
@@ -222,8 +204,10 @@ export async function parse(mdposts: Map<string, MarkdownPost>) {
         image: posts.get(rkey)?.extendedData?.image,
         tags: posts.get(rkey)?.extendedData?.tags,
         category: posts.get(rkey)?.extendedData?.category,
-        readingTime: (posts.get(rkey)?.content as VFile)?.data.readingTime as ReadingTime,
-        headings: (posts.get(rkey)?.content as VFile)?.data.headings as Headings[],
+        readingTime: (posts.get(rkey)?.content as VFile)?.data
+          .readingTime as ReadingTime,
+        headings: (posts.get(rkey)?.content as VFile)?.data
+          .headings as Headings[],
         lang: posts.get(rkey)?.extendedData?.lang,
         nextSlug: posts.get(rkey)?.extendedData?.nextSlug,
         nextTitle: posts.get(rkey)?.extendedData?.nextTitle,
