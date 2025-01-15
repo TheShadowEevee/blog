@@ -1,19 +1,32 @@
-import sitemap from '@astrojs/sitemap'
-import svelte from '@astrojs/svelte'
-import tailwind from '@astrojs/tailwind'
-import swup from '@swup/astro'
-import Compress from 'astro-compress'
-import icon from 'astro-icon'
-import { defineConfig } from 'astro/config'
+import sitemap from "@astrojs/sitemap";
+import svelte from "@astrojs/svelte";
+import tailwind from "@astrojs/tailwind";
+import swup from "@swup/astro";
+import Compress from "astro-compress";
+import icon from "astro-icon";
+import { defineConfig } from "astro/config";
 import umami from "@yeskunall/astro-umami";
-import vercel from "@astrojs/vercel/serverless";
+import vercel from "@astrojs/vercel";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypeComponents from "rehype-components"; /* Render the custom directive content */
+import rehypeKatex from "rehype-katex";
+import rehypeSlug from "rehype-slug";
+import remarkDirective from "remark-directive"; /* Handle directives */
+import remarkGithubAdmonitionsToDirectives from "remark-github-admonitions-to-directives";
+import remarkMath from "remark-math";
+import remarkSectionize from "remark-sectionize";
+import { AdmonitionComponent } from "./src/plugins/rehype-component-admonition.ts";
+import { GithubCardComponent } from "./src/plugins/rehype-component-github-card.ts";
+import { parseDirectiveNode } from "./src/plugins/remark-directive-rehype.ts";
+import { remarkReadingTime } from "./src/plugins/remark-reading-time.mjs";
+import { externalAnchorPlugin } from "./src/plugins/external-anchor.ts";
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://blog.shad.moe/',
-  base: '/',
-  output: 'hybrid',
-  trailingSlash: 'ignore',
+  site: "https://blog.shad.moe/",
+  base: "/",
+  output: "hybrid",
+  trailingSlash: "ignore",
 
   integrations: [
     tailwind({
@@ -56,7 +69,57 @@ export default defineConfig({
       hostUrl: "https://umami.shad.moe",
     }),
   ],
-
+  markdown: {
+    remarkPlugins: [
+      remarkMath,
+      remarkReadingTime,
+      remarkGithubAdmonitionsToDirectives,
+      remarkDirective,
+      remarkSectionize,
+      parseDirectiveNode,
+      externalAnchorPlugin, // See https://tomoviktor.com/posts/astro-external-anchor/
+    ],
+    rehypePlugins: [
+      rehypeKatex,
+      rehypeSlug,
+      [
+        rehypeComponents,
+        {
+          components: {
+            github: GithubCardComponent,
+            note: (x, y) => AdmonitionComponent(x, y, "note"),
+            tip: (x, y) => AdmonitionComponent(x, y, "tip"),
+            important: (x, y) => AdmonitionComponent(x, y, "important"),
+            caution: (x, y) => AdmonitionComponent(x, y, "caution"),
+            warning: (x, y) => AdmonitionComponent(x, y, "warning"),
+          },
+        },
+      ],
+      [
+        rehypeAutolinkHeadings,
+        {
+          behavior: "append",
+          properties: {
+            className: ["anchor"],
+          },
+          content: {
+            type: "element",
+            tagName: "span",
+            properties: {
+              className: ["anchor-icon"],
+              "data-pagefind-ignore": true,
+            },
+            children: [
+              {
+                type: "text",
+                value: "#",
+              },
+            ],
+          },
+        },
+      ],
+    ],
+  },
   vite: {
     build: {
       rollupOptions: {

@@ -1,13 +1,15 @@
-- [X] Tag selection doesn't work in /archive
-- [X] Post Names / Data doesn't display in /archive
-- [X] Incorrect Publish Date on /archive
-- [X] Incorrect Publish Date on Post Views
-- [X] No Read Time / Word Count on Post Views
-- [ ] No Table of Contents on Post Views
-- [X] No Search (Probably needs removed)
-- [ ] Admonitions Not Working
-- [ ] Following are still disabled: remarkExcerpt, externalAnchorPlugin, rehypeComponents
-- [X] Break Content Functions back out into content-utils.ts
-- [ ] Clean Up Old / Commented Out code
-- [ ] Many type errors in parser.ts
-- [X] Update Footer / Credits to include ATmosphere
+- [x] Tag selection doesn't work in /archive
+- [x] Post Names / Data doesn't display in /archive
+- [x] Incorrect Publish Date on /archive
+- [x] Incorrect Publish Date on Post Views
+- [x] No Read Time / Word Count on Post Views
+- [x] No Table of Contents on Post Views
+- [x] No Search (Probably needs removed)
+- [x] Admonitions Not Working
+- [x] Following are still disabled: remarkExcerpt, externalAnchorPlugin, rehypeComponents
+- [x] Break Content Functions back out into content-utils.ts
+- [x] Clean Up Old / Commented Out code
+- [x] Many type errors in parser.ts
+- [x] Update Footer / Credits to include ATmosphere
+- [x] Admonition Titles not working
+- [x] TOC not lining up wth page view

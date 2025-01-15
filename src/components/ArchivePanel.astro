@@ -22,7 +22,6 @@ if (Array.isArray(tags) && tags.length > 0) {
       Array.isArray(post.value.extendedData?.tags) &&
       post.value.extendedData?.tags.some(tag => tags.includes(tag)),
   )
-
 }
 
 if (Array.isArray(categories) && categories.length > 0) {
@@ -34,28 +33,29 @@ if (Array.isArray(categories) && categories.length > 0) {
 }
 
 const groups: { year: number; posts: typeof posts }[] = (() => {
-  const groupedPosts = posts.reduce(
-    (grouped: { [year: number]: typeof posts }, post) => {
-      const year = new Date(post.value.extendedData?.published ?? 0).getFullYear()
-      if (!grouped[year]) {
-        grouped[year] = []
-      }
-      grouped[year].push(post)
-      return grouped
-    },
-    {},
-  )
+  const groupedPosts: { [year: number]: typeof posts } = {}; // Explicit type for groupedPosts
 
-  // convert the object to an array
-  const groupedPostsArray = Object.keys(groupedPosts).map(key => ({
-    year: Number.parseInt(key),
-    posts: groupedPosts[Number.parseInt(key)],
-  }))
+  posts.forEach(post => {
+    const publishedDate = new Date(post.value.extendedData?.published ?? 0);
+    if (isNaN(publishedDate.getTime())) return;
 
-  // sort years by latest first
-  groupedPostsArray.sort((a, b) => b.year - a.year)
-  return groupedPostsArray
-})()
+    const year = publishedDate.getFullYear();
+    if (!groupedPosts[year]) {
+      groupedPosts[year] = [];
+    }
+    groupedPosts[year].push(post);
+  });
+
+  const groupedPostsArray = Object.keys(groupedPosts).map(key => {
+    const year = Number.parseInt(key);
+    groupedPosts[year].sort((a, b) => 
+      new Date(b.value.extendedData?.published ?? 0).getTime() - new Date(a.value.extendedData?.published ?? 0).getTime()
+    );
+    return { year, posts: groupedPosts[year] };
+  });
+
+  return groupedPostsArray.sort((a, b) => b.year - a.year);
+})();
 
 function formatDate(date: Date) {
   const month = (date.getMonth() + 1).toString().padStart(2, '0')
