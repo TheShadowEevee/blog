@@ -11,8 +11,8 @@ interface Props {
 	class?: string;
 	style?: string;
 }
-const { id, name, isCollapsed, collapsedHeight, style } = Astro.props;
-const className = Astro.props.class;
+const { id, name, isCollapsed, collapsedHeight, style } = Astro.props
+const className = Astro.props.class
 ---
 <widget-layout data-id={id} data-is-collapsed={String(isCollapsed)} class={"pb-4 card-base " + className} style={style}>
     <div class="font-bold transition text-lg text-neutral-900 dark:text-neutral-100 relative ml-8 mt-4 mb-2

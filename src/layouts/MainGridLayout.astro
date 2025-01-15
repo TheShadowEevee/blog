@@ -1,27 +1,23 @@
 ---
-import BackToTop from "@components/control/BackToTop.astro";
-import Footer from "@components/Footer.astro";
-import Navbar from "@components/Navbar.astro";
-import SideBar from "@components/widget/SideBar.astro";
-import type { MarkdownHeading } from "astro";
-import { Icon } from "astro-icon/components";
-import ImageWrapper from "../components/misc/ImageWrapper.astro";
+import Footer from '@components/Footer.astro'
+import Navbar from '@components/Navbar.astro'
+import BackToTop from '@components/control/BackToTop.astro'
+import SideBar from '@components/widget/SideBar.astro'
+import Layout from './Layout.astro'
+import { Icon } from 'astro-icon/components'
+import { siteConfig } from '../config'
 import TOC from "../components/widget/TOC.astro";
-import { siteConfig } from "../config";
-import {
-	BANNER_HEIGHT,
-	BANNER_HEIGHT_EXTEND,
-	MAIN_PANEL_OVERLAPS_BANNER_HEIGHT,
-} from "../constants/constants";
-import Layout from "./Layout.astro";
+import ImageWrapper from "../components/misc/ImageWrapper.astro";
+import {BANNER_HEIGHT, BANNER_HEIGHT_EXTEND, MAIN_PANEL_OVERLAPS_BANNER_HEIGHT} from "../constants/constants";
+import type { Headings } from '@utils/content-utils'
 
 interface Props {
-	title?: string;
-	banner?: string;
-	description?: string;
-	lang?: string;
-	setOGTypeArticle?: boolean;
-	headings?: MarkdownHeading[];
+  title?: string
+  banner?: string
+  description?: string
+  lang?: string
+  setOGTypeArticle?: boolean;
+  headings? : Headings[]
 }
 
 const {
@@ -80,7 +76,7 @@ const mainPanelTop = siteConfig.banner.enable
             </a>}
 
 
-            <SideBar class="mb-4 row-start-2 row-end-3 col-span-2 lg:row-start-1 lg:row-end-2 lg:col-span-1 lg:max-w-[17.5rem] onload-animation" headings={headings}></SideBar>
+            <SideBar class="mb-4 row-start-2 row-end-3 col-span-2 lg:row-start-1 lg:row-end-2 lg:col-span-1 lg:max-w-[17.5rem] onload-animation"></SideBar>
 
             <main id="swup-container" class="transition-swup-fade col-span-2 lg:col-span-1 overflow-hidden">
                 <div id="content-wrapper" class="onload-animation">

@@ -2,14 +2,13 @@
 import Profile from './Profile.astro'
 import Tag from './Tags.astro'
 import Categories from './Categories.astro'
-import type { MarkdownHeading } from 'astro'
 
 interface Props {
-	class?: string;
-	headings?: MarkdownHeading[];
+    class? : string
 }
 
-const className = Astro.props.class;
+const className = Astro.props.class
+
 ---
 <div id="sidebar" class:list={[className, "w-full"]}>
     <div class="flex flex-col w-full gap-4 mb-4">

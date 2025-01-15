@@ -38,16 +38,15 @@ const jsonLd = {
   inLanguage: blogPost?.extendedData?.lang
     ? blogPost?.extendedData?.lang?.replace("_", "-")
     : siteConfig.lang.replace("_", "-"),
-  // TODO include cover image here
 };
 ---
 
 <MainGridLayout
-  banner={blogPost?.image}
-  title={blogPost?.title}
-  description={blogPost?.description}
-  lang={blogPost?.lang}
+  title={blogPost?.extendedData?.title}
+  description={blogPost?.extendedData?.description}
+  lang={blogPost?.extendedData?.lang ?? "en"}
   setOGTypeArticle={true}
+  headings={blogPost?.extendedData?.headings}
 >
   <script
     is:inline
@@ -99,7 +98,7 @@ const jsonLd = {
                     md:before:w-1 before:h-5 before:rounded-md before:bg-[var(--primary)]
                     before:absolute before:top-[0.75rem] before:left-[-1.125rem]"
         >
-          {blogPost?.title}
+          {blogPost?.extendedData?.title}
         </div>
       </div>
 
@@ -111,24 +110,11 @@ const jsonLd = {
           tags={blogPost?.extendedData?.tags ?? []}
           category={blogPost?.extendedData?.category ?? ""}
         />
-        {
-          !blogPost?.image && (
-            <div class="border-[var(--line-divider)] border-dashed border-b-[1px] mb-5" />
-          )
-        }
+        {!blogPost?.extendedData?.image && <div class="border-[var(--line-divider)] border-dashed border-b-[1px] mb-5"></div>}
       </div>
 
-      <!-- always show cover as long as it has one -->
-
-      {
-        blogPost?.image && (
-          <ImageWrapper
-            id="post-cover"
-            src={blogPost?.image}
-            basePath={path.join("content/posts/", getDir(entry.id))}
-            class="mb-8 rounded-xl banner-container onload-animation"
-          />
-        )
+      {blogPost?.extendedData?.image &&
+        <ImageWrapper id="post-cover" src={blogPost?.extendedData?.image} class="mb-8 rounded-xl banner-container onload-animation"/>
       }
 
       <Markdown class="mb-6 markdown-content onload-animation">
