@@ -146,7 +146,6 @@ export async function parse(mdposts: Map<string, MarkdownPost>) {
             tagName: "span",
             properties: {
               className: ["anchor-icon"],
-              "data-pagefind-ignore": true,
             },
             children: [
               {
