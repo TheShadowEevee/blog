@@ -1,6 +1,6 @@
 {
     "functions": {
-      "pages/posts/[...rkey].tsx": {
+      "pages/posts/[...rkey].astro": {
         "memory": 1024
       }
     }
