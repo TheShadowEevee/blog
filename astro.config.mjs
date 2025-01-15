@@ -6,7 +6,7 @@ import Compress from "astro-compress";
 import icon from "astro-icon";
 import { defineConfig } from "astro/config";
 import umami from "@yeskunall/astro-umami";
-import vercelServerless from "@astrojs/vercel";
+import vercel from "@astrojs/vercel";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeComponents from "rehype-components"; /* Render the custom directive content */
 import rehypeKatex from "rehype-katex";
@@ -144,5 +144,9 @@ export default defineConfig({
       },
     },
   },
-  adapter: vercelServerless(),
+  adapter: vercel({
+    isr: {
+      expiration: 60 * 60 * 24,
+    },
+  }),
 });
