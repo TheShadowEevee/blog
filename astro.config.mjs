@@ -25,7 +25,7 @@ import { externalAnchorPlugin } from "./src/plugins/external-anchor.ts";
 export default defineConfig({
   site: "https://blog.shad.moe/",
   base: "/",
-  output: "server",
+  output: "hybrid",
   trailingSlash: "ignore",
 
   integrations: [
