@@ -1,7 +1,8 @@
 {
-    "functions": {
-      "pages/posts/[...rkey].astro": {
-        "memory": 1024
-      }
-    }
-  }
+    "routes": [
+        {
+        "src": "/posts/(.*)",
+        "dest": "/src/pages/posts/[...rkey].astro"
+        }
+    ]
+}
