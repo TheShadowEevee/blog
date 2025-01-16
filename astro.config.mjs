@@ -148,5 +148,6 @@ export default defineConfig({
     isr: {
       expiration: 60 * 60 * 24,
     },
+    edgeMiddleware: true,
   }),
 });
