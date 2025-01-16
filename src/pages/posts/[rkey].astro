@@ -1,5 +1,5 @@
 ---
-export const prerender = false;
+//export const prerender = false;
 
 import License from "@components/misc/License.astro";
 import Markdown from "@components/misc/Markdown.astro";
@@ -15,7 +15,7 @@ import { type Post, getPosts, getPost } from "@utils/content-utils";
 import { i18n } from "@i18n/translation";
 import I18nKey from "@i18n/i18nKey";
 
-/*export async function getStaticPaths() {
+export async function getStaticPaths() {
   const posts: Map<string, Post> | undefined = await getPosts();
 
   let rkeyArray: string[] = [];
@@ -37,7 +37,7 @@ import I18nKey from "@i18n/i18nKey";
       rkey: rkey,
     },
   }));
-}*/
+}
 
 let allPosts: Map<string, Post> | undefined = await getPosts();
 let blogPost: Post | undefined = undefined;
