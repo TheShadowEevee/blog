@@ -1,6 +1,4 @@
 ---
-export const prerender = false;
-
 import License from "@components/misc/License.astro";
 import Markdown from "@components/misc/Markdown.astro";
 import MainGridLayout from "@layouts/MainGridLayout.astro";
@@ -15,12 +13,39 @@ import { type Post, getPosts, getPost } from "@utils/content-utils";
 import { i18n } from "@i18n/translation";
 import I18nKey from "@i18n/i18nKey";
 
+/*export async function getStaticPaths() {
+  const posts: Map<string, Post> | undefined = await getPosts();
 
-let allPosts: Map<string, Post> | undefined = await getPosts()
-let blogPost: Post | undefined = undefined
+  let rkeyArray: string[] = [];
+
+  posts.forEach((post, postRkey) => {
+    rkeyArray.push(postRkey);
+    if (post.extendedData?.title) {
+      rkeyArray.push(
+        post.extendedData?.title
+          ?.toLowerCase()
+          .replace(/ /g, "-")
+          .replace(/[^a-zA-Z0-9\-]/g, "")
+      );
+    }
+  });
+
+  return rkeyArray.map((rkey) => ({
+    params: {
+      rkey: rkey,
+    },
+  }));
+}*/
+
+export async function generateStaticParams() {
+  return []
+}
+
+let allPosts: Map<string, Post> | undefined = await getPosts();
+let blogPost: Post | undefined = undefined;
 
 if (allPosts) {
-  blogPost = getPost(allPosts, Astro.params.rkey ?? "")
+  blogPost = getPost(allPosts, Astro.params.rkey ?? "");
 }
 
 const jsonLd = {
@@ -34,7 +59,9 @@ const jsonLd = {
     name: profileConfig.name,
     url: Astro.site,
   },
-  datePublished: formatDateToYYYYMMDD(new Date(blogPost?.extendedData?.published ?? 0)),
+  datePublished: formatDateToYYYYMMDD(
+    new Date(blogPost?.extendedData?.published ?? 0)
+  ),
   inLanguage: blogPost?.extendedData?.lang
     ? blogPost?.extendedData?.lang?.replace("_", "-")
     : siteConfig.lang.replace("_", "-"),
@@ -74,7 +101,10 @@ const jsonLd = {
           >
             <Icon name="material-symbols:notes-rounded" />
           </div>
-          <div class="text-sm">{blogPost?.extendedData?.readingTime?.words} {" " + i18n(I18nKey.wordsCount)}</div>
+          <div class="text-sm">
+            {blogPost?.extendedData?.readingTime?.words}
+            {" " + i18n(I18nKey.wordsCount)}
+          </div>
         </div>
         <div class="flex flex-row items-center">
           <div
@@ -82,7 +112,10 @@ const jsonLd = {
           >
             <Icon name="material-symbols:schedule-outline-rounded" />
           </div>
-          <div class="text-sm">{Math.round(blogPost?.extendedData?.readingTime?.minutes as number)} {" " + i18n(I18nKey.minutesCount)}</div>
+          <div class="text-sm">
+            {Math.round(blogPost?.extendedData?.readingTime?.minutes as number)}
+            {" " + i18n(I18nKey.minutesCount)}
+          </div>
         </div>
       </div>
 
@@ -107,11 +140,21 @@ const jsonLd = {
           tags={blogPost?.extendedData?.tags ?? []}
           category={blogPost?.extendedData?.category ?? ""}
         />
-        {!blogPost?.extendedData?.image && <div class="border-[var(--line-divider)] border-dashed border-b-[1px] mb-5"></div>}
+        {
+          !blogPost?.extendedData?.image && (
+            <div class="border-[var(--line-divider)] border-dashed border-b-[1px] mb-5" />
+          )
+        }
       </div>
 
-      {blogPost?.extendedData?.image &&
-        <ImageWrapper id="post-cover" src={blogPost?.extendedData?.image} class="mb-8 rounded-xl banner-container onload-animation"/>
+      {
+        blogPost?.extendedData?.image && (
+          <ImageWrapper
+            id="post-cover"
+            src={blogPost?.extendedData?.image}
+            class="mb-8 rounded-xl banner-container onload-animation"
+          />
+        )
       }
 
       <Markdown class="mb-6 markdown-content onload-animation">
