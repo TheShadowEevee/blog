@@ -1,4 +1,6 @@
 ---
+export const prerender = false;
+
 import License from "@components/misc/License.astro";
 import Markdown from "@components/misc/Markdown.astro";
 import MainGridLayout from "@layouts/MainGridLayout.astro";
@@ -36,13 +38,6 @@ import I18nKey from "@i18n/i18nKey";
     },
   }));
 }*/
-
-export const dynamic = "force-static";
-export const dynamicParams = true;
-
-export async function generateStaticParams() {
-  return []
-}
 
 let allPosts: Map<string, Post> | undefined = await getPosts();
 let blogPost: Post | undefined = undefined;
