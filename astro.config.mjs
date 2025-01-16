@@ -25,7 +25,7 @@ import { externalAnchorPlugin } from "./src/plugins/external-anchor.ts";
 export default defineConfig({
   site: "https://blog.shad.moe/",
   base: "/",
-  output: "hybrid",
+  output: "server",
   trailingSlash: "ignore",
 
   integrations: [
@@ -139,6 +139,5 @@ export default defineConfig({
     isr: {
       expiration: 60 * 60 * 24,
     },
-    edgeMiddleware: true,
   }),
 });
