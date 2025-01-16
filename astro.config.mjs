@@ -147,6 +147,7 @@ export default defineConfig({
   adapter: vercelServerless({
     isr: {
       expiration: 60 * 60 * 24,
+      bypassToken: "9o8a3yurpowehfiw",
     },
   }),
 });
