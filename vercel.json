@@ -1,8 +1,1 @@
-{
-    "routes": [
-        {
-        "src": "/posts/(.*)",
-        "dest": "/src/pages/posts/[...rkey].astro"
-        }
-    ]
-}
+{}
