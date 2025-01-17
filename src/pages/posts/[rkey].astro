@@ -41,7 +41,7 @@ import I18nKey from "@i18n/i18nKey";
 
 let blogPost: Post | undefined = undefined;
 
-const response = await safeFetch(`http://localhost:4321/api/post/${Astro.params.rkey}`)
+const response = await safeFetch(`${import.meta.env.NEXT_PUBLIC_URL}/api/post/${Astro.params.rkey}`)
 
 blogPost = response.result
 
