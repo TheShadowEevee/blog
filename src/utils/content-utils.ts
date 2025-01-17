@@ -86,25 +86,32 @@ export interface PostList {
 }
 
 export async function getAllTags() {
-  let postList = await getPosts();
+  const response = await safeFetch(`http://localhost:4321/api/posts/fetchAllPosts`);
+
+  let postList = response.result;
   let tags: string[] = new Array();
-  for (let [_, post] of postList) {
-    for (let tag of post.extendedData?.tags ?? []) {
+
+  for (const rkey in postList) {
+    for (let tag of postList[rkey].extendedData?.tags ?? []) {
       tags.push(tag);
     }
   }
+
   return tags;
 }
 
 export async function getSortedPosts() {
-  let postList = await getPosts();
+  const response = await safeFetch(`http://localhost:4321/api/posts/fetchAllPosts`);
+
+  let postList = response.result;
   let posts: PostList[] = new Array();
-  for (let [rkey, post] of postList) {
+
+  for (const rkey in postList) {
     posts.push({
       slug: rkey,
-      body: post.content,
-      data: post.extendedData ?? {},
-      lastUpdate: post.createdAt,
+      body: postList[rkey].content,
+      data: postList[rkey].extendedData ?? {},
+      lastUpdate: postList[rkey].createdAt,
     });
   }
 
@@ -133,15 +140,19 @@ export type Category = {
 
 export async function getCategoryList(): Promise<Category[]> {
   const count: { [key: string]: number } = {};
-  let postList = await getPosts();
+  const response = await safeFetch(`http://localhost:4321/api/posts/fetchAllPosts`);
 
-  for (let [_, post] of postList) {
-    if (!post.extendedData?.category) {
+  let postList = response.result;
+
+  for (const rkey in postList) {
+    if (!postList[rkey].extendedData.category) {
       const ucKey = i18n(I18nKey.uncategorized);
       count[ucKey] = count[ucKey] ? count[ucKey] + 1 : 1;
     } else {
-      count[post.extendedData?.category] = count[post.extendedData?.category]
-        ? count[post.extendedData?.category] + 1
+      count[postList[rkey].extendedData?.category] = count[
+        postList[rkey].extendedData?.category
+      ]
+        ? count[postList[rkey].extendedData?.category] + 1
         : 1;
     }
   }
@@ -157,7 +168,7 @@ export async function getCategoryList(): Promise<Category[]> {
   return ret;
 }
 
-async function safeFetch(url: string) {
+export async function safeFetch(url: string) {
   const response = await fetch(url);
   if (!response.ok)
     throw new Error(response.status + ":" + response.statusText);
@@ -170,7 +181,7 @@ export function parseExtendedValue(content: string) {
       new RegExp(
         "<!-- ### ADDITIONAL DATA FIELD ### " +
           "(.*)" +
-          " ### https://blog.shad.moe ### --->"
+          " ### solutions.konpeki.post.extendedData ### --->"
       )
     );
 
@@ -231,55 +242,4 @@ export async function getProfile(): Promise<Profile> {
     description: fetchProfile["description"],
     pds: pdsurl,
   };
-}
-
-export async function getPosts() {
-  let profile: Profile;
-  let posts: Map<string, Post>;
-  profile = await getProfile();
-  const rawResponse = await fetch(
-    `${profile.pds}/xrpc/com.atproto.repo.listRecords?repo=${profile.did}&collection=com.whtwnd.blog.entry`
-  );
-  const response = await rawResponse.json();
-  let mdposts: Map<string, MarkdownPost> = new Map();
-  for (let data of response["records"]) {
-    const matches = data["uri"].split("/");
-    const rkey = matches[matches.length - 1];
-    const record = data["value"];
-    if (
-      matches &&
-      matches.length === 5 &&
-      record &&
-      (record["visibility"] === "public" || !record["visibility"])
-    ) {
-      mdposts.set(rkey, {
-        title: record["title"],
-        createdAt: new Date(record["createdAt"]),
-        mdcontent: record["content"],
-        rkey,
-        visibility: record["visibility"],
-        ogp: record["ogp"],
-        data: "",
-      });
-    }
-    posts = await parse(mdposts);
-  }
-  // @ts-ignore : This is totally defined before use, if not womp womp
-  return posts;
-}
-
-export function getPost(posts: Map<string, Post>, rkey: string) {
-  let blogPost: Post | undefined;
-  posts.forEach((post, postRkey) => {
-    if (
-      postRkey == rkey ||
-      post.extendedData?.title
-        ?.toLowerCase()
-        .replace(/ /g, "-")
-        .replace(/[^a-zA-Z0-9\-]/g, "") == rkey
-    ) {
-      blogPost = posts.get(postRkey) as Post;
-    }
-  });
-  return blogPost;
 }
