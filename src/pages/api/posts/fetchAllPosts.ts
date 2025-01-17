@@ -3,6 +3,7 @@ import { parse } from "@utils/parser";
 import type { APIRoute } from "astro";
 
 export const prerender = false;
+export const dynamic = 'force-dynamic';
 
 export const GET: APIRoute = async ({ params, request }) => {
   try {
