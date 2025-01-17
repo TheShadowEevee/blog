@@ -140,5 +140,6 @@ export default defineConfig({
       expiration: 60 * 60 * 24,
       bypassToken: "9o8a3yurpowehfiw",
     },
+    edgeMiddleware: true,
   }),
 });
