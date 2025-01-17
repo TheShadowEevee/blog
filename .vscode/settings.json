@@ -24,5 +24,8 @@
   },
   "[astro]": {
     "editor.defaultFormatter": "astro-build.astro-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }
