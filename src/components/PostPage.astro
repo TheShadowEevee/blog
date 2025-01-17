@@ -37,10 +37,7 @@ const interval = 50;
             published={entry.data.published}
             updated={entry.data.updated}
             url={getPostUrlBySlug(
-              entry.data.title
-                .toLowerCase()
-                .replace(/ /g, "-")
-                .replace(/[^a-zA-Z0-9\-]/g, "") ?? ""
+              entry.slug ?? ""
             )}
             image={entry.data.image}
             description={entry.data.description}

@@ -3,7 +3,7 @@ import { UNCATEGORIZED } from '@constants/constants'
 import I18nKey from '../i18n/i18nKey'
 import { i18n } from '../i18n/translation'
 import { getPostUrlBySlug } from '../utils/url-utils'
-import { getAllTags, getPosts } from '@utils/content-utils'
+import { safeFetch } from '@utils/content-utils'
 
 interface Props {
   keyword?: string
@@ -12,23 +12,29 @@ interface Props {
 }
 const { tags, categories } = Astro.props
 
-let postList = await getPosts()
+const response = await safeFetch(`http://localhost:4321/api/posts/fetchAllPosts`)
 
-let posts = Array.from(postList, ([name, value]) => ({name, value}))
+let postList = response.result
+
+let posts = []
+
+for (const rkey in postList) {
+  posts.push([rkey, postList[rkey]])
+}
 
 if (Array.isArray(tags) && tags.length > 0) {
   posts = posts.filter(
     post =>
-      Array.isArray(post.value.extendedData?.tags) &&
-      post.value.extendedData?.tags.some(tag => tags.includes(tag)),
+      Array.isArray(post[1].extendedData?.tags) &&
+      post[1].extendedData?.tags.some((tag: string) => tags.includes(tag)),
   )
 }
 
 if (Array.isArray(categories) && categories.length > 0) {
   posts = posts.filter(
     post =>
-      (post.value.extendedData?.category && categories.includes(post.value.extendedData?.category)) ||
-      (!post.value.extendedData?.category && categories.includes(UNCATEGORIZED)),
+      (post[1].extendedData?.category && categories.includes(post[1].extendedData?.category)) ||
+      (!post[1].extendedData?.category && categories.includes(UNCATEGORIZED)),
   )
 }
 
@@ -36,7 +42,7 @@ const groups: { year: number; posts: typeof posts }[] = (() => {
   const groupedPosts: { [year: number]: typeof posts } = {}; // Explicit type for groupedPosts
 
   posts.forEach(post => {
-    const publishedDate = new Date(post.value.extendedData?.published ?? 0);
+    const publishedDate = new Date(post[1].extendedData?.published ?? 0);
     if (isNaN(publishedDate.getTime())) return;
 
     const year = publishedDate.getFullYear();
@@ -49,7 +55,7 @@ const groups: { year: number; posts: typeof posts }[] = (() => {
   const groupedPostsArray = Object.keys(groupedPosts).map(key => {
     const year = Number.parseInt(key);
     groupedPosts[year].sort((a, b) => 
-      new Date(b.value.extendedData?.published ?? 0).getTime() - new Date(a.value.extendedData?.published ?? 0).getTime()
+      new Date(b[1].extendedData?.published ?? 0).getTime() - new Date(a[1].extendedData?.published ?? 0).getTime()
     );
     return { year, posts: groupedPosts[year] };
   });
@@ -80,14 +86,14 @@ function formatTag(tag: string[]) {
                     <div class="w-[70%] md:w-[80%] transition text-left text-50">{group.posts.length} {i18n(I18nKey.postsCount)}</div>
                 </div>
                 {group.posts.map(post => (
-                    <a href={getPostUrlBySlug(post.name)}
-                       aria-label={post.value.title}
+                    <a href={getPostUrlBySlug(post[0])}
+                       aria-label={post[1].title}
                        class="group btn-plain !block h-10 w-full rounded-lg hover:text-[initial]"
                     >
                         <div class="flex flex-row justify-start items-center h-full">
                             <!-- date -->
                             <div class="w-[15%] md:w-[10%] transition text-sm text-right text-50">
-                                {formatDate(new Date(post.value.extendedData?.published ?? 0))}
+                                {formatDate(new Date(post[1].extendedData?.published ?? 0))}
                             </div>
                             <!-- dot and line -->
                             <div class="w-[15%] md:w-[10%] relative dash-line h-full flex items-center">
@@ -105,13 +111,13 @@ function formatTag(tag: string[]) {
                                 group-hover:translate-x-1 transition-all group-hover:text-[var(--primary)]
                                 text-75 pr-8 whitespace-nowrap overflow-ellipsis overflow-hidden"
                             >
-                                    {post.value.extendedData?.title}
+                                    {post[1].extendedData?.title}
                             </div>
                             <!-- tag list -->
                             <div class="hidden md:block md:w-[15%] text-left text-sm transition
                             whitespace-nowrap overflow-ellipsis overflow-hidden
                             text-30"
-                            >{formatTag(post.value.extendedData?.tags ?? [])}</div>
+                            >{formatTag(post[1].extendedData?.tags ?? [])}</div>
                         </div>
                     </a>
                 ))}
