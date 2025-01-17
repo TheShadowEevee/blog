@@ -86,7 +86,7 @@ export interface PostList {
 }
 
 export async function getAllTags() {
-  const response = await safeFetch(`http://localhost:4321/api/posts/fetchAllPosts`);
+  const response = await safeFetch(`${import.meta.env.NEXT_PUBLIC_URL}/api/posts/fetchAllPosts`);
 
   let postList = response.result;
   let tags: string[] = new Array();
@@ -101,7 +101,7 @@ export async function getAllTags() {
 }
 
 export async function getSortedPosts() {
-  const response = await safeFetch(`http://localhost:4321/api/posts/fetchAllPosts`);
+  const response = await safeFetch(`${import.meta.env.NEXT_PUBLIC_URL}/api/posts/fetchAllPosts`);
 
   let postList = response.result;
   let posts: PostList[] = new Array();
@@ -140,7 +140,7 @@ export type Category = {
 
 export async function getCategoryList(): Promise<Category[]> {
   const count: { [key: string]: number } = {};
-  const response = await safeFetch(`http://localhost:4321/api/posts/fetchAllPosts`);
+  const response = await safeFetch(`${import.meta.env.NEXT_PUBLIC_URL}/api/posts/fetchAllPosts`);
 
   let postList = response.result;
 
