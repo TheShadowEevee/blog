@@ -1,10 +1,11 @@
-import { getProfile, safeFetch, type MarkdownPost, type Post, type Profile } from "@utils/content-utils";
+import type { MarkdownPost, Post, Profile } from "@/types/posts";
+import { getProfile, safeFetch } from "@utils/content-utils";
 import { parse } from "@utils/parser";
 import type { APIRoute } from "astro";
 
 export const prerender = false;
 
-export const GET: APIRoute = async ({ params, request }) => {
+export const GET: APIRoute = async () => {
   try {
 
     let profile: Profile;
@@ -17,7 +18,6 @@ export const GET: APIRoute = async ({ params, request }) => {
     );
 
     let allPosts: Map<string, MarkdownPost> = new Map();
-
       for (let data of response["records"]) {
         const matches = data["uri"].split("/");
         const rkey = matches[matches.length - 1];
@@ -26,15 +26,15 @@ export const GET: APIRoute = async ({ params, request }) => {
           matches &&
           matches.length === 5 &&
           record &&
-          (record["visibility"] === "public" || !record["visibility"])
+          (record.visibility === "public" || !record.visibility) // If no visibility field, assume public
         ) {
             allPosts.set(rkey, {
-            title: record["title"],
-            createdAt: new Date(record["createdAt"]),
-            mdcontent: record["content"],
+            title: record.title,
+            createdAt: new Date(record.createdAt),
+            mdcontent: record.content,
             rkey,
-            visibility: record["visibility"],
-            ogp: record["ogp"],
+            visibility: record.visibility,
+            ogp: record.ogp,
             data: "",
           });
         }

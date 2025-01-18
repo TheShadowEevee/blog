@@ -5,9 +5,13 @@ import { i18n } from '@i18n/translation'
 import I18nKey from '@i18n/i18nKey'
 import { getCategoryUrl } from '@utils/url-utils'
 import ButtonLink from '@components/control/ButtonLink.astro'
-import { getCategoryList } from '@utils/content-utils'
+import { safeFetch } from '@utils/content-utils'
 
-const categories = await getCategoryList()
+const response = await safeFetch(
+  `${import.meta.env.NEXT_PUBLIC_URL}/api/posts/fetchAllCategories`
+);
+
+const categories = response.result;
 
 const COLLAPSED_HEIGHT = '7.5rem'
 const COLLAPSE_THRESHOLD = 5

@@ -1,0 +1,23 @@
+---
+export const prerender = false;
+export const ssr = false;
+
+// import { ForwardRefEditor } from "@components/MDXEditor";
+import MainGridLayout from "../../layouts/MainGridLayout.astro";
+
+import { forwardRef } from "react";
+import { type MDXEditorMethods, type MDXEditorProps } from "@mdxeditor/editor";
+
+// This is the only place InitializedMDXEditor is imported directly.
+// const EditorIn = await import("../../components/MDXEditor.tsx");
+
+// const EditorOut = EditorIn.default;
+
+// export const ForwardRefEditor = forwardRef<MDXEditorMethods, MDXEditorProps>(
+//   (props, ref) => <EditorOut {...props} editorRef={ref} />
+// );
+
+// ForwardRefEditor.displayName = "ForwardRefEditor";
+---
+
+<MainGridLayout />
