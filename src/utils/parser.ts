@@ -28,12 +28,9 @@ import { i18n } from "@i18n/translation";
 import {
   checkUpdated,
   parseExtendedValue,
-  type Headings,
-  type MarkdownPost,
-  type Post,
-  type ReadingTime,
 } from "./content-utils";
 import { externalAnchorPlugin } from "@/plugins/external-anchor";
+import type { MarkdownPost, Post, ReadingTime, Headings } from "@/types/posts";
 
 // Disabled as rehypeSanitize is disabled
 // WhiteWind's own custom schema:
@@ -171,6 +168,7 @@ export async function parse(mdposts: Map<string, MarkdownPost>) {
         category:
           parseExtendedValue(post.mdcontent)?.category ??
           i18n(I18nKey.uncategorized),
+        draft: post.visibility != "publicr",
         readingTime: {
           text: 0,
           minutes: 0,
@@ -208,6 +206,7 @@ export async function parse(mdposts: Map<string, MarkdownPost>) {
         headings: (posts.get(rkey)?.content as VFile)?.data
           .headings as Headings[],
         lang: posts.get(rkey)?.extendedData?.lang,
+        draft: posts.get(rkey)?.extendedData?.draft,
         nextSlug: posts.get(rkey)?.extendedData?.nextSlug,
         nextTitle: posts.get(rkey)?.extendedData?.nextTitle,
         prevSlug: posts.get(rkey)?.extendedData?.prevSlug,

@@ -7,9 +7,10 @@
 - [x] No Search (Probably needs removed)
 - [x] Admonitions Not Working
 - [x] Following are still disabled: remarkExcerpt, externalAnchorPlugin, rehypeComponents
-- [x] Break Content Functions back out into content-utils.ts
+- [ ] Break Content Functions back out into content-utils.ts
 - [x] Clean Up Old / Commented Out code
 - [x] Many type errors in parser.ts
 - [x] Update Footer / Credits to include ATmosphere
 - [x] Admonition Titles not working
 - [x] TOC not lining up wth page view
+- [ ] Sitemap not working

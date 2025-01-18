@@ -3,18 +3,6 @@ import MainGridLayout from '@layouts/MainGridLayout.astro'
 import ArchivePanel from '@components/ArchivePanel.astro'
 import { i18n } from '@i18n/translation'
 import I18nKey from '@i18n/i18nKey'
-import { getCategoryList } from '@utils/content-utils'
-
-export async function getStaticPaths() {
-  const categories = await getCategoryList()
-  return categories.map(category => {
-    return {
-      params: {
-        category: category.name,
-      },
-    }
-  })
-}
 
 const category = Astro.params.category as string
 ---

@@ -6,7 +6,6 @@ import Compress from "astro-compress";
 import icon from "astro-icon";
 import { defineConfig } from "astro/config";
 import umami from "@yeskunall/astro-umami";
-import vercelServerless from "@astrojs/vercel/serverless";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeComponents from "rehype-components"; /* Render the custom directive content */
 import rehypeKatex from "rehype-katex";
@@ -21,11 +20,15 @@ import { parseDirectiveNode } from "./src/plugins/remark-directive-rehype.ts";
 import { remarkReadingTime } from "./src/plugins/remark-reading-time.mjs";
 import { externalAnchorPlugin } from "./src/plugins/external-anchor.ts";
 
+import node from "@astrojs/node";
+
+import react from "@astrojs/react";
+
 // https://astro.build/config
 export default defineConfig({
   site: "https://blog.shad.moe/",
   base: "/",
-  output: "hybrid",
+  output: "server",
   trailingSlash: "ignore",
 
   integrations: [
@@ -67,6 +70,9 @@ export default defineConfig({
       id: "6bae5cfe-012e-48cf-8b3e-d96b0518ab72",
       endpointUrl: "https://umami.shad.moe",
       hostUrl: "https://umami.shad.moe",
+    }),
+    react({
+      include: ["**/MDXEditor.tsx"],
     }),
   ],
   markdown: {
@@ -135,11 +141,7 @@ export default defineConfig({
       },
     },
   },
-  adapter: vercelServerless({
-    isr: {
-      expiration: 60 * 60 * 24,
-      bypassToken: "9o8a3yurpowehfiw",
-    },
-    edgeMiddleware: true,
+  adapter: node({
+    mode: "standalone",
   }),
 });

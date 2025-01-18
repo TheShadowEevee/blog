@@ -11,39 +11,18 @@ import PostMetadata from "../../components/PostMeta.astro";
 import ImageWrapper from "../../components/misc/ImageWrapper.astro";
 import { profileConfig, siteConfig } from "../../config";
 import { formatDateToYYYYMMDD } from "../../utils/date-utils";
-import { safeFetch, type Post } from "@utils/content-utils";
+import { safeFetch } from "@utils/content-utils";
 import { i18n } from "@i18n/translation";
 import I18nKey from "@i18n/i18nKey";
+import type { Post } from "@/types/posts";
 
-/*export async function getStaticPaths() {
-  const posts: Map<string, Post> | undefined = await getPosts();
+let blogPost: Post;
 
-  let rkeyArray: string[] = [];
+const response = await safeFetch(
+  `${import.meta.env.NEXT_PUBLIC_URL}/api/post/${Astro.params.rkey}`
+);
 
-  posts.forEach((post, postRkey) => {
-    rkeyArray.push(postRkey);
-    if (post.extendedData?.title) {
-      rkeyArray.push(
-        post.extendedData?.title
-          ?.toLowerCase()
-          .replace(/ /g, "-")
-          .replace(/[^a-zA-Z0-9\-]/g, "")
-      );
-    }
-  });
-
-  return rkeyArray.map((rkey) => ({
-    params: {
-      rkey: rkey,
-    },
-  }));
-}*/
-
-let blogPost: Post | undefined = undefined;
-
-const response = await safeFetch(`${import.meta.env.NEXT_PUBLIC_URL}/api/post/${Astro.params.rkey}`)
-
-blogPost = response.result
+blogPost = response.result;
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -125,7 +104,11 @@ const jsonLd = {
                     md:before:w-1 before:h-5 before:rounded-md before:bg-[var(--primary)]
                     before:absolute before:top-[0.75rem] before:left-[-1.125rem]"
         >
-          {blogPost?.extendedData?.title}
+          {
+            blogPost?.extendedData?.draft
+              ? blogPost?.extendedData?.title
+              : "DRAFT: " + blogPost?.extendedData?.title
+          }
         </div>
       </div>
 
