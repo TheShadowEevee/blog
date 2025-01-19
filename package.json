@@ -51,6 +51,7 @@
     "clsx": "^2.1.1",
     "dotenv": "^16.4.7",
     "hastscript": "^9.0.0",
+    "ioredis": "^5.4.2",
     "lucide-react": "^0.473.0",
     "markdown-it": "^14.1.0",
     "mdast-util-to-string": "^4.0.0",

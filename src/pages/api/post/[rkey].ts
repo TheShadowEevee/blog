@@ -1,9 +1,7 @@
+import type { Profile, MarkdownPost, Post } from "@/types/posts";
 import {
   getProfile,
   safeFetch,
-  type MarkdownPost,
-  type Post,
-  type Profile,
 } from "@utils/content-utils";
 import { parse } from "@utils/parser";
 import type { APIRoute } from "astro";
@@ -33,7 +31,7 @@ export const GET: APIRoute = async ({ params, request }) => {
         return new Response(
           JSON.stringify({
             success: true,
-            result: response.result,
+            result: JSON.parse(response.result),
           })
         );
       } else {
