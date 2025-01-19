@@ -59,7 +59,9 @@ export default defineConfig({
       },
     }),
     svelte(),
-    sitemap(),
+    sitemap({
+      customPages: ['a']
+    }),
     Compress({
       CSS: false,
       Image: false,
