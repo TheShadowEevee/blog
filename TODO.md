@@ -7,13 +7,12 @@
 - [x] No Search (Probably needs removed)
 - [x] Admonitions Not Working
 - [x] Following are still disabled: remarkExcerpt, externalAnchorPlugin, rehypeComponents
-- [ ] Break Content Functions back out into content-utils.ts
+- [x] Break Content Functions back out into content-utils.ts
 - [x] Clean Up Old / Commented Out code
 - [x] Many type errors in parser.ts
 - [x] Update Footer / Credits to include ATmosphere
 - [x] Admonition Titles not working
 - [x] TOC not lining up wth page view
-- [ ] Sitemap not working
 - [ ] Finish Editor
   - [x] Remove toolbar options that don't work due to rendering issues
   - [ ] Fix Toolbar theming
@@ -22,7 +21,7 @@
 - [ ] Add Editor Button
 - [ ] Add Login via PDS
 - [ ] Allow Post
-- [ ] Posts out of order on main view
+- [x] Posts out of order on main view
 
 -------- Publish! --------
 
