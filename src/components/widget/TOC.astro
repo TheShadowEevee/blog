@@ -112,7 +112,6 @@ const maxLevel = siteConfig.toc.depth;
     markVisibleSection = (entries: IntersectionObserverEntry[]) => {
       requestAnimationFrame(() => {
         entries.forEach((entry) => {
-          console.log("IntersectionObserver entry:", entry);
           const id = entry.target.children[0]?.getAttribute("id");
           const idx = id ? this.headingIdxMap.get(id) : undefined;
 
@@ -188,8 +187,6 @@ const maxLevel = siteConfig.toc.depth;
       )
         top = topmost.offsetTop - 32;
       else top = bottommost.offsetTop - tocHeight * 0.8;
-
-      console.log("top:", top, "tocHeight:", tocHeight); // Debugging the scroll position
 
       this.tocEl.scrollTo({
         top,
@@ -271,7 +268,6 @@ const maxLevel = siteConfig.toc.depth;
         const id = decodeURIComponent(this.tocEntries[i].hash?.substring(1));
         const heading = document.getElementById(id);
         const section = heading?.parentElement;
-        console.log(section)
         if (heading instanceof HTMLElement && section instanceof HTMLElement) {
           this.headings[i] = heading;
           this.sections[i] = section;

@@ -1,12 +1,20 @@
 import type { APIRoute } from "astro";
-import { Redis } from "@upstash/redis";
+import Redis from 'ioredis';
+//import { Redis } from "@upstash/redis";
 
 export const prerender = false;
 
-// Initialize Redis
-const redis: Redis = new Redis({
-  url: import.meta.env.KV_REST_API_URL!,
-  token: import.meta.env.KV_REST_API_TOKEN!,
+// Old Upstash DB Code
+// // Initialize Redis
+// const redis: Redis = new Redis({
+//   url: import.meta.env.KV_REST_API_URL!,
+//   token: import.meta.env.KV_REST_API_TOKEN!,
+// });
+
+const redis = new Redis({
+  host: import.meta.env.REDIS_IP!, // Local Redis server IP
+  port: import.meta.env.REDIS_PORT!,           // Local Redis server port
+  password: import.meta.env.REDIS_PASSWORD!, // Optional, if your Redis instance requires authentication
 });
 
 export const GET: APIRoute = async ({ params }) => {
@@ -55,7 +63,7 @@ export const POST: APIRoute = async ({ params, request }) => {
       const content = body.content;
 
       if (type === "blogPost") {
-        const result = await redis.set(key, content, {ex: +import.meta.env.POST_CACHE_SECONDS});
+        const result = await redis.set(key, JSON.stringify(content), 'EX', import.meta.env.POST_CACHE_SECONDS);
 
         return new Response(
           JSON.stringify({
