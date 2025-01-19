@@ -2,7 +2,6 @@ import rehypeStringify from "rehype-stringify";
 import remarkParse from "remark-parse";
 import remarkGfm from "remark-gfm";
 import remarkRehype from "remark-rehype";
-//import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import rehypeRaw from "rehype-raw";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeComponents from "rehype-components"; /* Render the custom directive content */
@@ -17,7 +16,6 @@ import remarkSectionize from "remark-sectionize";
 import { parseDirectiveNode } from "@/plugins/remark-directive-rehype";
 import remarkReadingTime from "remark-reading-time";
 import remarkHeadings from "@vcarl/remark-headings";
-//import type { Schema } from "../../node_modules/rehype-sanitize/lib";
 import { unified } from "unified";
 import type { Node } from "unist";
 import type { Root, Element } from "hast";
@@ -31,48 +29,6 @@ import {
 } from "./content-utils";
 import { externalAnchorPlugin } from "@/plugins/external-anchor";
 import type { MarkdownPost, Post, ReadingTime, Headings } from "@/types/posts";
-
-// Disabled as rehypeSanitize is disabled
-// WhiteWind's own custom schema:
-// https://github.com/whtwnd/whitewind-blog/blob/7eb8d4623eea617fd562b93d66a0e235323a2f9a/frontend/src/services/DocProvider.tsx#L122
-// const customSchema = {
-//   ...defaultSchema,
-//   attributes: {
-//     ...defaultSchema.attributes,
-//     font: [...(defaultSchema.attributes?.font ?? []), "color"],
-//     blockquote: [
-//       ...(defaultSchema.attributes?.blockquote ?? []),
-//       // bluesky
-//       "className",
-//       "dataBlueskyUri",
-//       "dataBlueskyCid",
-//       // instagram
-//       "dataInstgrmCaptioned",
-//       "dataInstgrmPermalink",
-//       "dataInstgrmVersion",
-//     ],
-//     iframe: [
-//       "width",
-//       "height",
-//       "title",
-//       "frameborder",
-//       "allow",
-//       "referrerpolicy",
-//       "allowfullscreen",
-//       "style",
-//       "seamless",
-//       ["src", /https:\/\/(www.youtube.com|bandcamp.com)\/.*/],
-//     ],
-//     section: ["dataFootnotes", "className"],
-//   },
-//   tagNames: [
-//     ...(defaultSchema.tagNames ?? []),
-//     "font",
-//     "mark",
-//     "iframe",
-//     "section",
-//   ],
-// };
 
 // Automatically enforce https on PDS images. Heavily inspired by WhiteWind's blob replacer:
 // https://github.com/whtwnd/whitewind-blog/blob/7eb8d4623eea617fd562b93d66a0e235323a2f9a/frontend/src/services/DocProvider.tsx#L90
@@ -117,7 +73,6 @@ export async function parse(mdposts: Map<string, MarkdownPost>) {
         .use(parseDirectiveNode)
         .use(externalAnchorPlugin) // See https://tomoviktor.com/posts/astro-external-anchor/
         .use(remarkRehype, { allowDangerousHtml: true }) // Convert to HTML
-        //.use(rehypeSanitize, customSchema as Schema) // Sanitize the HTML || Honestly? This is good to have but causes some annoying issues. I trust the content I put out. I could update the Schema but that's a pain in itself.
         .use(rehypeRaw) // Parse HTML that exists as raw text leftover from MD parse
         .use(rehypeUpgradeImage)
         .use(rehypeStringify)
