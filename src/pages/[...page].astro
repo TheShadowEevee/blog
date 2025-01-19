@@ -1,21 +1,9 @@
 ---
-import type { GetStaticPaths } from 'astro'
 import PostPage from '../components/PostPage.astro'
 import Pagination from '../components/control/Pagination.astro'
 import { PAGE_SIZE } from '../constants/constants'
 import MainGridLayout from '../layouts/MainGridLayout.astro'
-import { getSortedPosts, safeFetch } from '../utils/content-utils'
-import Content from 'node_modules/photoswipe/dist/types/slide/content'
-
-// export const prerender = true;
-
-// export const getStaticPaths = (async ({ paginate }) => {
-//   const allBlogPosts = await getSortedPosts()
-//   return paginate(allBlogPosts, { pageSize: PAGE_SIZE })
-// }) satisfies GetStaticPaths
-// // https://github.com/withastro/astro/issues/6507#issuecomment-1489916992
-
-//const { page } = Astro.props
+import { safeFetch } from '../utils/content-utils'
 
 const response = await safeFetch(`${import.meta.env.NEXT_PUBLIC_URL}/api/posts/fetchAllPosts`)
 

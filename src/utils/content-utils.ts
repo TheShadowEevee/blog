@@ -1,5 +1,5 @@
 import { public_handle } from "@/config";
-import type { PostList } from "@/types/posts";
+import type { PostList, Profile } from "@/types/posts";
 
 export async function getSortedPosts() {
   const response = await safeFetch(`${import.meta.env.NEXT_PUBLIC_URL}/api/posts/fetchAllPosts`);

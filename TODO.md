@@ -14,3 +14,16 @@
 - [x] Admonition Titles not working
 - [x] TOC not lining up wth page view
 - [ ] Sitemap not working
+- [ ] Finish Editor
+  - [x] Remove toolbar options that don't work due to rendering issues
+  - [ ] Fix Toolbar theming
+  - [ ] Fix code block theming
+  - [ ] Github Cards
+- [ ] Add Editor Button
+- [ ] Add Login via PDS
+- [ ] Allow Post
+- [ ] Posts out of order on main view
+
+-------- Publish! --------
+
+- [ ] Allow 
