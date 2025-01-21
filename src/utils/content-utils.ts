@@ -59,6 +59,10 @@ export function parseExtendedValue(content: string) {
   }
 }
 
+export function removeExtendedValue(content: string) {
+  return content.replace(/<!-- ### ADDITIONAL DATA FIELD ### (.*) ### solutions.konpeki.post.extendedData ### --->/gm, "")
+}
+
 export function checkUpdated(published: string, latest: Date) {
   if (published) {
     if (

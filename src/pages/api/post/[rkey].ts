@@ -66,21 +66,23 @@ export const GET: APIRoute = async ({ params, request }) => {
 
             post = await parse(mdposts);
 
-            const rkeyPost = await fetch(cacheURL + rkey, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                type: "blogPost",
-                content: post.get(rkey),
-              }),
-            });
+            if (record["visibility"] === "public") {
+              const rkeyPost = await fetch(cacheURL + rkey, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  type: "blogPost",
+                  content: post.get(rkey),
+                }),
+              });
+              
+              const rkeyPostRes = await rkeyPost.json();
 
-            const rkeyPostRes = await rkeyPost.json();
-
-            if (!rkeyPostRes.success) {
-              throw (
-                "Error caching the post: " + rkeyPostRes.result
-              );
+              if (!rkeyPostRes.success) {
+                throw (
+                  "Error caching the post: " + rkeyPostRes.result
+                );
+              }
             }
 
             return new Response(
