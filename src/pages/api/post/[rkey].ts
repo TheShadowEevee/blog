@@ -52,7 +52,7 @@ export const GET: APIRoute = async ({ params, request }) => {
             matches &&
             matches.length === 5 &&
             record &&
-            (record["visibility"] === "public" || !record["visibility"])
+            (record["visibility"] === "public" || record["visibility"] === "url" || !record["visibility"])
           ) {
             mdposts.set(rkey, {
               title: record["title"],
