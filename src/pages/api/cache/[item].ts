@@ -62,7 +62,7 @@ export const POST: APIRoute = async ({ params, request }) => {
       const type = body.type;
       const content = body.content;
 
-      if (type === "blogPost") {
+      if (type === "blogPost" && content.visibility != "url") {
         const result = await redis.set(key, JSON.stringify(content), 'EX', import.meta.env.POST_CACHE_SECONDS);
 
         return new Response(
