@@ -28,7 +28,7 @@ import {
 } from "@mdxeditor/editor";
 import { headingsPlugin } from "@mdxeditor/editor";
 
-//import "@mdxeditor/editor/style.css";
+import "@mdxeditor/editor/style.css";
 import type { RootContent } from "mdast";
 import { type ForwardedRef } from "react";
 
