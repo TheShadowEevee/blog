@@ -1,7 +1,7 @@
 import { siteConfig } from "@/config";
 import rss from "@astrojs/rss";
 import type { APIContext } from "astro";
-import { getSortedPosts } from "@utils/content-utils";
+import { getSortedPosts, removeExtendedValue } from "@utils/content-utils";
 import MarkdownIt from "markdown-it";
 import sanitizeHtml from "sanitize-html";
 
@@ -25,7 +25,7 @@ export async function GET(context: APIContext) {
         pubDate: new Date(post.data?.published as string) ?? new Date(),
         description: post.data?.description || "",
         link: `/posts/${post.slug}/`,
-        content: sanitizeHtml(parser.render(post.body as string), {
+        content: sanitizeHtml(parser.render(removeExtendedValue(post.body as string)), {
           allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img"]),
         }),
       };
