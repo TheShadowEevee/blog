@@ -12,8 +12,6 @@ if (!aboutPost) {
 	throw new Error("About page content not found");
 }
 
-console.log(await getEntry('spec', 'about'))
-
 const { Content } = await aboutPost.render()
 ---
 <MainGridLayout title={i18n(I18nKey.about)} description={i18n(I18nKey.about)}>
