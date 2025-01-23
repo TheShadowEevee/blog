@@ -1,15 +1,7 @@
 import type { APIRoute } from "astro";
 import Redis from 'ioredis';
-//import { Redis } from "@upstash/redis";
 
 export const prerender = false;
-
-// Old Upstash DB Code
-// // Initialize Redis
-// const redis: Redis = new Redis({
-//   url: import.meta.env.KV_REST_API_URL!,
-//   token: import.meta.env.KV_REST_API_TOKEN!,
-// });
 
 const redis = new Redis({
   host: import.meta.env.REDIS_IP!, // Local Redis server IP

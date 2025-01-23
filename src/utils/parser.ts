@@ -18,9 +18,6 @@ import remarkReadingTime from "remark-reading-time";
 import remarkHeadings from "@vcarl/remark-headings";
 import { unified } from "unified";
 import type { Node } from "unist";
-import type { Root, Element } from "hast";
-import type { Plugin } from "unified";
-import type { VFile } from "node_modules/rehype-raw/lib";
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import {
@@ -29,6 +26,7 @@ import {
 } from "./content-utils";
 import { externalAnchorPlugin } from "@/plugins/external-anchor";
 import type { MarkdownPost, Post, ReadingTime, Headings } from "@/types/posts";
+import type { VFile } from "node_modules/rehype-raw/lib";
 
 // Automatically enforce https on PDS images. Heavily inspired by WhiteWind's blob replacer:
 // https://github.com/whtwnd/whitewind-blog/blob/7eb8d4623eea617fd562b93d66a0e235323a2f9a/frontend/src/services/DocProvider.tsx#L90
