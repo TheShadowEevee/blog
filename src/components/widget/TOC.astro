@@ -1,10 +1,10 @@
 ---
-import type { MarkdownHeading } from 'astro';
 import { siteConfig } from "../../config";
+import { Headings } from '@/types/posts';
 
 interface Props {
   class?: string
-  headings: MarkdownHeading[]
+  headings: Headings[]
 }
 
 let { headings = []  } = Astro.props;
@@ -28,10 +28,14 @@ const removeTailingHash = (text: string) => {
 let heading1Count = 1;
 
 const maxLevel = siteConfig.toc.depth;
+
 ---
 <table-of-contents class:list={[className, "group"]}>
     {headings.filter((heading) => heading.depth < minDepth + maxLevel).map((heading) =>
-            <a href={`#${heading.slug}`} class="px-2 flex gap-2 relative transition w-full min-h-9 rounded-xl
+            <a href={`#${heading.value
+            .toLowerCase()
+            .replace(/ /g, "-")
+            .replace(/[^a-zA-Z0-9\-]/g, "")}`} class="px-2 flex gap-2 relative transition w-full min-h-9 rounded-xl
         hover:bg-[var(--toc-btn-hover)] active:bg-[var(--toc-btn-active)] py-2
     ">
                 <div class:list={["transition w-5 h-5 shrink-0 rounded-lg text-xs flex items-center justify-center font-bold",
@@ -49,7 +53,7 @@ const maxLevel = siteConfig.toc.depth;
                 <div class:list={["transition text-sm", {
                     "text-50": heading.depth == minDepth || heading.depth == minDepth + 1,
                     "text-30": heading.depth == minDepth + 2,
-                }]}>{removeTailingHash(heading.text)}</div>
+                }]}>{removeTailingHash(heading.value)}</div>
             </a>
     )}
     <div id="active-indicator" class:list={[{'hidden': headings.length == 0}, "-z-10 absolute bg-[var(--toc-btn-hover)] left-0 right-0 rounded-xl transition-all " +
