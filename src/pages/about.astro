@@ -6,13 +6,20 @@ import I18nKey from "../i18n/i18nKey";
 import { i18n } from "../i18n/translation";
 import MainGridLayout from "../layouts/MainGridLayout.astro";
 
-const aboutPost = await getEntry("spec", "about");
+import { CollectionEntry, getCollection } from 'astro:content';
+import { i18n } from '../i18n/translation'
+import I18nKey from '../i18n/i18nKey'
+import Markdown from '@components/misc/Markdown.astro'
 
-if (!aboutPost) {
-	throw new Error("About page content not found");
-}
+// The content collection broke in some unexplainable way so it's replaced with this
+const posts = await getCollection('spec');
+type Props = CollectionEntry<'spec'>;
 
-const { Content } = await aboutPost.render()
+const slug  = "about";
+const post = posts.find((page) => page.slug === slug);
+if (!post) return Astro.redirect("/404");
+const { Content } = await post.render();
+
 ---
 <MainGridLayout title={i18n(I18nKey.about)} description={i18n(I18nKey.about)}>
     <div class="flex w-full rounded-[var(--radius-large)] overflow-hidden relative min-h-32">
