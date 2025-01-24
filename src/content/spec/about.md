@@ -7,7 +7,7 @@ I am a current student at Purdue Univeristy, studying Cybersecurity and Computin
 If you ever want to get in touch with me, feel free! I can be reached on [Bluesky](https://bsky.app/profile/theshadoweevee.konpeki.solutions) or via email at [theshadoweevee@shad.moe](mailto:theshadoweevee@shad.moe) OR [theshadoweevee@konpeki.solutions](mailto:theshadoweevee@konpeki.solutions).
 
 View the source code for this blog!
-::github{repo="theshadoweevee/blog"}
+::github{repo="TheShadowEevee/blog"}
 
 <details><summary>Credits</summary>
 
