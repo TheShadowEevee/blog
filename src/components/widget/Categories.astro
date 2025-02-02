@@ -12,6 +12,7 @@ const response = await safeFetch(
 );
 
 const categories = response.result;
+console.log(categories)
 
 const COLLAPSED_HEIGHT = '7.5rem'
 const COLLAPSE_THRESHOLD = 5
@@ -29,7 +30,7 @@ const style = Astro.props.style
 <WidgetLayout name={i18n(I18nKey.categories)} id="categories" isCollapsed={isCollapsed} collapsedHeight={COLLAPSED_HEIGHT}
                 class={className} style={style}
 >
-    {categories.map((c) =>
+    {categories.map((c: { name: string; count: any }) =>
         <ButtonLink
             url={getCategoryUrl(c.name)}
             badge={String(c.count)}
