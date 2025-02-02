@@ -54,7 +54,7 @@ export const GET: APIRoute = async () => {
     return new Response(
       JSON.stringify({
         success: false,
-        result: "Failed to get data: " + error,
+        result: [{"name": "Failed to get categories." , "count": 0}],
       })
     );
   }
