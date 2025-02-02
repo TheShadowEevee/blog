@@ -1,8 +1,8 @@
 # About
 
-Hello! I'm Michael, also known as TheShadowEevee. I dabble in many things and am a master at none, which really means I'm fairly versitile in many skillsets! That also means that what I discuss here can vary quite a bit, but will generally lean towards technology oriented topics.
+Hello! I'm Michael (@TheShadowEevee). I'm a cybersec/virtual reality/technology enthusiast with a general interest in many technology-oriented topics and a passion for learning other areas as they intrigue me.
 
-I am a current student at Purdue Univeristy, studying Cybersecurity and Computing Infrastructure and Network Engineering Technology, with minors in Forensic Sciences and Law and Society. We're back to the whole "good at many things, master at none" with this, but my primary skillset and focus is in the Cybersecurity domain.
+I am at [Purdue University](https://purdue.edu) studying [Cybersecurity](https://polytechnic.purdue.edu/degrees/cybersecurity) and [Computing Infrastructure and Network Engineering Technology](https://polytechnic.purdue.edu/degrees/computing-infrastructure-and-network-engineering-technology), with minors in Forensic Sciences and Law and Society. While I primarily work in these areas, I don't let that restrict my skills; I continue to learn more across many fields, letting new experiences and projects guide my learning outside class.
 
 If you ever want to get in touch with me, feel free! I can be reached on [Bluesky](https://bsky.app/profile/theshadoweevee.konpeki.solutions) or via email at [theshadoweevee@shad.moe](mailto:theshadoweevee@shad.moe) OR [theshadoweevee@konpeki.solutions](mailto:theshadoweevee@konpeki.solutions).
 
