@@ -16,7 +16,6 @@ const response = await safeFetch(
 );
 
 const categories = response.result;
-console.log(categories)
 
 const isCollapsed = categories.length >= COLLAPSE_THRESHOLD;
 
