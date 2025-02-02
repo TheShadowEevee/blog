@@ -26,7 +26,7 @@ import react from "@astrojs/react";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://blog.shad.moe/",
+  site: "https://shad.moe/",
   base: "/",
   output: "server",
   trailingSlash: "ignore",
