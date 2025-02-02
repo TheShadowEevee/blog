@@ -18,16 +18,14 @@ export async function GET(context: APIContext) {
     },
     title: siteConfig.title,
     description: siteConfig.subtitle || "No description",
-    site: context.site ?? "https://blog.shad.moe",
+    site: context.site ?? "https://shad.moe",
     items: blog.map((post) => {
       return {
         title: post.data?.title,
         pubDate: new Date(post.data?.published as string) ?? new Date(),
         description: post.data?.description || "",
         link: `/posts/${post.slug}/`,
-        content: sanitizeHtml(parser.render(removeExtendedValue(post.body as string)), {
-          allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img"]),
-        }),
+        content: removeExtendedValue(post.body as string),
       };
     }),
     customData:
