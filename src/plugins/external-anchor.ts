@@ -1,6 +1,6 @@
 import { visit } from "unist-util-visit";
 
-const site = "https://blog.shad.moe";
+const site = "https://shad.moe";
 const draft_site = "https://blog-preview.shad.moe";
 const webring = "ring.purduehackers.com";
 
