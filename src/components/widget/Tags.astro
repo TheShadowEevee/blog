@@ -11,7 +11,11 @@ const response = await safeFetch(
   `${import.meta.env.NEXT_PUBLIC_URL}/api/posts/fetchAllTags`
 );
 
-const tags = response.result;
+let tags: [] = []
+
+if (response.success == true) {
+    tags = response.result
+}
 
 const COLLAPSED_HEIGHT = '7.5rem'
 

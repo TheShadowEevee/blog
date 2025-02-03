@@ -1,3 +1,4 @@
+import type { Post } from "@/types/posts";
 import { safeFetch } from "@utils/content-utils";
 import type { APIRoute } from "astro";
 
@@ -14,8 +15,11 @@ export const GET: APIRoute = async () => {
       `${import.meta.env.NEXT_PUBLIC_URL}/api/posts/fetchAllPosts`
     );
 
-    let postList = response.result;
-    let tags: string[] = new Array();
+    let postList: Post[] = []
+
+    if (response.success == true) {
+        postList = response.result
+    }    let tags: string[] = new Array();
 
     for (const rkey in postList) {
       for (let tag of postList[rkey].extendedData?.tags ?? []) {

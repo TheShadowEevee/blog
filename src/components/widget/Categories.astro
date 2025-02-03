@@ -11,7 +11,11 @@ const response = await safeFetch(
   `${import.meta.env.NEXT_PUBLIC_URL}/api/posts/fetchAllCategories`
 );
 
-const categories = response.result;
+let categories: [] = []
+
+if (response.success == true) {
+    categories = response.result
+}
 
 const COLLAPSED_HEIGHT = '7.5rem'
 const COLLAPSE_THRESHOLD = 5

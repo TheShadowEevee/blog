@@ -16,13 +16,15 @@ import { i18n } from "@i18n/translation";
 import I18nKey from "@i18n/i18nKey";
 import type { Post } from "@/types/posts";
 
-let blogPost: Post;
+let blogPost: Post = {};
 
 const response = await safeFetch(
   `${import.meta.env.NEXT_PUBLIC_URL}/api/post/${Astro.params.rkey}`
 );
 
-blogPost = response.result;
+if (response.success == true) {
+    blogPost = response.result
+}
 
 const jsonLd = {
   "@context": "https://schema.org",
