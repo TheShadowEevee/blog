@@ -1,11 +1,11 @@
 import type { APIRoute } from "astro";
-import Redis from 'ioredis';
+import Redis from "ioredis";
 
 export const prerender = false;
 
 const redis = new Redis({
   host: import.meta.env.REDIS_IP!, // Local Redis server IP
-  port: import.meta.env.REDIS_PORT!,           // Local Redis server port
+  port: import.meta.env.REDIS_PORT!, // Local Redis server port
   password: import.meta.env.REDIS_PASSWORD!, // Optional, if your Redis instance requires authentication
 });
 
@@ -14,24 +14,33 @@ export const GET: APIRoute = async ({ params }) => {
     const item = params.item;
 
     if (item) {
-      const result = await redis.get(item);
+      try {
+        const result = await redis.get(item);
 
-      if (!result) {
+        if (!result) {
+          return new Response(
+            JSON.stringify({
+              success: false,
+              result: "Item '" + item + "' does not exist",
+            })
+          );
+        }
+
+        return new Response(
+          JSON.stringify({
+            success: true,
+            result: result,
+          }),
+          { status: 200 }
+        );
+      } catch {
         return new Response(
           JSON.stringify({
             success: false,
-            result: "Item '" + item + "' does not exist",
+            result: "Failed to fetch.",
           })
         );
       }
-
-      return new Response(
-        JSON.stringify({
-          success: true,
-          result: result,
-        }),
-        { status: 200 }
-      );
     } else {
       throw "'item' is null or undefined";
     }
@@ -55,7 +64,12 @@ export const POST: APIRoute = async ({ params, request }) => {
       const content = body.content;
 
       if (type === "blogPost") {
-        const result = await redis.set(key, JSON.stringify(content), 'EX', import.meta.env.POST_CACHE_SECONDS);
+        const result = await redis.set(
+          key,
+          JSON.stringify(content),
+          "EX",
+          import.meta.env.POST_CACHE_SECONDS
+        );
 
         return new Response(
           JSON.stringify({

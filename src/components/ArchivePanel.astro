@@ -4,6 +4,7 @@ import I18nKey from '../i18n/i18nKey'
 import { i18n } from '../i18n/translation'
 import { getPostUrlBySlug } from '../utils/url-utils'
 import { safeFetch } from '@utils/content-utils'
+import type { Post } from '@/types/posts'
 
 interface Props {
   keyword?: string
@@ -14,7 +15,11 @@ const { tags, categories } = Astro.props
 
 const response = await safeFetch(`${import.meta.env.NEXT_PUBLIC_URL}/api/posts/fetchAllPosts`)
 
-let postList = response.result
+let postList: Post[] = []
+
+if (response.success == true) {
+    postList = response.result
+}
 
 let posts = []
 
