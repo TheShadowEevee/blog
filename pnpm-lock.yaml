@@ -50,6 +50,9 @@ importers:
       '@iconify/svelte':
         specifier: ^4.0.2
         version: 4.2.0(svelte@5.17.3)
+      '@inox-tools/sitemap-ext':
+        specifier: ^0.4.2
+        version: 0.4.2(@types/node@22.8.1)(astro@4.16.18(@types/node@22.8.1)(lightningcss@1.27.0)(rollup@2.79.2)(sass@1.81.0)(stylus@0.63.0)(terser@5.36.0)(typescript@5.7.3))(jiti@1.21.6)(lightningcss@1.27.0)(sass@1.81.0)(stylus@0.63.0)(terser@5.36.0)(yaml@2.6.0)
       '@mdxeditor/editor':
         specifier: ^3.20.0
         version: 3.20.0(@codemirror/language@6.10.8)(@lezer/highlight@1.2.1)(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(yjs@13.6.23)
@@ -1502,6 +1505,20 @@ packages:
     engines: {node: ^18.17.0 || ^20.3.0 || >=21.0.0}
     cpu: [x64]
     os: [win32]
+
+  '@inox-tools/aik-route-config@0.8.2':
+    resolution: {integrity: sha512-0OT5YG1XVsPOFXcaHfmguWUr8dEBGaKG4YjQXTYrk4SMQ29NZQMpjhZFB0SRM6utg8DY8UX/Ki3Rd7d9rRtkRA==}
+    peerDependencies:
+      astro: ^5
+      astro-integration-kit: ~0.17 || ~0.18
+
+  '@inox-tools/sitemap-ext@0.4.2':
+    resolution: {integrity: sha512-JPzRV2YRmXDrKuHe2UQ8rpC7vj5VTKLGDnUmjFbVSYDgve1YH0k8GaRTRuBvMSVr6rcDpAsi71U0+qViXfO1sQ==}
+    peerDependencies:
+      astro: ^5
+
+  '@inox-tools/utils@0.3.1':
+    resolution: {integrity: sha512-2ppd/FyGpkRrDpEriLupyBDbw4nYO/3peQlIR905i+cI0XeUQkJ9zgfYaVB/rE59d6yJ3dQbZe1B9sk23oHgpg==}
 
   '@ioredis/commands@1.2.0':
     resolution: {integrity: sha512-Sx1pU8EM64o2BrqNpEO1CNLtKQwyhuXuqyfH7oGKCk+1a33d2r5saW8zNwm3j6BTExtjrv2BxTgzzkMwts6vGg==}
@@ -7842,6 +7859,51 @@ snapshots:
 
   '@img/sharp-win32-x64@0.33.5':
     optional: true
+
+  '@inox-tools/aik-route-config@0.8.2(@types/node@22.8.1)(astro-integration-kit@0.18.0(astro@4.16.18(@types/node@22.8.1)(lightningcss@1.27.0)(rollup@2.79.2)(sass@1.81.0)(stylus@0.63.0)(terser@5.36.0)(typescript@5.7.3)))(astro@4.16.18(@types/node@22.8.1)(lightningcss@1.27.0)(rollup@2.79.2)(sass@1.81.0)(stylus@0.63.0)(terser@5.36.0)(typescript@5.7.3))(jiti@1.21.6)(lightningcss@1.27.0)(sass@1.81.0)(stylus@0.63.0)(terser@5.36.0)(yaml@2.6.0)':
+    dependencies:
+      '@inox-tools/utils': 0.3.1
+      astro: 4.16.18(@types/node@22.8.1)(lightningcss@1.27.0)(rollup@2.79.2)(sass@1.81.0)(stylus@0.63.0)(terser@5.36.0)(typescript@5.7.3)
+      astro-integration-kit: 0.18.0(astro@4.16.18(@types/node@22.8.1)(lightningcss@1.27.0)(rollup@2.79.2)(sass@1.81.0)(stylus@0.63.0)(terser@5.36.0)(typescript@5.7.3))
+      debug: 4.4.0
+      recast: 0.23.9
+      vite: 6.0.11(@types/node@22.8.1)(jiti@1.21.6)(lightningcss@1.27.0)(sass@1.81.0)(stylus@0.63.0)(terser@5.36.0)(yaml@2.6.0)
+    transitivePeerDependencies:
+      - '@types/node'
+      - jiti
+      - less
+      - lightningcss
+      - sass
+      - sass-embedded
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+      - tsx
+      - yaml
+
+  '@inox-tools/sitemap-ext@0.4.2(@types/node@22.8.1)(astro@4.16.18(@types/node@22.8.1)(lightningcss@1.27.0)(rollup@2.79.2)(sass@1.81.0)(stylus@0.63.0)(terser@5.36.0)(typescript@5.7.3))(jiti@1.21.6)(lightningcss@1.27.0)(sass@1.81.0)(stylus@0.63.0)(terser@5.36.0)(yaml@2.6.0)':
+    dependencies:
+      '@astrojs/sitemap': 3.2.1
+      '@inox-tools/aik-route-config': 0.8.2(@types/node@22.8.1)(astro-integration-kit@0.18.0(astro@4.16.18(@types/node@22.8.1)(lightningcss@1.27.0)(rollup@2.79.2)(sass@1.81.0)(stylus@0.63.0)(terser@5.36.0)(typescript@5.7.3)))(astro@4.16.18(@types/node@22.8.1)(lightningcss@1.27.0)(rollup@2.79.2)(sass@1.81.0)(stylus@0.63.0)(terser@5.36.0)(typescript@5.7.3))(jiti@1.21.6)(lightningcss@1.27.0)(sass@1.81.0)(stylus@0.63.0)(terser@5.36.0)(yaml@2.6.0)
+      astro: 4.16.18(@types/node@22.8.1)(lightningcss@1.27.0)(rollup@2.79.2)(sass@1.81.0)(stylus@0.63.0)(terser@5.36.0)(typescript@5.7.3)
+      astro-integration-kit: 0.18.0(astro@4.16.18(@types/node@22.8.1)(lightningcss@1.27.0)(rollup@2.79.2)(sass@1.81.0)(stylus@0.63.0)(terser@5.36.0)(typescript@5.7.3))
+      sitemap: 8.0.0
+    transitivePeerDependencies:
+      - '@types/node'
+      - jiti
+      - less
+      - lightningcss
+      - sass
+      - sass-embedded
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+      - tsx
+      - yaml
+
+  '@inox-tools/utils@0.3.1': {}
 
   '@ioredis/commands@1.2.0': {}
 
