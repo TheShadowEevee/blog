@@ -1,3 +1,4 @@
+import type { Post } from "@/types/posts";
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import { safeFetch } from "@utils/content-utils";
@@ -17,8 +18,12 @@ export const GET: APIRoute = async () => {
       `${import.meta.env.NEXT_PUBLIC_URL}/api/posts/fetchAllPosts`
     );
 
-    let postList = response.result;
+    let postList: Post[] = []
 
+    if (response.success == true) {
+        postList = response.result
+    }
+    
     for (const rkey in postList) {
       if (!postList[rkey].extendedData.category) {
         const ucKey = i18n(I18nKey.uncategorized);

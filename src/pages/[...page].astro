@@ -1,4 +1,5 @@
 ---
+import type { Post } from '@/types/posts'
 import PostPage from '../components/PostPage.astro'
 import Pagination from '../components/control/Pagination.astro'
 import MainGridLayout from '../layouts/MainGridLayout.astro'
@@ -6,9 +7,14 @@ import { safeFetch } from '../utils/content-utils'
 
 const response = await safeFetch(`${import.meta.env.NEXT_PUBLIC_URL}/api/posts/fetchAllPosts`)
 
-let postList = response.result
+let postList: Post[] = []
+let len = 0
 
-const len = postList.length
+if (response.success == true) {
+    postList = response.result
+
+    len = postList.length
+}
 
 ---
 
