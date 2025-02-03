@@ -1,4 +1,4 @@
-import sitemap from "@astrojs/sitemap";
+import sitemap from '@inox-tools/sitemap-ext';
 import svelte from "@astrojs/svelte";
 import tailwind from "@astrojs/tailwind";
 import swup from "@swup/astro";
@@ -60,7 +60,7 @@ export default defineConfig({
     }),
     svelte(),
     sitemap({
-      customPages: ['a']
+      includeByDefault: true,
     }),
     Compress({
       CSS: false,
