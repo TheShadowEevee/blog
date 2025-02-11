@@ -2,10 +2,6 @@ import { siteConfig } from "@/config";
 import rss from "@astrojs/rss";
 import type { APIContext } from "astro";
 import { getSortedPosts, removeExtendedValue } from "@utils/content-utils";
-import MarkdownIt from "markdown-it";
-import sanitizeHtml from "sanitize-html";
-
-const parser = new MarkdownIt();
 
 export async function GET(context: APIContext) {
   const blog = await getSortedPosts();
@@ -31,11 +27,11 @@ export async function GET(context: APIContext) {
     customData:
       `<language>${siteConfig.lang}</language>` +
       `<lastBuildDate>${new Date(
-        blog[0]?.data?.published as string
+        blog[0]?.data?.published as string,
       ).toUTCString()}</lastBuildDate>` +
       `<atom:link href="${context.site}rss.xml" rel="self" type="application/rss+xml"/>` +
       `<pubDate>${new Date(
-        blog[0]?.data?.published as string
+        blog[0]?.data?.published as string,
       ).toUTCString()}</pubDate>`,
   });
 }

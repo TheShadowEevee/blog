@@ -15,17 +15,17 @@ export const GET: APIRoute = async () => {
   try {
     const count: { [key: string]: number } = {};
     const response = await safeFetch(
-      `${import.meta.env.NEXT_PUBLIC_URL}/api/posts/fetchAllPosts`
+      `${import.meta.env.NEXT_PUBLIC_URL}/api/posts/fetchAllPosts`,
     );
 
-    let postList: Post[] = []
+    let postList: Post[] = [];
 
     if (response.success == true) {
-        postList = response.result
+      postList = response.result;
     }
-    
+
     for (const rkey in postList) {
-      if (!postList[rkey].extendedData.category) {
+      if (!postList[rkey].extendedData?.category) {
         const ucKey = i18n(I18nKey.uncategorized);
         count[ucKey] = count[ucKey] ? count[ucKey] + 1 : 1;
       } else {
@@ -53,14 +53,14 @@ export const GET: APIRoute = async () => {
       }),
       {
         status: 200,
-      }
+      },
     );
   } catch (error) {
     return new Response(
       JSON.stringify({
         success: false,
-        result: [{"name": "Failed to get categories." , "count": 0}],
-      })
+        result: [{ name: "Failed to get categories.", count: 0 }],
+      }),
     );
   }
 };
