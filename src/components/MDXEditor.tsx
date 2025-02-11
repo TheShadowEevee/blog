@@ -1,16 +1,14 @@
+// This file *errors*, and not in a nice way. To be fair, this is only 40% of an actual module, so issues are expected. 
 "use client";
 import {
-  BlockTypeSelect,
   BoldItalicUnderlineToggles,
   codeBlockPlugin,
   codeMirrorPlugin,
   CodeToggle,
-  CreateLink,
   diffSourcePlugin,
   DiffSourceToggleWrapper,
   directivesPlugin,
   InsertTable,
-  linkDialogPlugin,
   linkPlugin,
   listsPlugin,
   ListsToggle,
