@@ -2,7 +2,9 @@ import { public_handle } from "@/config";
 import type { PostList, Profile } from "@/types/posts";
 
 export async function getSortedPosts() {
-  const response = await safeFetch(`${import.meta.env.NEXT_PUBLIC_URL}/api/posts/fetchAllPosts`);
+  const response = await safeFetch(
+    `${import.meta.env.NEXT_PUBLIC_URL}/api/posts/fetchAllPosts`,
+  );
 
   let postList = response.result;
   let posts: PostList[] = new Array();
@@ -47,8 +49,8 @@ export function parseExtendedValue(content: string) {
       new RegExp(
         "<!-- ### ADDITIONAL DATA FIELD ### " +
           "(.*)" +
-          " ### solutions.konpeki.post.extendedData ### --->"
-      )
+          " ### solutions.konpeki.post.extendedData ### --->",
+      ),
     );
 
     if (values) {
@@ -60,7 +62,10 @@ export function parseExtendedValue(content: string) {
 }
 
 export function removeExtendedValue(content: string) {
-  return content.replace(/<!-- ### ADDITIONAL DATA FIELD ### (.*) ### solutions.konpeki.post.extendedData ### --->/gm, "")
+  return content.replace(
+    /<!-- ### ADDITIONAL DATA FIELD ### (.*) ### solutions.konpeki.post.extendedData ### --->/gm,
+    "",
+  );
 }
 
 export function checkUpdated(published: string, latest: Date) {
@@ -79,7 +84,7 @@ export function checkUpdated(published: string, latest: Date) {
 
 export async function getProfile(): Promise<Profile> {
   const fetchProfile = await safeFetch(
-    `https://public.api.bsky.app/xrpc/app.bsky.actor.getProfile?actor=${public_handle}`
+    `https://public.api.bsky.app/xrpc/app.bsky.actor.getProfile?actor=${public_handle}`,
   );
   let split = fetchProfile["did"].split(":");
   let diddoc;

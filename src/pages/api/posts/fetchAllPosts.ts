@@ -13,7 +13,7 @@ export const GET: APIRoute = async () => {
     profile = await getProfile();
 
     const response = await safeFetch(
-      `${profile.pds}/xrpc/com.atproto.repo.listRecords?repo=${profile.did}&collection=com.whtwnd.blog.entry`
+      `${profile.pds}/xrpc/com.atproto.repo.listRecords?repo=${profile.did}&collection=com.whtwnd.blog.entry`,
     );
 
     let allPosts: Map<string, MarkdownPost> = new Map();
@@ -47,21 +47,21 @@ export const GET: APIRoute = async () => {
             [...(await parse(allPosts)).entries()].sort(
               (a, b) =>
                 new Date(b[1].extendedData?.published ?? 0).getTime() -
-                new Date(a[1].extendedData?.published ?? 0).getTime()
-            )
-          )
+                new Date(a[1].extendedData?.published ?? 0).getTime(),
+            ),
+          ),
         ),
       }),
       {
         status: 200,
-      }
+      },
     );
   } catch (error) {
     return new Response(
       JSON.stringify({
         success: false,
         result: "Failed to get data: " + error,
-      })
+      }),
     );
   }
 };

@@ -12,7 +12,7 @@ import { h } from "hastscript";
  */
 export function GithubCardComponent(
   properties: Properties,
-  children: RootContent[]
+  children: RootContent[],
 ) {
   if (Array.isArray(children) && children.length !== 0)
     return h("div", { class: "hidden" }, [
@@ -23,7 +23,7 @@ export function GithubCardComponent(
     return h(
       "div",
       { class: "hidden" },
-      'Invalid repository. ("repo" attributte must be in the format "owner/repo")'
+      'Invalid repository. ("repo" attributte must be in the format "owner/repo")',
     );
 
   const repo = properties.repo;
@@ -33,7 +33,7 @@ export function GithubCardComponent(
   const nLanguage = h(
     `span#${cardUuid}-language`,
     { class: "gc-language" },
-    "Waiting..."
+    "Waiting...",
   );
 
   const nTitle = h(`div`, { class: "gc-titlebar" }, [
@@ -51,7 +51,7 @@ export function GithubCardComponent(
   const nDescription = h(
     `div#${cardUuid}-description`,
     { class: "gc-description" },
-    "Waiting for api.github.com..."
+    "Waiting for api.github.com...",
   );
 
   const nStars = h(`div#${cardUuid}-stars`, { class: "gc-stars" }, "00K");
@@ -86,7 +86,7 @@ export function GithubCardComponent(
         c.classList.add("fetch-error");
          console.warn("[GITHUB-CARD] (Error) Loading card for ${repo} | ${cardUuid}.")
       })
-    `
+    `,
   );
 
   return h(
@@ -102,6 +102,6 @@ export function GithubCardComponent(
       nDescription,
       h("div", { class: "gc-infobar" }, [nStars, nForks, nLicense, nLanguage]),
       nScript,
-    ]
+    ],
   );
 }

@@ -8,7 +8,7 @@ export function remarkReadingTime() {
     const readingTime = getReadingTime(textOnPage);
     data.astro.frontmatter.minutes = Math.max(
       1,
-      Math.round(readingTime.minutes)
+      Math.round(readingTime.minutes),
     );
     data.astro.frontmatter.words = readingTime.words;
   };

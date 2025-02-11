@@ -1,6 +1,6 @@
 ---
 import { siteConfig } from "../../config";
-import { Headings } from '@/types/posts';
+import { type Headings } from '@/types/posts';
 
 interface Props {
   class?: string
@@ -35,7 +35,10 @@ const maxLevel = siteConfig.toc.depth;
             <a href={`#${heading.value
             .toLowerCase()
             .replace(/ /g, "-")
-            .replace(/[^a-zA-Z0-9\-]/g, "")}`} class="px-2 flex gap-2 relative transition w-full min-h-9 rounded-xl
+            .replace(/[^a-zA-Z0-9\-]/g, "")
+            // This next replace is a bit icky, but it works for what it needs to. Just don't use <.*> headings.
+            // This is intended to parse out HTML like <sup />, For example in "January 1<sup>st</sup>"
+            .replace(/<[^>]*>/g, "")}`} class="px-2 flex gap-2 relative transition w-full min-h-9 rounded-xl
         hover:bg-[var(--toc-btn-hover)] active:bg-[var(--toc-btn-active)] py-2
     ">
                 <div class:list={["transition w-5 h-5 shrink-0 rounded-lg text-xs flex items-center justify-center font-bold",

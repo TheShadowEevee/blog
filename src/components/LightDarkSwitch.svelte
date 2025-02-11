@@ -48,11 +48,13 @@ function toggleScheme() {
 
 function showPanel() {
   const panel = document.querySelector('#light-dark-panel')
+  // @ts-ignore - Acceptable Ignore, if this is null then we don't need it.
   panel.classList.remove('float-panel-closed')
 }
 
 function hidePanel() {
   const panel = document.querySelector('#light-dark-panel')
+  // @ts-ignore - Acceptable Ignore, if this is null then we don't need it.
   panel.classList.add('float-panel-closed')
 }
 </script>

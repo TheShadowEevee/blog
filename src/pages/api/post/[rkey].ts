@@ -1,8 +1,5 @@
 import type { Profile, MarkdownPost, Post } from "@/types/posts";
-import {
-  getProfile,
-  safeFetch,
-} from "@utils/content-utils";
+import { getProfile, safeFetch } from "@utils/content-utils";
 import { parse } from "@utils/parser";
 import type { APIRoute } from "astro";
 
@@ -15,7 +12,7 @@ export const GET: APIRoute = async ({ params, request }) => {
     if (rkey) {
       // https://stackoverflow.com/a/75664821
       const domain = request.url.match(
-        /^(?<protocol>https?:\/\/)(?=(?<fqdn>[^:/]+))(?:(?<service>www|ww\d|cdn|ftp|mail|pop\d?|ns\d?|git)\.)?(?:(?<subdomain>[^:/]+)\.)*(?<domain>[^:/]+\.?[a-z0-9]+)(?::(?<port>\d+))?(?<path>\/[^?]*)?(?:\?(?<query>[^#]*))?(?:#(?<hash>.*))?/i
+        /^(?<protocol>https?:\/\/)(?=(?<fqdn>[^:/]+))(?:(?<service>www|ww\d|cdn|ftp|mail|pop\d?|ns\d?|git)\.)?(?:(?<subdomain>[^:/]+)\.)*(?<domain>[^:/]+\.?[a-z0-9]+)(?::(?<port>\d+))?(?<path>\/[^?]*)?(?:\?(?<query>[^#]*))?(?:#(?<hash>.*))?/i,
       );
 
       const cacheURL =
@@ -32,13 +29,13 @@ export const GET: APIRoute = async ({ params, request }) => {
           JSON.stringify({
             success: true,
             result: JSON.parse(response.result),
-          })
+          }),
         );
       } else {
         const profile: Profile = await getProfile();
 
         const response = await safeFetch(
-          `${profile.pds}/xrpc/com.atproto.repo.getRecord?repo=${profile.did}&collection=com.whtwnd.blog.entry&rkey=${rkey}`
+          `${profile.pds}/xrpc/com.atproto.repo.getRecord?repo=${profile.did}&collection=com.whtwnd.blog.entry&rkey=${rkey}`,
         );
 
         if (!response.error) {
@@ -52,7 +49,9 @@ export const GET: APIRoute = async ({ params, request }) => {
             matches &&
             matches.length === 5 &&
             record &&
-            (record["visibility"] === "public" || record["visibility"] === "url" || !record["visibility"])
+            (record["visibility"] === "public" ||
+              record["visibility"] === "url" ||
+              !record["visibility"])
           ) {
             mdposts.set(rkey, {
               title: record["title"],
@@ -75,13 +74,11 @@ export const GET: APIRoute = async ({ params, request }) => {
                   content: post.get(rkey),
                 }),
               });
-              
+
               const rkeyPostRes = await rkeyPost.json();
 
               if (!rkeyPostRes.success) {
-                throw (
-                  "Error caching the post: " + rkeyPostRes.result
-                );
+                throw "Error caching the post: " + rkeyPostRes.result;
               }
             }
 
@@ -89,7 +86,7 @@ export const GET: APIRoute = async ({ params, request }) => {
               JSON.stringify({
                 success: true,
                 result: post.get(rkey),
-              })
+              }),
             );
           }
         }
@@ -98,7 +95,7 @@ export const GET: APIRoute = async ({ params, request }) => {
             success: false,
             result: "Unknown Error Fetching Post",
           }),
-          { status: 400 }
+          { status: 400 },
         );
       }
     } else {
@@ -109,7 +106,7 @@ export const GET: APIRoute = async ({ params, request }) => {
       JSON.stringify({
         success: false,
         result: "Failed to get data: " + error,
-      })
+      }),
     );
   }
 };
