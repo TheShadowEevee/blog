@@ -37,13 +37,13 @@ function AdmonitionComponent({
   type,
 }: {
   children: RootContent[];
-  type: 'tip' | 'note' | 'important' | 'caution' | 'warning';
+  type: "tip" | "note" | "important" | "caution" | "warning";
 }) {
-
   if (!Array.isArray(children) || children.length === 0) {
     return (
       <div className="hidden">
-        Invalid admonition directive. (Admonition directives must be of block type &quot;:::note{name='name'} &lt;content&gt; :::&quot;)
+        Invalid admonition directive. (Admonition directives must be of block
+        type &quot;:::note{(name = "name")} &lt;content&gt; :::&quot;)
       </div>
     );
   }
@@ -52,22 +52,22 @@ function AdmonitionComponent({
   if (children[0].data?.directiveLabel) {
     label = children[0].children[0].value; // The first child is the label
     children = children.slice(1);
-    if (typeof label === 'object' && label?.tagName === 'p') {
-      label.tagName = 'div'; // Change <p> to <div> (assumes `label` is mutable)
+    if (typeof label === "object" && label?.tagName === "p") {
+      label.tagName = "div"; // Change <p> to <div> (assumes `label` is mutable)
     }
   }
 
   // Function to extract text content from AST nodes
   const extractText = (node: any) => {
-    if (!node) return '';
-    
-    if (node.type === 'text') {
+    if (!node) return "";
+
+    if (node.type === "text") {
       return node.value; // For text nodes, return the value
-    } 
-    
+    }
+
     // For other node types (like paragraphs), recurse into children and render them
     if (node.children && Array.isArray(node.children)) {
-      return node.children.map(extractText).join(''); // Join all child text values
+      return node.children.map(extractText).join(""); // Join all child text values
     }
 
     // Fallback: Render the node as a string for debugging
@@ -83,23 +83,25 @@ function AdmonitionComponent({
       })}
     </blockquote>
   );
-} 
+}
 
 const AdmonitionDirectiveDescriptorSelf: DirectiveDescriptor = {
-  name: 'admonition',
+  name: "admonition",
   testNode(node) {
-    return ['tip', 'note', 'important', 'caution', 'warning'].includes(node.name);
+    return ["tip", "note", "important", "caution", "warning"].includes(
+      node.name,
+    );
   },
-  attributes: ['type', 'has-directive-label'],
+  attributes: ["type", "has-directive-label"],
   hasChildren: true,
   Editor: (props) => {
     if (!props || !props.mdastNode) {
-      return <div style={{ color: 'red' }}>Invalid node</div>; // Fallback rendering
+      return <div style={{ color: "red" }}>Invalid node</div>; // Fallback rendering
     }
     // Extract children from mdastNode (ensure it's properly structured)
     const children = props.mdastNode.children || [];
     const properties = props.mdastNode.attributes || {}; // Ensure properties are passed correctly
-    const type = props.mdastNode.name || 'warning'; // Default to 'warning' if name is missing
+    const type = props.mdastNode.name || "warning"; // Default to 'warning' if name is missing
     return (
       <AdmonitionComponent
         properties={properties}

@@ -16,17 +16,14 @@ import remarkSectionize from "remark-sectionize";
 import { parseDirectiveNode } from "@/plugins/remark-directive-rehype";
 import remarkReadingTime from "remark-reading-time";
 import remarkHeadings from "@vcarl/remark-headings";
-import { unified } from "unified";
-import type { Node } from "unist";
+import { type Plugin, unified } from "unified";
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
-import {
-  checkUpdated,
-  parseExtendedValue,
-} from "./content-utils";
+import { checkUpdated, parseExtendedValue } from "./content-utils";
 import { externalAnchorPlugin } from "@/plugins/external-anchor";
 import type { MarkdownPost, Post, ReadingTime, Headings } from "@/types/posts";
-import type { VFile } from "node_modules/rehype-raw/lib";
+import type { VFile } from "vfile";
+import type { Root, Element, Node } from "hast";
 
 // Automatically enforce https on PDS images. Heavily inspired by WhiteWind's blob replacer:
 // https://github.com/whtwnd/whitewind-blog/blob/7eb8d4623eea617fd562b93d66a0e235323a2f9a/frontend/src/services/DocProvider.tsx#L90
@@ -46,8 +43,8 @@ const upgradeImage = (child: Node): void => {
   elem.children.forEach((child) => upgradeImage(child));
 };
 
-const rehypeUpgradeImage: Plugin<any, Root, Node> = () => {
-  return (tree) => {
+const rehypeUpgradeImage: Plugin<[], Root> = () => {
+  return (tree: { children: any[] }) => {
     tree.children.forEach((child) => upgradeImage(child));
   };
 };
@@ -113,7 +110,7 @@ export async function parse(mdposts: Map<string, MarkdownPost>) {
         published: parseExtendedValue(post.mdcontent)?.published,
         updated: checkUpdated(
           parseExtendedValue(post.mdcontent)?.published,
-          post.createdAt
+          post.createdAt,
         ),
         description: parseExtendedValue(post.mdcontent)?.description,
         image: parseExtendedValue(post.mdcontent)?.image,

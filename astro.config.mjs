@@ -1,4 +1,4 @@
-import sitemap from '@inox-tools/sitemap-ext';
+import sitemap from "@inox-tools/sitemap-ext";
 import svelte from "@astrojs/svelte";
 import tailwind from "@astrojs/tailwind";
 import swup from "@swup/astro";
