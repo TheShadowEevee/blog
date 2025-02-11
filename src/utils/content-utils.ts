@@ -62,10 +62,14 @@ export function parseExtendedValue(content: string) {
 }
 
 export function removeExtendedValue(content: string) {
-  return content.replace(
-    /<!-- ### ADDITIONAL DATA FIELD ### (.*) ### solutions.konpeki.post.extendedData ### --->/gm,
-    "",
-  );
+  try {
+    return content.replace(
+      /<!-- ### ADDITIONAL DATA FIELD ### (.*) ### solutions.konpeki.post.extendedData ### --->/gm,
+      "",
+    );
+  } catch {
+    return content
+  }
 }
 
 export function checkUpdated(published: string, latest: Date) {
