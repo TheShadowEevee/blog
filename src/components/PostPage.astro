@@ -1,29 +1,37 @@
 ---
-import { getPostUrlBySlug } from '@utils/url-utils'
-import PostCard from './PostCard.astro'
+import { getPostUrlBySlug } from "@utils/url-utils";
+import PostCard from "./PostCard.astro";
+import type { Post } from "@/types/posts";
 
-const { page } = Astro.props
+const page: Record<string, Post> = Astro.props.page;
 
-let delay = 0
-const interval = 50
+let delay = 0;
+const interval = 50;
 ---
-<div class="transition flex flex-col rounded-[var(--radius-large)] bg-[var(--card-bg)] py-1 md:py-0 md:bg-transparent md:gap-4 mb-4">
-    {page.data.map((entry: { data: { draft: boolean; title: string; tags: string[]; category: string; published: Date; image: string; description: string; updated: Date; }; slug: string; }) => {
+
+<div
+  class="transition flex flex-col rounded-[var(--radius-large)] bg-[var(--card-bg)] py-1 md:py-0 md:bg-transparent md:gap-4 mb-4"
+>
+  {
+    Object.entries(page).map(([rkey, entry]) => {
         return (
-            <PostCard
-                    entry={entry}
-                    title={entry.data.title}
-                    tags={entry.data.tags}
-                    category={entry.data.category}
-                    published={entry.data.published}
-                    updated={entry.data.updated}
-                    url={getPostUrlBySlug(entry.slug)}
-                    image={entry.data.image}
-                    description={entry.data.description}
-                    draft={entry.data.draft}
-                    class:list="onload-animation"
-                    style={`animation-delay: calc(var(--content-delay) + ${delay++ * interval}ms);`}
-            ></PostCard>
+          <PostCard
+            entry={entry}
+            title={entry.extendedData?.title ?? "Post has invalid title"}
+            tags={entry.extendedData?.tags ?? []}
+            category={entry.extendedData?.category ?? "Uncatagorized"}
+            published={new Date(entry.extendedData?.published ?? 0)}
+            updated={entry.extendedData?.updated}
+            url={getPostUrlBySlug(rkey)}
+            image={entry.extendedData?.image ?? ""}
+            description={entry.extendedData?.description ?? ""}
+            draft={entry.extendedData?.draft ?? false}
+            class:list="onload-animation"
+            style={`animation-delay: calc(var(--content-delay) + ${delay++ * interval}ms);`}
+            readingTime={entry.extendedData?.readingTime ?? {text: "", minutes: 0, time: 0, words: 0}}
+          />
         );
-    })}
+      }
+    )
+  }
 </div>

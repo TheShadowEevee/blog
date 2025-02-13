@@ -1,10 +1,11 @@
-import sitemap from "@astrojs/sitemap";
+import sitemap from "@inox-tools/sitemap-ext";
 import svelte from "@astrojs/svelte";
 import tailwind from "@astrojs/tailwind";
 import swup from "@swup/astro";
 import Compress from "astro-compress";
 import icon from "astro-icon";
 import { defineConfig } from "astro/config";
+import umami from "@yeskunall/astro-umami";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeComponents from "rehype-components"; /* Render the custom directive content */
 import rehypeKatex from "rehype-katex";
@@ -13,23 +14,27 @@ import remarkDirective from "remark-directive"; /* Handle directives */
 import remarkGithubAdmonitionsToDirectives from "remark-github-admonitions-to-directives";
 import remarkMath from "remark-math";
 import remarkSectionize from "remark-sectionize";
-import { AdmonitionComponent } from "./src/plugins/rehype-component-admonition.mjs";
-import { GithubCardComponent } from "./src/plugins/rehype-component-github-card.mjs";
-import { parseDirectiveNode } from "./src/plugins/remark-directive-rehype.js";
-import { remarkExcerpt } from "./src/plugins/remark-excerpt.js";
+import { AdmonitionComponent } from "./src/plugins/rehype-component-admonition.ts";
+import { GithubCardComponent } from "./src/plugins/rehype-component-github-card.ts";
+import { parseDirectiveNode } from "./src/plugins/remark-directive-rehype.ts";
 import { remarkReadingTime } from "./src/plugins/remark-reading-time.mjs";
-import { externalAnchorPlugin } from "./src/plugins/external-anchor.mjs";
+import { externalAnchorPlugin } from "./src/plugins/external-anchor.ts";
 
-import umami from "@yeskunall/astro-umami";
+import node from "@astrojs/node";
+
+import react from "@astrojs/react";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://blog.shad.moe/",
+  site: "https://shad.moe/",
   base: "/",
+  output: "server",
   trailingSlash: "ignore",
+
   integrations: [
     tailwind({
       nesting: true,
+      //applyBaseStyles: false,
     }),
     swup({
       theme: false,
@@ -54,7 +59,9 @@ export default defineConfig({
       },
     }),
     svelte(),
-    sitemap(),
+    sitemap({
+      includeByDefault: true,
+    }),
     Compress({
       CSS: false,
       Image: false,
@@ -67,12 +74,14 @@ export default defineConfig({
       endpointUrl: "https://umami.shad.moe",
       hostUrl: "https://umami.shad.moe",
     }),
+    react({
+      include: ["**/MDXEditor.tsx"],
+    }),
   ],
   markdown: {
     remarkPlugins: [
       remarkMath,
       remarkReadingTime,
-      remarkExcerpt,
       remarkGithubAdmonitionsToDirectives,
       remarkDirective,
       remarkSectionize,
@@ -107,7 +116,6 @@ export default defineConfig({
             tagName: "span",
             properties: {
               className: ["anchor-icon"],
-              "data-pagefind-ignore": true,
             },
             children: [
               {
@@ -136,4 +144,7 @@ export default defineConfig({
       },
     },
   },
+  adapter: node({
+    mode: "standalone",
+  }),
 });
