@@ -1,89 +1,124 @@
-import { getCollection } from 'astro:content'
-import type { BlogPostData } from '@/types/config'
-import I18nKey from '@i18n/i18nKey'
-import { i18n } from '@i18n/translation'
+import { public_handle } from "@/config";
+import type { PostList, Profile } from "@/types/posts";
 
-export async function getSortedPosts(): Promise<
-  { body: string, data: BlogPostData; slug: string }[]
-> {
-  const allBlogPosts = (await getCollection('posts', ({ data }) => {
-    return import.meta.env.PROD ? data.draft !== true : true
-  })) as unknown as { body: string, data: BlogPostData; slug: string }[]
+export async function getSortedPosts() {
+  const response = await safeFetch(
+    `${import.meta.env.NEXT_PUBLIC_URL}/api/posts/fetchAllPosts`,
+  );
 
-  const sorted = allBlogPosts.sort(
-    (a: { data: BlogPostData }, b: { data: BlogPostData }) => {
-      const dateA = new Date(a.data.published)
-      const dateB = new Date(b.data.published)
-      return dateA > dateB ? -1 : 1
-    },
-  )
+  let postList = response.result;
+  let posts: PostList[] = new Array();
 
-  for (let i = 1; i < sorted.length; i++) {
-    sorted[i].data.nextSlug = sorted[i - 1].slug
-    sorted[i].data.nextTitle = sorted[i - 1].data.title
-  }
-  for (let i = 0; i < sorted.length - 1; i++) {
-    sorted[i].data.prevSlug = sorted[i + 1].slug
-    sorted[i].data.prevTitle = sorted[i + 1].data.title
+  for (const rkey in postList) {
+    posts.push({
+      slug: rkey,
+      body: postList[rkey].content,
+      data: postList[rkey].extendedData ?? {},
+      lastUpdate: postList[rkey].createdAt,
+    });
   }
 
-  return sorted
+  posts.sort((a, b) => {
+    const dateA = new Date(a.data?.published ?? 0).getTime();
+    const dateB = new Date(b.data?.published ?? 0).getTime();
+    return dateB - dateA;
+  });
+
+  for (let i = 1; i < posts.length; i++) {
+    posts[i].data!.nextSlug = posts[i - 1].slug;
+    posts[i].data!.nextTitle = posts[i - 1].data?.title ?? "";
+  }
+  for (let i = 0; i < posts.length - 1; i++) {
+    posts[i].data!.prevSlug = posts[i + 1].slug;
+    posts[i].data!.prevTitle = posts[i + 1].data?.title ?? "";
+  }
+
+  return posts;
 }
 
-export type Tag = {
-  name: string
-  count: number
+export async function safeFetch(url: string) {
+  const response = await fetch(url);
+  if (!response.ok)
+    throw new Error(response.status + ":" + response.statusText);
+  return await response.json();
 }
 
-export async function getTagList(): Promise<Tag[]> {
-  const allBlogPosts = await getCollection<'posts'>('posts', ({ data }) => {
-    return import.meta.env.PROD ? data.draft !== true : true
-  })
+export function parseExtendedValue(content: string) {
+  if (content) {
+    let values = content.match(
+      new RegExp(
+        "<!-- ### ADDITIONAL DATA FIELD ### " +
+          "(.*)" +
+          " ### solutions.konpeki.post.extendedData ### --->",
+      ),
+    );
 
-  const countMap: { [key: string]: number } = {}
-  allBlogPosts.map((post: { data: { tags: string[] } }) => {
-    post.data.tags.map((tag: string) => {
-      if (!countMap[tag]) countMap[tag] = 0
-      countMap[tag]++
-    })
-  })
-
-  // sort tags
-  const keys: string[] = Object.keys(countMap).sort((a, b) => {
-    return a.toLowerCase().localeCompare(b.toLowerCase())
-  })
-
-  return keys.map(key => ({ name: key, count: countMap[key] }))
-}
-
-export type Category = {
-  name: string
-  count: number
-}
-
-export async function getCategoryList(): Promise<Category[]> {
-  const allBlogPosts = await getCollection<'posts'>('posts', ({ data }) => {
-    return import.meta.env.PROD ? data.draft !== true : true
-  })
-  const count: { [key: string]: number } = {}
-  allBlogPosts.map((post: { data: { category: string | number } }) => {
-    if (!post.data.category) {
-      const ucKey = i18n(I18nKey.uncategorized)
-      count[ucKey] = count[ucKey] ? count[ucKey] + 1 : 1
-      return
+    if (values) {
+      return JSON.parse(values[1].replaceAll("'", '"'));
+    } else {
+      return "";
     }
-    count[post.data.category] = count[post.data.category]
-      ? count[post.data.category] + 1
-      : 1
-  })
-
-  const lst = Object.keys(count).sort((a, b) => {
-    return a.toLowerCase().localeCompare(b.toLowerCase())
-  })
-
-  const ret: Category[] = []
-  for (const c of lst) {
-    ret.push({ name: c, count: count[c] })
   }
-  return ret
+}
+
+export function removeExtendedValue(content: string) {
+  try {
+    return content.replace(
+      /<!-- ### ADDITIONAL DATA FIELD ### (.*) ### solutions.konpeki.post.extendedData ### --->/gm,
+      "",
+    );
+  } catch {
+    return content
+  }
+}
+
+export function checkUpdated(published: string, latest: Date) {
+  if (published) {
+    if (
+      new Date(published).getDate().toString() +
+        new Date(published).getFullYear().toString() !=
+      latest.getDate().toString() + latest.getFullYear().toString()
+    ) {
+      return latest;
+    } else {
+      return undefined;
+    }
+  }
+}
+
+export async function getProfile(): Promise<Profile> {
+  const fetchProfile = await safeFetch(
+    `https://public.api.bsky.app/xrpc/app.bsky.actor.getProfile?actor=${public_handle}`,
+  );
+  let split = fetchProfile["did"].split(":");
+  let diddoc;
+  if (split[0] === "did") {
+    if (split[1] === "plc") {
+      diddoc = await safeFetch(`https://plc.directory/${fetchProfile["did"]}`);
+    } else if (split[1] === "web") {
+      diddoc = await safeFetch("https://" + split[2] + "/.well-known/did.json");
+    } else {
+      throw new Error("Invalid DID, Not blessed method");
+    }
+  } else {
+    throw new Error("Invalid DID, malformed");
+  }
+  let pdsurl;
+  for (let service of diddoc["service"]) {
+    if (service["id"] === "#atproto_pds") {
+      pdsurl = service["serviceEndpoint"];
+    }
+  }
+  if (!pdsurl) {
+    throw new Error("DID lacks #atproto_pds service");
+  }
+  return {
+    avatar: fetchProfile["avatar"],
+    banner: fetchProfile["banner"],
+    displayName: fetchProfile["displayName"],
+    did: fetchProfile["did"],
+    handle: fetchProfile["handle"],
+    description: fetchProfile["description"],
+    pds: pdsurl,
+  };
 }
