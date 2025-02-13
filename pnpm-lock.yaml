@@ -23,6 +23,12 @@ importers:
       '@astrojs/tailwind':
         specifier: ^5.1.2
         version: 5.1.4(astro@4.16.18(@types/node@22.8.1)(lightningcss@1.27.0)(rollup@2.79.2)(sass@1.81.0)(stylus@0.63.0)(terser@5.36.0)(typescript@5.7.3))(tailwindcss@3.4.17)
+      '@fontsource-variable/jetbrains-mono':
+        specifier: ^5.1.2
+        version: 5.1.2
+      '@fontsource/roboto':
+        specifier: ^5.1.1
+        version: 5.1.1
       '@iconify/svelte':
         specifier: ^4.2.0
         version: 4.2.0(svelte@5.17.3)
@@ -62,6 +68,9 @@ importers:
       ioredis:
         specifier: ^5.4.2
         version: 5.4.2
+      katex:
+        specifier: ^0.16.21
+        version: 0.16.21
       mdast-util-to-string:
         specifier: ^4.0.0
         version: 4.0.0
@@ -1257,6 +1266,12 @@ packages:
 
   '@floating-ui/utils@0.2.9':
     resolution: {integrity: sha512-MDWhGtE+eHw5JW7lq4qhc5yRLS11ERl1c7Z6Xd0a58DozHES6EnNNwUWbMiG4J9Cgj053Bhk8zvlhFYKVhULwg==}
+
+  '@fontsource-variable/jetbrains-mono@5.1.2':
+    resolution: {integrity: sha512-syGEJ/N4FFisAXegxtbe1etYpo2T630dqCbYufPf7Dli/hMKSoSUIm3wK4q5RsGFRxWno1WecfnsgZA1jRK0EQ==}
+
+  '@fontsource/roboto@5.1.1':
+    resolution: {integrity: sha512-XwVVXtERDQIM7HPUIbyDe0FP4SRovpjF7zMI8M7pbqFp3ahLJsJTd18h+E6pkar6UbV3btbwkKjYARr5M+SQow==}
 
   '@iconify/svelte@4.2.0':
     resolution: {integrity: sha512-fEl0T7SAPonK7xk6xUlRPDmFDZVDe2Z7ZstlqeDS/sS8ve2uyU+Qa8rTWbIqzZJlRvONkK5kVXiUf9nIc+6OOQ==}
@@ -7320,6 +7335,10 @@ snapshots:
       react-dom: 19.0.0(react@19.0.0)
 
   '@floating-ui/utils@0.2.9': {}
+
+  '@fontsource-variable/jetbrains-mono@5.1.2': {}
+
+  '@fontsource/roboto@5.1.1': {}
 
   '@iconify/svelte@4.2.0(svelte@5.17.3)':
     dependencies:
