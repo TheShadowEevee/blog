@@ -29,6 +29,18 @@ importers:
       '@fontsource/roboto':
         specifier: ^5.1.1
         version: 5.1.1
+      '@iconify-json/fa6-brands':
+        specifier: ^1.2.1
+        version: 1.2.5
+      '@iconify-json/fa6-regular':
+        specifier: ^1.2.1
+        version: 1.2.3
+      '@iconify-json/fa6-solid':
+        specifier: ^1.2.1
+        version: 1.2.3
+      '@iconify-json/material-symbols':
+        specifier: ^1.2.5
+        version: 1.2.14
       '@iconify/svelte':
         specifier: ^4.2.0
         version: 4.2.0(svelte@5.17.3)
@@ -1272,6 +1284,18 @@ packages:
 
   '@fontsource/roboto@5.1.1':
     resolution: {integrity: sha512-XwVVXtERDQIM7HPUIbyDe0FP4SRovpjF7zMI8M7pbqFp3ahLJsJTd18h+E6pkar6UbV3btbwkKjYARr5M+SQow==}
+
+  '@iconify-json/fa6-brands@1.2.5':
+    resolution: {integrity: sha512-U/iFfziz6jSN9zArOJZYTtoj2tQyh6MxPdI8M84DQ2kEulPaj8j+h9bqvjmzszNHmD7v+kmmKd/MLkMKk+3Zuw==}
+
+  '@iconify-json/fa6-regular@1.2.3':
+    resolution: {integrity: sha512-NGV2j5mn4j49mpP7MABCljp1WPWKjwgfjN6NGwsmlFuQ7bdnz36nZB/5aRXLOcT36NXaBeCoT05G9aatdtMr3A==}
+
+  '@iconify-json/fa6-solid@1.2.3':
+    resolution: {integrity: sha512-C5o8YJF+ekrS4wRb/6/0SE2KjRyJlCg++IOVC/fineiRinITivsmzFRNW1MQX2xfDZ1T7bxeKxLN6lcaTG3jGA==}
+
+  '@iconify-json/material-symbols@1.2.14':
+    resolution: {integrity: sha512-S0AAFFQPVr8Dkrprspz/otNjxdD3rJRXDGZjbO8a8zn8ZR5mO8jAF81lVoTfUWxPH6SCtH2lK1JQGXHGPxld7g==}
 
   '@iconify/svelte@4.2.0':
     resolution: {integrity: sha512-fEl0T7SAPonK7xk6xUlRPDmFDZVDe2Z7ZstlqeDS/sS8ve2uyU+Qa8rTWbIqzZJlRvONkK5kVXiUf9nIc+6OOQ==}
@@ -7339,6 +7363,22 @@ snapshots:
   '@fontsource-variable/jetbrains-mono@5.1.2': {}
 
   '@fontsource/roboto@5.1.1': {}
+
+  '@iconify-json/fa6-brands@1.2.5':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/fa6-regular@1.2.3':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/fa6-solid@1.2.3':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/material-symbols@1.2.14':
+    dependencies:
+      '@iconify/types': 2.0.0
 
   '@iconify/svelte@4.2.0(svelte@5.17.3)':
     dependencies:
