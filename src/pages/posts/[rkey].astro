@@ -24,6 +24,12 @@ const response = await safeFetch(
 
 if (response.success == true) {
     blogPost = response.result
+} else {
+  return new Response(null, { status: 404 })
+}
+
+if (blogPost.title == "undefined") {
+  return new Response(null, { status: 404 })
 }
 
 const jsonLd = {
