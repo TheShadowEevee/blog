@@ -35,10 +35,10 @@ const maxLevel = siteConfig.toc.depth;
             <a href={`#${heading.value
             .toLowerCase()
             .replace(/ /g, "-")
-            .replace(/[^a-zA-Z0-9\-]/g, "")
             // This next replace is a bit icky, but it works for what it needs to. Just don't use <.*> headings.
             // This is intended to parse out HTML like <sup />, For example in "January 1<sup>st</sup>"
-            .replace(/<[^>]*>/g, "")}`} class="px-2 flex gap-2 relative transition w-full min-h-9 rounded-xl
+            .replaceAll(/<[^>]*>/g, "")
+            .replace(/[^a-zA-Z0-9\-]/g, "")}`} class="px-2 flex gap-2 relative transition w-full min-h-9 rounded-xl
         hover:bg-[var(--toc-btn-hover)] active:bg-[var(--toc-btn-active)] py-2
     ">
                 <div class:list={["transition w-5 h-5 shrink-0 rounded-lg text-xs flex items-center justify-center font-bold",
@@ -56,7 +56,7 @@ const maxLevel = siteConfig.toc.depth;
                 <div class:list={["transition text-sm", {
                     "text-50": heading.depth == minDepth || heading.depth == minDepth + 1,
                     "text-30": heading.depth == minDepth + 2,
-                }]}>{removeTailingHash(heading.value)}</div>
+                }]}>{removeTailingHash(heading.value).replaceAll(/<[^>]*>/g, "")}</div>
             </a>
     )}
     <div id="active-indicator" class:list={[{'hidden': headings.length == 0}, "-z-10 absolute bg-[var(--toc-btn-hover)] left-0 right-0 rounded-xl transition-all " +
