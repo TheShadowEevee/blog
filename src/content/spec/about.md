@@ -6,6 +6,12 @@ I am at [Purdue University](https://purdue.edu) studying [Cybersecurity](https:/
 
 If you ever want to get in touch with me, feel free! I can be reached on [Bluesky](https://bsky.app/profile/theshadoweevee.konpeki.solutions) or via email at [theshadoweevee@shad.moe](mailto:theshadoweevee@shad.moe) OR [theshadoweevee@konpeki.solutions](mailto:theshadoweevee@konpeki.solutions).
 
+## What's up with the post URLs?
+
+If you've looked at the address bar while reading one of my posts, you may have noticed a random jumble of letters and numbers. This is actually a unique ID for the post!
+
+Each of my posts is hosted on the AT Protocol. I talked about this in my post [Welcome to the ATmosphere](https://shad.moe/posts/3lgbnigwdzk2r/) in more detail. The quick TL;DR is that posts are stored very similarly to a post on [Bluesky](https://bsky.social), using the [WhiteWind](https://whtwnd.com) Schema.
+
 View the source code for this blog!
 ::github{repo="TheShadowEevee/blog"}
 
