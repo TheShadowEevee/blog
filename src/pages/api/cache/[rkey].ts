@@ -56,7 +56,7 @@ export const GET: APIRoute = async ({ params }) => {
 
 export const POST: APIRoute = async ({ params, request }) => {
   try {
-    const key = params.item;
+    const key = params.rkey;
 
     if (request.headers.get("Content-Type") === "application/json" && key) {
       const body = await request.json();
