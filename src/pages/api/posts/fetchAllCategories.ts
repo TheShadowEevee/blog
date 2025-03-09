@@ -1,8 +1,8 @@
 import type { Post } from "@/types/posts";
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
-import { safeFetch } from "@utils/content-utils";
 import type { APIRoute } from "astro";
+import { GET as getPosts } from "../posts/fetchAllPosts"
 
 export const prerender = false;
 
@@ -11,12 +11,12 @@ export type Category = {
   count: number;
 };
 
-export const GET: APIRoute = async () => {
+export const GET: APIRoute = async (Astro) => {
   try {
     const count: { [key: string]: number } = {};
-    const response = await safeFetch(
-      `${import.meta.env.NEXT_PUBLIC_URL}/api/posts/fetchAllPosts`,
-    );
+
+    const initResponse = await getPosts(Astro);
+    const response = await initResponse.json();
 
     let postList: Post[] = [];
 

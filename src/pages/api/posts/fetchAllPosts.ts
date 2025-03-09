@@ -5,10 +5,9 @@ import type { APIRoute } from "astro";
 
 export const prerender = false;
 
-export const GET: APIRoute = async () => {
+export const GET: APIRoute = async (Astro) => {
   try {
     let profile: Profile;
-    let posts: Map<string, Post>;
 
     profile = await getProfile();
 

@@ -3,8 +3,9 @@ import { UNCATEGORIZED } from '@constants/constants'
 import I18nKey from '../i18n/i18nKey'
 import { i18n } from '../i18n/translation'
 import { getPostUrlBySlug } from '../utils/url-utils'
-import { safeFetch } from '@utils/content-utils'
 import type { Post } from '@/types/posts'
+import { GET as getPosts } from "@/pages/api/posts/fetchAllPosts"
+
 
 interface Props {
   keyword?: string
@@ -13,7 +14,8 @@ interface Props {
 }
 const { tags, categories } = Astro.props
 
-const response = await safeFetch(`${import.meta.env.NEXT_PUBLIC_URL}/api/posts/fetchAllPosts`)
+const initResponse = await getPosts(Astro);
+const response = await initResponse.json();
 
 let postList: Post[] = []
 

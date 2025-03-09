@@ -11,24 +11,19 @@ import PostMetadata from "../../components/PostMeta.astro";
 import ImageWrapper from "../../components/misc/ImageWrapper.astro";
 import { profileConfig, siteConfig } from "../../config";
 import { formatDateToYYYYMMDD } from "../../utils/date-utils";
-import { safeFetch } from "@utils/content-utils";
 import { i18n } from "@i18n/translation";
 import I18nKey from "@i18n/i18nKey";
 import type { Post } from "@/types/posts";
+import { GET as getPost } from '../api/post/[rkey]'
 
 let blogPost: Post = {};
 
-const response = await safeFetch(
-  `${import.meta.env.NEXT_PUBLIC_URL}/api/post/${Astro.params.rkey}`
-);
+const initResponse = await getPost(Astro);
+const response = await initResponse.json();
 
-if (response.success == true) {
+if ((response.success == true) && (blogPost.title != "undefined")) {
     blogPost = response.result
 } else {
-  return new Response(null, { status: 404 })
-}
-
-if (blogPost.title == "undefined") {
   return new Response(null, { status: 404 })
 }
 

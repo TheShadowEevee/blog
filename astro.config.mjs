@@ -30,6 +30,7 @@ export default defineConfig({
   base: "/",
   output: "server",
   trailingSlash: "ignore",
+  prefetch: false,
 
   integrations: [
     tailwind({
