@@ -11,17 +11,17 @@ const redis = new Redis({
 
 export const GET: APIRoute = async ({ params }) => {
   try {
-    const item = params.item;
+    const rkey = params.rkey;
 
-    if (item) {
+    if (rkey) {
       try {
-        const result = await redis.get(item);
+        const result = await redis.get(rkey);
 
         if (!result) {
           return new Response(
             JSON.stringify({
               success: false,
-              result: "Item '" + item + "' does not exist",
+              result: "Resource '" + rkey + "' does not exist",
             }),
           );
         }
@@ -42,7 +42,7 @@ export const GET: APIRoute = async ({ params }) => {
         );
       }
     } else {
-      throw "'item' is null or undefined";
+      throw "'rkey' is null or undefined";
     }
   } catch (error) {
     return new Response(

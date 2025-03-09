@@ -5,11 +5,10 @@ import ButtonTag from '../control/ButtonTag.astro'
 import { i18n } from '../../i18n/translation'
 import I18nKey from '../../i18n/i18nKey'
 import { url } from '../../utils/url-utils'
-import { safeFetch } from '@utils/content-utils'
+import { GET as getTags } from "@/pages/api/posts/fetchAllTags"
 
-const response = await safeFetch(
-  `${import.meta.env.NEXT_PUBLIC_URL}/api/posts/fetchAllTags`
-);
+const initResponse = await getTags(Astro);
+const response = await initResponse.json();
 
 let tags: [] = []
 
