@@ -9,11 +9,10 @@ import { i18n } from '@i18n/translation'
 import I18nKey from '@i18n/i18nKey'
 import { getCategoryUrl } from '@utils/url-utils'
 import ButtonLink from '@components/control/ButtonLink.astro'
-import { safeFetch } from '@utils/content-utils'
+import { GET as getCategories } from "@/pages/api/posts/fetchAllCategories"
 
-const response = await safeFetch(
-  `${import.meta.env.NEXT_PUBLIC_URL}/api/posts/fetchAllCategories`
-);
+const initResponse = await getCategories(Astro);
+const response = await initResponse.json();
 
 let categories: [] = []
 
