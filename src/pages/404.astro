@@ -3,8 +3,8 @@
 import MainGridLayout from '../layouts/MainGridLayout.astro'
 // @ts-ignore : This module exists
 import { type CollectionEntry, getCollection } from 'astro:content';
-// import { i18n } from '../i18n/translation'
-// import I18nKey from '../i18n/i18nKey'
+import { i18n } from '../i18n/translation'
+import I18nKey from '../i18n/i18nKey'
 import Markdown from '@components/misc/Markdown.astro'
 
 // The content collection broke in some unexplainable way so it's replaced with this
@@ -16,7 +16,7 @@ const post = posts.find((page: { slug: string; }) => page.slug === slug);
 const { Content } = await post.render();
 
 ---
-<MainGridLayout title={"404"} description={"404"}>
+<MainGridLayout title={i18n(I18nKey.fourohfour)} description={i18n(I18nKey.fourohfour)}>
     <div class="flex w-full rounded-[var(--radius-large)] overflow-hidden relative min-h-32">
         <div class="card-base z-10 px-9 py-6 relative w-full ">
             <Markdown class="mt-2">
