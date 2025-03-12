@@ -19,7 +19,7 @@ const response = await initResponse.json();
 
 let postList: Post[] = []
 
-if (response.success == true) {
+if (response.success === true) {
     postList = response.result
 }
 
@@ -45,19 +45,20 @@ if (Array.isArray(categories) && categories.length > 0) {
   )
 }
 
+// @ts-ignore
 const groups: { year: number; posts: typeof posts }[] = (() => {
   const groupedPosts: { [year: number]: typeof posts } = {}; // Explicit type for groupedPosts
 
-  posts.forEach(post => {
+  for (const post of posts)  {
     const publishedDate = new Date(post[1].extendedData?.published ?? 0);
-    if (isNaN(publishedDate.getTime())) return;
+    if (Number.isNaN(publishedDate.getTime())) return;
 
     const year = publishedDate.getFullYear();
     if (!groupedPosts[year]) {
       groupedPosts[year] = [];
     }
     groupedPosts[year].push(post);
-  });
+  };
 
   const groupedPostsArray = Object.keys(groupedPosts).map(key => {
     const year = Number.parseInt(key);

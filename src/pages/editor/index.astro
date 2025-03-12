@@ -10,9 +10,9 @@ import { Icon } from "astro-icon/components";
 import { formatDateToYYYYMMDD } from "@/utils/date-utils";
 import type { MDXEditorMethods } from "@mdxeditor/editor";
 
-let editorRef = React.createRef<MDXEditorMethods | null>();
+const editorRef = React.createRef<MDXEditorMethods | null>();
 
-let editorProps = {
+const editorProps = {
   markdown: `
     # Markdown Test Page #
     ## Markdown Test Page ##

@@ -6,8 +6,8 @@ export async function getSortedPosts() {
     `${import.meta.env.NEXT_PUBLIC_URL}/api/posts/fetchAllPosts`,
   );
 
-  let postList = response.result;
-  let posts: PostList[] = new Array();
+  const postList = response.result;
+  const posts: PostList[] = new Array();
 
   for (const rkey in postList) {
     posts.push({
@@ -39,13 +39,13 @@ export async function getSortedPosts() {
 export async function safeFetch(url: string) {
   const response = await fetch(url);
   if (!response.ok)
-    throw new Error(response.status + ":" + response.statusText);
+    throw new Error(`${response.status}:${response.statusText}`);
   return await response.json();
 }
 
 export function parseExtendedValue(content: string) {
   if (content) {
-    let values = content.match(
+    const values = content.match(
       new RegExp(
         "<!-- ### ADDITIONAL DATA FIELD ### " +
           "(.*)" +
@@ -55,9 +55,8 @@ export function parseExtendedValue(content: string) {
 
     if (values) {
       return JSON.parse(values[1].replaceAll("'", '"'));
-    } else {
-      return "";
     }
+    return "";
   }
 }
 
@@ -68,7 +67,7 @@ export function removeExtendedValue(content: string) {
       "",
     );
   } catch {
-    return content
+    return content;
   }
 }
 
@@ -80,9 +79,8 @@ export function checkUpdated(published: string, latest: Date) {
       latest.getDate().toString() + latest.getFullYear().toString()
     ) {
       return latest;
-    } else {
-      return undefined;
     }
+    return undefined;
   }
 }
 
@@ -90,13 +88,13 @@ export async function getProfile(): Promise<Profile> {
   const fetchProfile = await safeFetch(
     `https://public.api.bsky.app/xrpc/app.bsky.actor.getProfile?actor=${public_handle}`,
   );
-  let split = fetchProfile["did"].split(":");
+  const split = fetchProfile.did.split(":");
   let diddoc;
   if (split[0] === "did") {
     if (split[1] === "plc") {
-      diddoc = await safeFetch(`https://plc.directory/${fetchProfile["did"]}`);
+      diddoc = await safeFetch(`https://plc.directory/${fetchProfile.did}`);
     } else if (split[1] === "web") {
-      diddoc = await safeFetch("https://" + split[2] + "/.well-known/did.json");
+      diddoc = await safeFetch(`https://${split[2]}/.well-known/did.json`);
     } else {
       throw new Error("Invalid DID, Not blessed method");
     }
@@ -104,21 +102,21 @@ export async function getProfile(): Promise<Profile> {
     throw new Error("Invalid DID, malformed");
   }
   let pdsurl;
-  for (let service of diddoc["service"]) {
-    if (service["id"] === "#atproto_pds") {
-      pdsurl = service["serviceEndpoint"];
+  for (const service of diddoc.service) {
+    if (service.id === "#atproto_pds") {
+      pdsurl = service.serviceEndpoint;
     }
   }
   if (!pdsurl) {
     throw new Error("DID lacks #atproto_pds service");
   }
   return {
-    avatar: fetchProfile["avatar"],
-    banner: fetchProfile["banner"],
-    displayName: fetchProfile["displayName"],
-    did: fetchProfile["did"],
-    handle: fetchProfile["handle"],
-    description: fetchProfile["description"],
+    avatar: fetchProfile.avatar,
+    banner: fetchProfile.banner,
+    displayName: fetchProfile.displayName,
+    did: fetchProfile.did,
+    handle: fetchProfile.handle,
+    description: fetchProfile.description,
     pds: pdsurl,
   };
 }

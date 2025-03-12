@@ -4,9 +4,9 @@ import Redis from "ioredis";
 export const prerender = false;
 
 const redis = new Redis({
-  host: import.meta.env.REDIS_IP!, // Local Redis server IP
-  port: import.meta.env.REDIS_PORT!, // Local Redis server port
-  password: import.meta.env.REDIS_PASSWORD!, // Optional, if your Redis instance requires authentication
+  host: import.meta.env.REDIS_IP, // Local Redis server IP
+  port: import.meta.env.REDIS_PORT, // Local Redis server port
+  password: import.meta.env.REDIS_PASSWORD, // Optional, if your Redis instance requires authentication
 });
 
 export const GET: APIRoute = async ({ params }) => {
@@ -21,7 +21,7 @@ export const GET: APIRoute = async ({ params }) => {
           return new Response(
             JSON.stringify({
               success: false,
-              result: "Resource '" + rkey + "' does not exist",
+              result: `Resource '${rkey}' does not exist`,
             }),
           );
         }
@@ -48,7 +48,7 @@ export const GET: APIRoute = async ({ params }) => {
     return new Response(
       JSON.stringify({
         success: false,
-        result: "Failed to get data: " + error,
+        result: `Failed to get data: ${error}`,
       }),
     );
   }
@@ -87,7 +87,7 @@ export const POST: APIRoute = async ({ params, request }) => {
     return new Response(
       JSON.stringify({
         success: false,
-        result: "Failed to post data: " + error,
+        result: `Failed to post data: ${error}`,
       }),
       { status: 400 },
     );

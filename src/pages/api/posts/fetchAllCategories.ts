@@ -2,7 +2,7 @@ import type { Post } from "@/types/posts";
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import type { APIRoute } from "astro";
-import { GET as getPosts } from "../posts/fetchAllPosts"
+import { GET as getPosts } from "../posts/fetchAllPosts";
 
 export const prerender = false;
 
@@ -20,7 +20,7 @@ export const GET: APIRoute = async (Astro) => {
 
     let postList: Post[] = [];
 
-    if (response.success == true) {
+    if (response.success === true) {
       postList = response.result;
     }
 

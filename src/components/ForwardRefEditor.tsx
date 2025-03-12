@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 // @ts-ignore - "react" can't be found here
 import { forwardRef } from "react";
-import { type MDXEditorMethods, type MDXEditorProps } from "@mdxeditor/editor";
+import type { MDXEditorMethods, MDXEditorProps } from "@mdxeditor/editor";
 
 // This is the only place InitializedMDXEditor is imported directly.
 const Editor = dynamic(() => import("./MDXEditor"), {
