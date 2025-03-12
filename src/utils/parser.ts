@@ -40,18 +40,22 @@ const upgradeImage = (child: Node): void => {
       elem.properties.src = src.replace(/http\:\/\//, "https://");
     }
   }
-  elem.children.forEach((child) => upgradeImage(child));
+  for (const child of elem.children) {
+    upgradeImage(child);
+  }
 };
 
 const rehypeUpgradeImage: Plugin<[], Root> = () => {
   return (tree: { children: any[] }) => {
-    tree.children.forEach((child) => upgradeImage(child));
+    for (const child of tree.children) {
+      upgradeImage(child);
+    }
   };
 };
 
 export async function parse(mdposts: Map<string, MarkdownPost>) {
-  let posts: Map<string, Post> = new Map();
-  for (let [rkey, post] of mdposts) {
+  const posts: Map<string, Post> = new Map();
+  for (const [rkey, post] of mdposts) {
     posts.set(rkey, {
       title: post.title,
       rkey: post.rkey,
@@ -103,7 +107,7 @@ export async function parse(mdposts: Map<string, MarkdownPost>) {
           },
         })
         .process(post.mdcontent),
-      visibility: post.visibility != "author",
+      visibility: post.visibility !== "author",
       ogp: post.ogp,
       extendedData: {
         title: post.title,
@@ -118,7 +122,7 @@ export async function parse(mdposts: Map<string, MarkdownPost>) {
         category:
           parseExtendedValue(post.mdcontent)?.category ??
           i18n(I18nKey.uncategorized),
-        draft: post.visibility != "publicr",
+        draft: post.visibility !== "publicr",
         readingTime: {
           text: 0,
           minutes: 0,

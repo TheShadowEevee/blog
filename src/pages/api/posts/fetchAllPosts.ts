@@ -1,4 +1,4 @@
-import type { MarkdownPost, Post, Profile } from "@/types/posts";
+import type { MarkdownPost, Profile } from "@/types/posts";
 import { getProfile, safeFetch } from "@utils/content-utils";
 import { parse } from "@utils/parser";
 import type { APIRoute } from "astro";
@@ -7,19 +7,17 @@ export const prerender = false;
 
 export const GET: APIRoute = async (Astro) => {
   try {
-    let profile: Profile;
-
-    profile = await getProfile();
+    const profile: Profile = await getProfile();
 
     const response = await safeFetch(
       `${profile.pds}/xrpc/com.atproto.repo.listRecords?repo=${profile.did}&collection=com.whtwnd.blog.entry`,
     );
 
-    let allPosts: Map<string, MarkdownPost> = new Map();
-    for (let data of response["records"]) {
-      const matches = data["uri"].split("/");
+    const allPosts: Map<string, MarkdownPost> = new Map();
+    for (const data of response.records) {
+      const matches = data.uri.split("/");
       const rkey = matches[matches.length - 1];
-      const record = data["value"];
+      const record = data.value;
       if (
         matches &&
         matches.length === 5 &&
@@ -59,7 +57,7 @@ export const GET: APIRoute = async (Astro) => {
     return new Response(
       JSON.stringify({
         success: false,
-        result: "Failed to get data: " + error,
+        result: `Failed to get data: ${error}`,
       }),
     );
   }

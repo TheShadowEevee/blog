@@ -24,7 +24,7 @@ export function AdmonitionComponent(
     );
 
   let label = null;
-  if (properties && properties["has-directive-label"] != undefined) {
+  if (properties && properties["has-directive-label"] !== undefined) {
     // *Should* be true, but is returning string ''. So... we do this
     label = children[0]; // The first child is the label
     children = children.slice(1);
@@ -32,8 +32,8 @@ export function AdmonitionComponent(
     label.tagName = "div"; // Change the tag <p> to <div>
   }
 
-  return h(`blockquote`, { class: `admonition bdm-${type}` }, [
-    h("span", { class: `bdm-title` }, label ? label : type.toUpperCase()),
+  return h("blockquote", { class: `admonition bdm-${type}` }, [
+    h("span", { class: "bdm-title" }, label ? label : type.toUpperCase()),
     ...children,
   ]);
 }
