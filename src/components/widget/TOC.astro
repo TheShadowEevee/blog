@@ -1,13 +1,13 @@
 ---
 import { siteConfig } from "../../config";
-import { type Headings } from '@/types/posts';
+import type { Headings } from '@/types/posts';
 
 interface Props {
   class?: string
   headings: Headings[]
 }
 
-let { headings = []  } = Astro.props;
+const { headings = []  } = Astro.props;
 
 let minDepth = 10;
 for (const heading of headings) {
@@ -17,14 +17,15 @@ for (const heading of headings) {
 const className = Astro.props.class
 
 const removeTailingHash = (text: string) => {
-    let lastIndexOfHash = text.lastIndexOf('#');
-    if (lastIndexOfHash != text.length - 1) {
+    const lastIndexOfHash = text.lastIndexOf('#');
+    if (lastIndexOfHash !== text.length - 1) {
         return text;
     }
 
     return text.substring(0, lastIndexOfHash);
 }
 
+// biome-ignore lint/style/useConst: <explanation>
 let heading1Count = 1;
 
 const maxLevel = siteConfig.toc.depth;
