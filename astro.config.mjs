@@ -133,7 +133,7 @@ export default defineConfig({
     build: {
       rollupOptions: {
         external: [
-          "ioredis"
+          /node_modules/
         ],
         onwarn(warning, warn) {
           // temporarily suppress this warning

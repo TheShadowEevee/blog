@@ -53,6 +53,9 @@ importers:
       '@inox-tools/sitemap-ext':
         specifier: ^0.4.2
         version: 0.4.2(@types/node@22.13.17)(astro@5.5.6(@types/node@22.13.17)(jiti@1.21.7)(lightningcss@1.29.3)(rollup@2.79.2)(stylus@0.64.0)(terser@5.39.0)(typescript@5.8.2)(yaml@2.7.1))(jiti@1.21.7)(lightningcss@1.29.3)(stylus@0.64.0)(terser@5.39.0)(yaml@2.7.1)
+      '@rollup/plugin-node-resolve':
+        specifier: ^16.0.1
+        version: 16.0.1(rollup@2.79.2)
       '@swup/astro':
         specifier: ^1.5.0
         version: 1.5.0(@types/babel__core@7.20.5)
@@ -1330,6 +1333,15 @@ packages:
     peerDependencies:
       rollup: ^1.20.0||^2.0.0
 
+  '@rollup/plugin-node-resolve@16.0.1':
+    resolution: {integrity: sha512-tk5YCxJWIG81umIvNkSod2qK5KyQW19qcBF/B78n1bjtOON6gzKoVeSzAE8yHCZEDmqkHKkxplExA8KzdJLJpA==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      rollup: ^2.78.0||^3.0.0||^4.0.0
+    peerDependenciesMeta:
+      rollup:
+        optional: true
+
   '@rollup/plugin-yaml@4.1.2':
     resolution: {integrity: sha512-RpupciIeZMUqhgFE97ba0s98mOFS7CWzN3EJNhJkqSv9XLlWYtwVdtE6cDw6ASOF/sZVFS7kRJXftaqM2Vakdw==}
     engines: {node: '>=14.0.0'}
@@ -1681,6 +1693,9 @@ packages:
 
   '@types/resolve@1.17.1':
     resolution: {integrity: sha512-yy7HuzQhj0dhGpD8RLXSZWEkLsV9ibvxvi6EiJ3bkqLAO1RGo0WbkWQiwpRlSFymTJRz0d3k5LM3kkx8ArDbLw==}
+
+  '@types/resolve@1.20.2':
+    resolution: {integrity: sha512-60BCwRFOZCQhDncwQdxxeOEEkbc5dIMccYLwbxsS4TUNeVECQ/pBJ0j09mrHOl/JJvpRPGwO9SvE4nR2Nb/a4Q==}
 
   '@types/sanitize-html@2.15.0':
     resolution: {integrity: sha512-71Z6PbYsVKfp4i6Jvr37s5ql6if1Q/iJQT80NbaSi7uGaG8CqBMXP0pk/EsURAOuGdk5IJCd/vnzKrR7S3Txsw==}
@@ -6437,6 +6452,16 @@ snapshots:
       resolve: 1.22.10
       rollup: 2.79.2
 
+  '@rollup/plugin-node-resolve@16.0.1(rollup@2.79.2)':
+    dependencies:
+      '@rollup/pluginutils': 5.1.4(rollup@2.79.2)
+      '@types/resolve': 1.20.2
+      deepmerge: 4.3.1
+      is-module: 1.0.0
+      resolve: 1.22.10
+    optionalDependencies:
+      rollup: 2.79.2
+
   '@rollup/plugin-yaml@4.1.2(rollup@2.79.2)':
     dependencies:
       '@rollup/pluginutils': 5.1.4(rollup@2.79.2)
@@ -6826,6 +6851,8 @@ snapshots:
   '@types/resolve@1.17.1':
     dependencies:
       '@types/node': 22.13.17
+
+  '@types/resolve@1.20.2': {}
 
   '@types/sanitize-html@2.15.0':
     dependencies:
