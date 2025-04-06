@@ -36,9 +36,9 @@ export function GithubCardComponent(
     "Waiting...",
   );
 
-  const nTitle = h("div", { class: "gc-titlebar" }, [
-    h("div", { class: "gc-titlebar-left" }, [
-      h("div", { class: "gc-owner" }, [
+  const nTitle = h("div", { class: 'gc-titlebar' }, [
+    h('div', { class: 'gc-titlebar-left' }, [
+      h('div', { class: 'gc-owner' }, [
         nAvatar,
         h("div", { class: "gc-user" }, (repo as string).split("/")[0]),
       ]),

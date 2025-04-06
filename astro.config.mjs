@@ -132,6 +132,9 @@ export default defineConfig({
   vite: {
     build: {
       rollupOptions: {
+        external: [
+          /node_modules/
+        ],
         onwarn(warning, warn) {
           // temporarily suppress this warning
           if (
