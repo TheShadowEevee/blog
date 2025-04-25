@@ -54,7 +54,7 @@ export const navBarConfig: NavBarConfig = {
 export const profileConfig: ProfileConfig = {
   avatar: "assets/images/avatar.png", // Relative to the /src directory. Relative to the /public directory if it starts with '/'
   name: "TheShadowEevee",
-  bio: "My name is Michael. I do dumb things. Sometimes you'll get to hear about them!",
+  bio: "I do dumb things. Sometimes you'll get to hear about them!",
   links: [
     {
       name: "Bluesky",
@@ -64,9 +64,9 @@ export const profileConfig: ProfileConfig = {
       url: "https://bsky.app/profile/did:plc:krbzbucjaj76xjob6ju47ilo",
     },
     {
-      name: "GitHub",
-      icon: "fa6-brands:github",
-      url: "https://github.com/TheShadowEevee",
+      name: "Forgejo",
+      icon: "fa6-brands:git-alt",
+      url: "https://git.shad.moe/TheShadowEevee",
     },
   ],
 };

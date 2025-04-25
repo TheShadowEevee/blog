@@ -1,10 +1,10 @@
 # About
 
-Hello! I'm Michael (@TheShadowEevee). I'm a cybersec/virtual reality/technology enthusiast with a general interest in many technology-oriented topics and a passion for learning other areas as they intrigue me.
+Hello! I'm Lumi, aka @TheShadowEevee. I'm a cybersec/virtual reality/technology enthusiast with a general interest in many technology-oriented topics and a passion for learning other areas as they intrigue me.
 
 I am at [Purdue University](https://purdue.edu) studying [Cybersecurity](https://polytechnic.purdue.edu/degrees/cybersecurity) and [Computing Infrastructure and Network Engineering Technology](https://polytechnic.purdue.edu/degrees/computing-infrastructure-and-network-engineering-technology), with minors in Forensic Sciences and Law and Society. While I primarily work in these areas, I don't let that restrict my skills; I continue to learn more across many fields, letting new experiences and projects guide my learning outside class.
 
-If you ever want to get in touch with me, feel free! I can be reached on [Bluesky](https://bsky.app/profile/theshadoweevee.konpeki.solutions) or via email at [theshadoweevee@shad.moe](mailto:theshadoweevee@shad.moe) OR [theshadoweevee@konpeki.solutions](mailto:theshadoweevee@konpeki.solutions).
+If you ever want to get in touch with me, feel free! I can be reached on [Bluesky](https://bsky.app/profile/theshadoweevee.konpeki.solutions) or via email at [lumi@shad.moe](mailto:lumi@shad.moe) OR [lumi@konpeki.solutions](mailto:lumi@konpeki.solutions).
 
 ## What's up with the post URLs?
 
