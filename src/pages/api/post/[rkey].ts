@@ -3,6 +3,7 @@ import { getProfile, safeFetch } from "@utils/content-utils";
 import { parse } from "@utils/parser";
 import type { APIRoute } from "astro";
 import { GET as cacheGET, POST as cachePOST } from "../cache/[rkey]";
+import { profileConfig } from "@/config";
 
 export const prerender = false;
 
@@ -13,7 +14,7 @@ export const GET: APIRoute = async (Astro) => {
     if (rkey) {
       // https://stackoverflow.com/a/75664821
       const domain = Astro.request.url.match(
-        /^(?<protocol>https?:\/\/)(?=(?<fqdn>[^:/]+))(?:(?<service>www|ww\d|cdn|ftp|mail|pop\d?|ns\d?|git)\.)?(?:(?<subdomain>[^:/]+)\.)*(?<domain>[^:/]+\.?[a-z0-9]+)(?::(?<port>\d+))?(?<path>\/[^?]*)?(?:\?(?<query>[^#]*))?(?:#(?<hash>.*))?/i,
+        /^(?<protocol>https?:\/\/)(?=(?<fqdn>[^:/]+))(?:(?<service>www|ww\d|cdn|ftp|mail|pop\d?|ns\d?|git)\.)?(?:(?<subdomain>[^:/]+)\.)*(?<domain>[^:/]+\.?[a-z0-9]+)(?::(?<port>\d+))?(?<path>\/[^?]*)?(?:\?(?<query>[^#]*))?(?:#(?<hash>.*))?/i
       );
 
       const cacheURL = `${
@@ -30,13 +31,13 @@ export const GET: APIRoute = async (Astro) => {
           JSON.stringify({
             success: true,
             result: JSON.parse(response.result),
-          }),
+          })
         );
       }
-      const profile: Profile = await getProfile();
+      const profile: Profile = await getProfile(profileConfig.did);
 
       const postResponse = await safeFetch(
-        `${profile.pds}/xrpc/com.atproto.repo.getRecord?repo=${profile.did}&collection=com.whtwnd.blog.entry&rkey=${rkey}`,
+        `${profile.pds}/xrpc/com.atproto.repo.getRecord?repo=${profile.did}&collection=com.whtwnd.blog.entry&rkey=${rkey}`
       );
 
       if (!postResponse.error) {
@@ -88,7 +89,7 @@ export const GET: APIRoute = async (Astro) => {
             JSON.stringify({
               success: true,
               result: post.get(rkey),
-            }),
+            })
           );
         }
       }
@@ -97,7 +98,7 @@ export const GET: APIRoute = async (Astro) => {
           success: false,
           result: "Unknown Error Fetching Post",
         }),
-        { status: 400 },
+        { status: 400 }
       );
     }
     throw "'item' is null or undefined";
@@ -106,7 +107,7 @@ export const GET: APIRoute = async (Astro) => {
       JSON.stringify({
         success: false,
         result: `Failed to get data: ${error}`,
-      }),
+      })
     );
   }
 };

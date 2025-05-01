@@ -16,6 +16,7 @@ import { i18n } from "@i18n/translation";
 import I18nKey from "@i18n/i18nKey";
 import type { Post } from "@/types/posts";
 import { GET as getPost } from '../api/post/[rkey]'
+import { getProfile } from "@utils/content-utils";
 
 let blogPost: Post = {};
 
@@ -26,6 +27,20 @@ if ((response.success === true) && (blogPost.title !== "undefined")) {
     blogPost = response.result
 } else {
   return new Response(null, { status: 404 })
+}
+
+let authors = [];
+
+if (blogPost && blogPost.extendedData && blogPost.extendedData.authors) {
+    for (let i = 0; i < blogPost.extendedData.authors.length; i++) {
+        let author = await getProfile(blogPost.extendedData.authors[i]);
+
+        authors.push(author);
+    }
+} else {
+    authors = [
+        await getProfile(profileConfig.did)
+    ];
 }
 
 const jsonLd = {
@@ -122,6 +137,7 @@ const jsonLd = {
           class="mb-5"
           published={new Date(blogPost?.extendedData?.published ?? 0)}
           tags={blogPost?.extendedData?.tags ?? []}
+          authors={authors}
           category={blogPost?.extendedData?.category ?? ""}
         />
         {
@@ -150,6 +166,7 @@ const jsonLd = {
           <License
             title={blogPost?.extendedData?.title ?? "Post does not exist"}
             pubDate={new Date(blogPost?.extendedData?.published ?? 0)}
+            authors={authors}
             class="mb-6 rounded-xl license-container onload-animation"
           />
         )

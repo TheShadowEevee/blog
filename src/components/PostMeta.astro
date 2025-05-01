@@ -4,17 +4,22 @@ import { Icon } from 'astro-icon/components'
 import { i18n } from '../i18n/translation'
 import I18nKey from '../i18n/i18nKey'
 import { url } from '../utils/url-utils'
+import { getProfile } from '../utils/content-utils'
+import type { Profile } from '@/types/posts'
+import { profileConfig } from '@/config'
 
 interface Props {
   class: string
   published: Date
   updated?: Date
   tags: string[]
+  authors: Profile[];
   category: string
   hideTagsForMobile?: boolean
   hideUpdateDate?: boolean
 }
-const { published, updated, tags, category, hideTagsForMobile = false, hideUpdateDate = false } = Astro.props
+const { published, updated, tags, authors, category, hideTagsForMobile = false, hideUpdateDate = false } = Astro.props
+
 const className = Astro.props.class
 ---
 
@@ -73,3 +78,28 @@ const className = Astro.props.class
         </div>
     </div>
 </div>
+{(authors.length > 1 || authors.filter((author) => author.did == profileConfig.did).length == 0) && (
+<div class:list={["flex flex-wrap text-neutral-500 dark:text-neutral-400 items-center gap-4 gap-x-4 gap-y-2", className]}>
+    <!-- co-authors -->
+    <div class:list={["items-center", {"flex": !hideTagsForMobile, "hidden md:flex": hideTagsForMobile}]}>
+        <div class="meta-icon"
+        >
+            <Icon name="material-symbols:group-rounded" class="text-xl"></Icon>
+        </div>
+        <div class="flex flex-row flex-nowrap items-center">
+            {authors.map((profile, i) => (
+                <div class:list={[{"hidden": i == 0}, "mx-1.5 text-[var(--meta-divider)] text-sm"]}>/</div>
+                <div class="flex gap-4">
+                    <img src={`${profile.avatar}`} class="h-10 meta-author-icon" />
+                </div>
+                <a href={`${profile.url}`} aria-label=`View ${profile.handle} on Bluesky`
+                   class="link-lg transition text-50 text-sm font-medium gap-x-6
+                                hover:text-[var(--primary)] dark:hover:text-[var(--primary)] whitespace-nowrap"
+                   target="_blank" data-umami-event="outbound-link-click" data-umami-event-url=`${profile.url}`>
+                    {profile.displayName}
+                </a>
+            ))}
+        </div>
+    </div>
+</div>
+)}

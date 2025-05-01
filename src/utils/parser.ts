@@ -114,17 +114,17 @@ export async function parse(mdposts: Map<string, MarkdownPost>) {
         published: parseExtendedValue(post.mdcontent)?.published,
         updated: checkUpdated(
           parseExtendedValue(post.mdcontent)?.published,
-          post.createdAt,
+          post.createdAt
         ),
         description: parseExtendedValue(post.mdcontent)?.description,
         image: parseExtendedValue(post.mdcontent)?.image,
         tags: parseExtendedValue(post.mdcontent)?.tags,
+        authors: parseExtendedValue(post.mdcontent)?.authors,
         category:
           parseExtendedValue(post.mdcontent)?.category ??
           i18n(I18nKey.uncategorized),
         draft: post.visibility !== "publicr",
         readingTime: {
-          text: 0,
           minutes: 0,
           time: 0,
           words: 0,
@@ -154,6 +154,7 @@ export async function parse(mdposts: Map<string, MarkdownPost>) {
         description: posts.get(rkey)?.extendedData?.description,
         image: posts.get(rkey)?.extendedData?.image,
         tags: posts.get(rkey)?.extendedData?.tags,
+        authors: posts.get(rkey)?.extendedData?.authors,
         category: posts.get(rkey)?.extendedData?.category,
         readingTime: (posts.get(rkey)?.content as VFile)?.data
           .readingTime as ReadingTime,

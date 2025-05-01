@@ -1,9 +1,9 @@
-import { public_handle } from "@/config";
+import { profileConfig, public_handle } from "@/config";
 import type { PostList, Profile } from "@/types/posts";
 
 export async function getSortedPosts() {
   const response = await safeFetch(
-    `${import.meta.env.NEXT_PUBLIC_URL}/api/posts/fetchAllPosts`,
+    `${import.meta.env.NEXT_PUBLIC_URL}/api/posts/fetchAllPosts`
   );
 
   const postList = response.result;
@@ -49,8 +49,8 @@ export function parseExtendedValue(content: string) {
       new RegExp(
         "<!-- ### ADDITIONAL DATA FIELD ### " +
           "(.*)" +
-          " ### solutions.konpeki.post.extendedData ### --->",
-      ),
+          " ### solutions.konpeki.post.extendedData ### --->"
+      )
     );
 
     if (values) {
@@ -64,7 +64,7 @@ export function removeExtendedValue(content: string) {
   try {
     return content.replace(
       /<!-- ### ADDITIONAL DATA FIELD ### (.*) ### solutions.konpeki.post.extendedData ### --->/gm,
-      "",
+      ""
     );
   } catch {
     return content;
@@ -84,15 +84,15 @@ export function checkUpdated(published: string, latest: Date) {
   }
 }
 
-export async function getProfile(): Promise<Profile> {
+export async function getProfile(did: string): Promise<Profile> {
   const fetchProfile = await safeFetch(
-    `https://public.api.bsky.app/xrpc/app.bsky.actor.getProfile?actor=${public_handle}`,
+    `https://public.api.bsky.app/xrpc/app.bsky.actor.getProfile?actor=${did}`
   );
-  const split = fetchProfile.did.split(":");
+  const split = did.split(":");
   let diddoc;
   if (split[0] === "did") {
     if (split[1] === "plc") {
-      diddoc = await safeFetch(`https://plc.directory/${fetchProfile.did}`);
+      diddoc = await safeFetch(`https://plc.directory/${did}`);
     } else if (split[1] === "web") {
       diddoc = await safeFetch(`https://${split[2]}/.well-known/did.json`);
     } else {
@@ -111,12 +111,13 @@ export async function getProfile(): Promise<Profile> {
     throw new Error("DID lacks #atproto_pds service");
   }
   return {
-    avatar: fetchProfile.avatar,
     banner: fetchProfile.banner,
-    displayName: fetchProfile.displayName,
-    did: fetchProfile.did,
-    handle: fetchProfile.handle,
     description: fetchProfile.description,
+    avatar: fetchProfile.avatar,
+    displayName: fetchProfile.displayName,
+    handle: fetchProfile.handle,
+    url: `https://bsky.app/profile/${did}`,
     pds: pdsurl,
+    did: did,
   };
 }

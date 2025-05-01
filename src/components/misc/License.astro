@@ -4,14 +4,16 @@ import { Icon } from 'astro-icon/components'
 import { licenseConfig, profileConfig } from '../../config'
 import { i18n } from '../../i18n/translation'
 import I18nKey from '../../i18n/i18nKey'
+import type { Profile } from '@/types/posts'
 
 interface Props {
   title: string
   pubDate: Date
+  authors: Profile[]
   class: string
 }
 
-const { title, pubDate } = Astro.props
+const { title, pubDate, authors } = Astro.props
 const className = Astro.props.class
 const profileConf = profileConfig
 const licenseConf = licenseConfig
@@ -27,7 +29,27 @@ const postUrl = decodeURIComponent(Astro.url.toString())
     <div class="flex gap-6 mt-2">
         <div>
             <div class="transition text-black/30 dark:text-white/30 text-sm">{i18n(I18nKey.author)}</div>
-            <div class="transition text-black/75 dark:text-white/75 whitespace-nowrap">{profileConf.name}</div>
+            <div class="transition text-black/75 dark:text-white/75 whitespace-nowrap">
+                <!-- {
+                    ((authors.length <= 1) ? "this" : "that")
+                } -->
+                {authors.map((author) => author.displayName).reduce((previous, current, index, all) => {
+                    if (all.length > 3) {
+                        return `${all[0]} and Contributors`;
+                    }
+
+                    if (index == all.length - 1) {
+                        return `${previous} and ${current}`
+                    }
+
+                    if (all.length > 2) {
+                        return `${previous}, ${current},`;
+                    }
+
+                    return `${current}`;
+                })}
+            </div>
+
         </div>
         <div>
             <div class="transition text-black/30 dark:text-white/30 text-sm">{i18n(I18nKey.publishedAt)}</div>

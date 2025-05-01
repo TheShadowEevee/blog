@@ -1,8 +1,10 @@
 ---
 import { getPostUrlBySlug } from "@utils/url-utils";
 import PostCard from "./PostCard.astro";
-import type { Post } from "@/types/posts";
+import type { Post, ReadingTime } from "@/types/posts";
+import { getProfile } from "@utils/content-utils";
 
+import { profileConfig } from "@/config";
 const page: Record<string, Post> = Astro.props.page;
 
 // biome-ignore lint/style/useConst:
@@ -14,12 +16,27 @@ const interval = 50;
   class="transition flex flex-col rounded-[var(--radius-large)] bg-[var(--card-bg)] py-1 md:py-0 md:bg-transparent md:gap-4 mb-4"
 >
   {
-    Object.entries(page).map(([rkey, entry]) => {
+    Object.entries(page).map(async ([rkey, entry]) => {
+        let authors = [];
+
+        if (entry.extendedData && entry.extendedData.authors) {
+            for (let i = 0; i < entry.extendedData.authors.length; i++) {
+                let author = await getProfile(entry.extendedData.authors[i]);
+
+                authors.push(author);
+            }
+        } else {
+            authors = [
+                await getProfile(profileConfig.did)
+            ];
+        }
+
         return (
           <PostCard
             entry={entry}
             title={entry.extendedData?.title ?? "Post has invalid title"}
             tags={entry.extendedData?.tags ?? []}
+            authors={authors}
             category={entry.extendedData?.category ?? "Uncatagorized"}
             published={new Date(entry.extendedData?.published ?? 0)}
             updated={entry.extendedData?.updated}
@@ -29,7 +46,7 @@ const interval = 50;
             draft={entry.extendedData?.draft ?? false}
             class:list="onload-animation"
             style={`animation-delay: calc(var(--content-delay) + ${delay++ * interval}ms);`}
-            readingTime={entry.extendedData?.readingTime ?? {text: "", minutes: 0, time: 0, words: 0}}
+            readingTime={entry.extendedData?.readingTime ?? {minutes: 0, time: 0, words: 0}}
           />
         );
       }

@@ -51,9 +51,10 @@ export type NavBarConfig = {
 };
 
 export type ProfileConfig = {
-  avatar?: string;
+  avatar: string;
   name: string;
-  bio?: string;
+  bio: string;
+  did: string;
   links: {
     name: string;
     url: string;

@@ -1,3 +1,4 @@
+import { profileConfig } from "@/config";
 import type { MarkdownPost, Profile } from "@/types/posts";
 import { getProfile, safeFetch } from "@utils/content-utils";
 import { parse } from "@utils/parser";
@@ -7,10 +8,10 @@ export const prerender = false;
 
 export const GET: APIRoute = async (Astro) => {
   try {
-    const profile: Profile = await getProfile();
+    const profile: Profile = await getProfile(profileConfig.did);
 
     const response = await safeFetch(
-      `${profile.pds}/xrpc/com.atproto.repo.listRecords?repo=${profile.did}&collection=com.whtwnd.blog.entry`,
+      `${profile.pds}/xrpc/com.atproto.repo.listRecords?repo=${profile.did}&collection=com.whtwnd.blog.entry`
     );
 
     const allPosts: Map<string, MarkdownPost> = new Map();
@@ -44,21 +45,21 @@ export const GET: APIRoute = async (Astro) => {
             [...(await parse(allPosts)).entries()].sort(
               (a, b) =>
                 new Date(b[1].extendedData?.published ?? 0).getTime() -
-                new Date(a[1].extendedData?.published ?? 0).getTime(),
-            ),
-          ),
+                new Date(a[1].extendedData?.published ?? 0).getTime()
+            )
+          )
         ),
       }),
       {
         status: 200,
-      },
+      }
     );
   } catch (error) {
     return new Response(
       JSON.stringify({
         success: false,
         result: `Failed to get data: ${error}`,
-      }),
+      })
     );
   }
 };

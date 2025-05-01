@@ -23,7 +23,9 @@ export const GET: APIRoute = async (Astro) => {
 
     for (const rkey in postList) {
       for (const tag of postList[rkey].extendedData?.tags ?? []) {
-        tags.push(tag);
+        if (!tags.includes(tag)) {
+          tags.push(tag);
+        }
       }
     }
 
@@ -34,14 +36,14 @@ export const GET: APIRoute = async (Astro) => {
       }),
       {
         status: 200,
-      },
+      }
     );
   } catch (error) {
     return new Response(
       JSON.stringify({
         success: false,
         result: `Failed to get data: ${error}`,
-      }),
+      })
     );
   }
 };

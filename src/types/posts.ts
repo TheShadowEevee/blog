@@ -8,6 +8,7 @@ export interface Profile {
   handle: string;
   description: string;
   pds: string;
+  url: string;
 }
 
 export interface Ogp {
@@ -41,7 +42,6 @@ export interface MarkdownPost {
 }
 
 export interface ReadingTime {
-  text: number;
   minutes: number;
   time: number;
   words: number;
@@ -59,6 +59,7 @@ export interface PostExtended {
   description?: string;
   image?: string;
   tags?: string[];
+  authors?: string[];
   category?: string;
   lang?: string;
   draft?: boolean;
