@@ -25,34 +25,6 @@ import type { MarkdownPost, Post, ReadingTime, Headings } from "@/types/posts";
 import type { VFile } from "vfile";
 import type { Root, Element, Node } from "hast";
 
-// Automatically enforce https on PDS images. Heavily inspired by WhiteWind's blob replacer:
-// https://github.com/whtwnd/whitewind-blog/blob/7eb8d4623eea617fd562b93d66a0e235323a2f9a/frontend/src/services/DocProvider.tsx#L90
-// In theory we could also use their cache, but I'd like to rely on their API as little as possible, opting to pull from the PDS instead.
-const upgradeImage = (child: Node): void => {
-  if (child.type !== "element") {
-    return;
-  }
-  const elem = child as Element;
-  if (elem.tagName === "img") {
-    // Ensure https
-    const src = elem.properties.src;
-    if (src !== undefined && typeof src === "string") {
-      elem.properties.src = src.replace(/http\:\/\//, "https://");
-    }
-  }
-  for (const child of elem.children) {
-    upgradeImage(child);
-  }
-};
-
-const rehypeUpgradeImage: Plugin<[], Root> = () => {
-  return (tree: { children: any[] }) => {
-    for (const child of tree.children) {
-      upgradeImage(child);
-    }
-  };
-};
-
 export async function parse(mdposts: Map<string, MarkdownPost>) {
   const posts: Map<string, Post> = new Map();
   for (const [rkey, post] of mdposts) {
@@ -73,7 +45,6 @@ export async function parse(mdposts: Map<string, MarkdownPost>) {
         .use(externalAnchorPlugin) // See https://tomoviktor.com/posts/astro-external-anchor/
         .use(remarkRehype, { allowDangerousHtml: true }) // Convert to HTML
         .use(rehypeRaw) // Parse HTML that exists as raw text leftover from MD parse
-        .use(rehypeUpgradeImage)
         .use(rehypeStringify)
         .use(rehypeKatex)
         .use(rehypeSlug)
