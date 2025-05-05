@@ -9,7 +9,7 @@ export const GET: APIRoute = async ({ params }) => {
   const rkey = params.rkey;
   try {
     if (rkey) {
-      const authorProfile = await getProfile(rkey, true);
+      const authorProfile = await getProfile(rkey);
       return new Response(
         JSON.stringify({
           success: true,
