@@ -10,10 +10,10 @@ import rehypeSlug from "rehype-slug";
 import remarkDirective from "remark-directive"; /* Handle directives */
 import remarkGithubAdmonitionsToDirectives from "remark-github-admonitions-to-directives";
 import remarkMath from "remark-math";
-import { AdmonitionComponent } from "@/plugins/rehype-component-admonition";
-import { GithubCardComponent } from "@/plugins/rehype-component-github-card";
+import { AdmonitionComponent } from "../plugins/rehype-component-admonition";
+import { GithubCardComponent } from "../plugins/rehype-component-github-card";
 import remarkSectionize from "remark-sectionize";
-import { parseDirectiveNode } from "@/plugins/remark-directive-rehype";
+import { parseDirectiveNode } from "../plugins/remark-directive-rehype";
 import remarkReadingTime from "remark-reading-time";
 import remarkHeadings from "@vcarl/remark-headings";
 import { type Plugin, unified } from "unified";

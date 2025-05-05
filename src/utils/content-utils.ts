@@ -37,6 +37,7 @@ export async function getSortedPosts() {
 }
 
 export async function safeFetch(url: string) {
+  console.log(url);
   const response = await fetch(url);
   if (!response.ok)
     throw new Error(`${response.status}:${response.statusText}`);
