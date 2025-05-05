@@ -1,14 +1,12 @@
 ---
 // @ts-ignore - "react" isn't findable
 import React from "react";
-import { ForwardRefEditor } from "@components/ForwardRefEditor";
 import MainGridLayout from "@layouts/MainGridLayout.astro";
 import Markdown from "@components/misc/Markdown.astro";
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import { Icon } from "astro-icon/components";
 import { formatDateToYYYYMMDD } from "@/utils/date-utils";
-import type { MDXEditorMethods } from "@mdxeditor/editor";
 
 const editorRef = React.createRef<MDXEditorMethods | null>();
 

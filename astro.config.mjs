@@ -75,9 +75,7 @@ export default defineConfig({
       endpointUrl: "https://umami.shad.moe",
       hostUrl: "https://umami.shad.moe",
     }),
-    react({
-      include: ["**/MDXEditor.tsx"],
-    }),
+    react({}),
   ],
   markdown: {
     remarkPlugins: [
