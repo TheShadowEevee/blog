@@ -22,7 +22,7 @@ export const GET: APIRoute = async ({ params }) => {
             JSON.stringify({
               success: false,
               result: `Resource '${rkey}' does not exist`,
-            }),
+            })
           );
         }
 
@@ -31,14 +31,14 @@ export const GET: APIRoute = async ({ params }) => {
             success: true,
             result: result,
           }),
-          { status: 200 },
+          { status: 200 }
         );
       } catch {
         return new Response(
           JSON.stringify({
             success: false,
             result: "Failed to fetch.",
-          }),
+          })
         );
       }
     } else {
@@ -49,7 +49,7 @@ export const GET: APIRoute = async ({ params }) => {
       JSON.stringify({
         success: false,
         result: `Failed to get data: ${error}`,
-      }),
+      })
     );
   }
 };
@@ -68,7 +68,7 @@ export const POST: APIRoute = async ({ params, request }) => {
           key,
           JSON.stringify(content),
           "EX",
-          import.meta.env.POST_CACHE_SECONDS,
+          import.meta.env.POST_CACHE_SECONDS
         );
 
         return new Response(
@@ -78,7 +78,24 @@ export const POST: APIRoute = async ({ params, request }) => {
           }),
           {
             status: 200,
-          },
+          }
+        );
+      } else if (type === "authorProfile" || type === "authorPDS") {
+        const result = await redis.set(
+          key,
+          JSON.stringify(content),
+          "EX",
+          import.meta.env.PROFILE_CACHE_SECONDS
+        );
+
+        return new Response(
+          JSON.stringify({
+            success: true,
+            message: result,
+          }),
+          {
+            status: 200,
+          }
         );
       }
     }
@@ -89,7 +106,7 @@ export const POST: APIRoute = async ({ params, request }) => {
         success: false,
         result: `Failed to post data: ${error}`,
       }),
-      { status: 400 },
+      { status: 400 }
     );
   }
 };

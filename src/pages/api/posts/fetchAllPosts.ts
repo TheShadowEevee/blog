@@ -8,7 +8,7 @@ export const prerender = false;
 
 export const GET: APIRoute = async (Astro) => {
   try {
-    const profile: Profile = await getProfile(profileConfig.did);
+    const profile: Profile = await getProfile(profileConfig.did, true);
 
     const response = await safeFetch(
       `${profile.pds}/xrpc/com.atproto.repo.listRecords?repo=${profile.did}&collection=com.whtwnd.blog.entry`

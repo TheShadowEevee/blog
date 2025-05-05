@@ -1,6 +1,5 @@
 import type { Profile, MarkdownPost, Post } from "@/types/posts";
 import { getProfile } from "@utils/content-utils";
-import { parse } from "@utils/parser";
 import type { APIRoute } from "astro";
 import { GET as cacheGET, POST as cachePOST } from "../cache/[rkey]";
 
@@ -10,7 +9,7 @@ export const GET: APIRoute = async ({ params }) => {
   const rkey = params.rkey;
   try {
     if (rkey) {
-      const authorProfile = await getProfile(rkey);
+      const authorProfile = await getProfile(rkey, true);
       return new Response(
         JSON.stringify({
           success: true,

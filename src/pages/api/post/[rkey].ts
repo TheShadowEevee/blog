@@ -2,38 +2,26 @@ import type { Profile, MarkdownPost, Post } from "@/types/posts";
 import { getProfile, safeFetch } from "@utils/content-utils";
 import { parse } from "@utils/parser";
 import type { APIRoute } from "astro";
-import { GET as cacheGET, POST as cachePOST } from "../cache/[rkey]";
 import { profileConfig } from "@/config";
 
 export const prerender = false;
 
 export const GET: APIRoute = async (Astro) => {
-  try {
-    const rkey = Astro.params.rkey;
+  const rkey = Astro.params.rkey;
 
-    if (rkey) {
-      // https://stackoverflow.com/a/75664821
-      const domain = Astro.request.url.match(
-        /^(?<protocol>https?:\/\/)(?=(?<fqdn>[^:/]+))(?:(?<service>www|ww\d|cdn|ftp|mail|pop\d?|ns\d?|git)\.)?(?:(?<subdomain>[^:/]+)\.)*(?<domain>[^:/]+\.?[a-z0-9]+)(?::(?<port>\d+))?(?<path>\/[^?]*)?(?:\?(?<query>[^#]*))?(?:#(?<hash>.*))?/i
+  if (rkey) {
+    let fetchPost = await safeFetch(
+      `${import.meta.env.NEXT_PUBLIC_URL}/api/cache/post-${rkey}`
+    );
+
+    if (fetchPost.success) {
+      return new Response(
+        JSON.stringify({
+          success: true,
+          result: JSON.parse(fetchPost.result),
+        })
       );
-
-      const cacheURL = `${
-        (domain?.groups?.protocol ?? "") +
-        (domain?.groups?.fqdn ?? "") +
-        (domain?.groups?.port ? `:${domain?.groups?.port}` : "")
-      }/api/cache/`;
-
-      const initResponse = await cacheGET(Astro);
-      const response = await initResponse.json();
-
-      if (response.success === true) {
-        return new Response(
-          JSON.stringify({
-            success: true,
-            result: JSON.parse(response.result),
-          })
-        );
-      }
+    } else {
       const profile: Profile = await getProfile(profileConfig.did);
 
       const postResponse = await safeFetch(
@@ -68,15 +56,17 @@ export const GET: APIRoute = async (Astro) => {
           post = await parse(mdposts);
 
           if (record.visibility === "public") {
-            // It would be nice to get rid of this, but "cachePOST" doesn't seem to work atm.
-            const rkeyPost = await fetch(cacheURL + rkey, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                type: "blogPost",
-                content: post.get(rkey),
-              }),
-            });
+            const rkeyPost = await fetch(
+              `${import.meta.env.NEXT_PUBLIC_URL}/api/cache/post-${rkey}`,
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  type: "blogPost",
+                  content: post.get(rkey),
+                }),
+              }
+            );
 
             const rkeyPostRes = await rkeyPost.json();
 
@@ -102,12 +92,5 @@ export const GET: APIRoute = async (Astro) => {
       );
     }
     throw "'item' is null or undefined";
-  } catch (error) {
-    return new Response(
-      JSON.stringify({
-        success: false,
-        result: `Failed to get data: ${error}`,
-      })
-    );
   }
 };

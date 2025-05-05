@@ -1,4 +1,3 @@
-import { profileConfig, public_handle } from "@/config";
 import type { PostList, Profile } from "@/types/posts";
 
 export async function getSortedPosts() {
@@ -86,30 +85,83 @@ export function checkUpdated(published: string, latest: Date) {
 }
 
 export async function getProfile(did: string): Promise<Profile> {
-  const fetchProfile = await safeFetch(
-    `https://public.api.bsky.app/xrpc/app.bsky.actor.getProfile?actor=${did}`
+  let pdsurl = null;
+
+  let fetchProfile = await safeFetch(
+    `${import.meta.env.NEXT_PUBLIC_URL}/api/cache/author-${did}`
   );
-  const split = did.split(":");
-  let diddoc;
-  if (split[0] === "did") {
-    if (split[1] === "plc") {
-      diddoc = await safeFetch(`https://plc.directory/${did}`);
-    } else if (split[1] === "web") {
-      diddoc = await safeFetch(`https://${split[2]}/.well-known/did.json`);
-    } else {
-      throw new Error("Invalid DID, Not blessed method");
-    }
+
+  if (fetchProfile.success) {
+    fetchProfile = JSON.parse(fetchProfile.result);
   } else {
-    throw new Error("Invalid DID, malformed");
-  }
-  let pdsurl;
-  for (const service of diddoc.service) {
-    if (service.id === "#atproto_pds") {
-      pdsurl = service.serviceEndpoint;
+    fetchProfile = await safeFetch(
+      `https://public.api.bsky.app/xrpc/app.bsky.actor.getProfile?actor=${did}`
+    );
+
+    const rkeyPost = await fetch(
+      `${import.meta.env.NEXT_PUBLIC_URL}/api/cache/author-${did}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "authorProfile",
+          content: fetchProfile,
+        }),
+      }
+    );
+
+    const rkeyPostRes = await rkeyPost.json();
+
+    if (!rkeyPostRes.success) {
+      throw `Error caching the post: ${rkeyPostRes.result}`;
     }
   }
-  if (!pdsurl) {
-    throw new Error("DID lacks #atproto_pds service");
+
+  let fetchPDS = await safeFetch(
+    `${import.meta.env.NEXT_PUBLIC_URL}/api/cache/authorPDS-${did}`
+  );
+
+  if (fetchPDS.success) {
+    pdsurl = JSON.parse(fetchPDS.result);
+  } else {
+    const split = did.split(":");
+    let diddoc;
+    if (split[0] === "did") {
+      if (split[1] === "plc") {
+        diddoc = await safeFetch(`https://plc.directory/${did}`);
+      } else if (split[1] === "web") {
+        diddoc = await safeFetch(`https://${split[2]}/.well-known/did.json`);
+      } else {
+        throw new Error("Invalid DID, Not blessed method");
+      }
+    } else {
+      throw new Error("Invalid DID, malformed");
+    }
+    for (const service of diddoc.service) {
+      if (service.id === "#atproto_pds") {
+        pdsurl = service.serviceEndpoint;
+      }
+    }
+    if (!pdsurl) {
+      throw new Error("DID lacks #atproto_pds service");
+    }
+    const pdsPost = await fetch(
+      `${import.meta.env.NEXT_PUBLIC_URL}/api/cache/authorPDS-${did}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "authorPDS",
+          content: pdsurl,
+        }),
+      }
+    );
+
+    const pdsPostRes = await pdsPost.json();
+
+    if (!pdsPostRes.success) {
+      throw `Error caching the post: ${pdsPostRes.result}`;
+    }
   }
   return {
     banner: fetchProfile.banner,

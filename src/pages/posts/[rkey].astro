@@ -33,13 +33,13 @@ let authors = [];
 
 if (blogPost && blogPost.extendedData && blogPost.extendedData.authors) {
     for (let i = 0; i < blogPost.extendedData.authors.length; i++) {
-        let author = await getProfile(blogPost.extendedData.authors[i]);
+        let author = await getProfile(blogPost.extendedData.authors[i], true);
 
         authors.push(author);
     }
 } else {
     authors = [
-        await getProfile(profileConfig.did)
+        await getProfile(profileConfig.did, true)
     ];
 }
 
