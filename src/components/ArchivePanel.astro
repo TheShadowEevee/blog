@@ -5,7 +5,7 @@ import { i18n } from '../i18n/translation'
 import { getPostUrlBySlug } from '../utils/url-utils'
 import type { Post } from '@/types/posts'
 import { GET as getPosts } from "@/pages/api/posts/fetchAllPosts"
-
+import { Icon } from "astro-icon/components";
 
 interface Props {
   keyword?: string
@@ -62,7 +62,7 @@ const groups: { year: number; posts: typeof posts }[] = (() => {
 
   const groupedPostsArray = Object.keys(groupedPosts).map(key => {
     const year = Number.parseInt(key);
-    groupedPosts[year].sort((a, b) => 
+    groupedPosts[year].sort((a, b) =>
       new Date(b[1].extendedData?.published ?? 0).getTime() - new Date(a[1].extendedData?.published ?? 0).getTime()
     );
     return { year, posts: groupedPosts[year] };
@@ -119,6 +119,9 @@ function formatTag(tag: string[]) {
                                 group-hover:translate-x-1 transition-all group-hover:text-[var(--primary)]
                                 text-75 pr-8 whitespace-nowrap overflow-ellipsis overflow-hidden"
                             >
+                                {post[1].extendedData?.pinned &&
+                                    <Icon class="inline-block text-[1rem] text-[var(--primary)] mr-1 align-middle translate-y-[-1px]" name="material-symbols:push-pin" />
+                                }
                                     {post[1].extendedData?.title}
                             </div>
                             <!-- tag list -->

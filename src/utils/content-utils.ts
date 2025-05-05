@@ -18,6 +18,11 @@ export async function getSortedPosts() {
   }
 
   posts.sort((a, b) => {
+    // First sort by pinned status (pinned posts come first)
+    if (a.data?.pinned && !b.data?.pinned) return -1;
+    if (!a.data?.pinned && b.data?.pinned) return 1;
+
+    // Then sort by date (newest first) for posts with the same pinned status
     const dateA = new Date(a.data?.published ?? 0).getTime();
     const dateB = new Date(b.data?.published ?? 0).getTime();
     return dateB - dateA;
@@ -36,7 +41,6 @@ export async function getSortedPosts() {
 }
 
 export async function safeFetch(url: string) {
-  console.log(url);
   const response = await fetch(url);
   if (!response.ok)
     throw new Error(`${response.status}:${response.statusText}`);

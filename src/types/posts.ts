@@ -64,6 +64,7 @@ export interface PostExtended {
   category?: string;
   lang?: string;
   draft?: boolean;
+  pinned?: boolean;
   readingTime?: ReadingTime;
   headings?: MarkdownHeading[];
   nextSlug?: string;

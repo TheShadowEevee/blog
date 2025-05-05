@@ -96,6 +96,7 @@ export async function parse(mdposts: Map<string, MarkdownPost>) {
           parseExtendedValue(post.mdcontent)?.category ??
           i18n(I18nKey.uncategorized),
         draft: post.visibility !== "publicr",
+        pinned: parseExtendedValue(post.mdcontent)?.pinned,
         readingTime: {
           minutes: 0,
           time: 0,
@@ -134,6 +135,9 @@ export async function parse(mdposts: Map<string, MarkdownPost>) {
           .headings as Headings[],
         lang: posts.get(rkey)?.extendedData?.lang,
         draft: posts.get(rkey)?.extendedData?.draft,
+        pinned:
+          (posts.get(rkey)?.extendedData?.pinned as unknown as string) ==
+          "true",
         nextSlug: posts.get(rkey)?.extendedData?.nextSlug,
         nextTitle: posts.get(rkey)?.extendedData?.nextTitle,
         prevSlug: posts.get(rkey)?.extendedData?.prevSlug,

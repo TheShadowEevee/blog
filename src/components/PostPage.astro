@@ -44,6 +44,7 @@ const interval = 50;
             image={entry.extendedData?.image ?? ""}
             description={entry.extendedData?.description ?? ""}
             draft={entry.extendedData?.draft ?? false}
+            pinned={entry.extendedData?.pinned}
             class:list="onload-animation"
             style={`animation-delay: calc(var(--content-delay) + ${delay++ * interval}ms);`}
             readingTime={entry.extendedData?.readingTime ?? {minutes: 0, time: 0, words: 0}}
