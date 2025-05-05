@@ -7,11 +7,7 @@ interface Props {
 }
 const className = Astro.props.class;
 ---
-<<<<<<< HEAD
-<div class=`prose dark:prose-invert prose-base !max-w-none custom-md ${className}`>
-=======
 <div data-pagefind-body class={`prose dark:prose-invert prose-base !max-w-none custom-md ${className}`}>
->>>>>>> template/main
     <!--<div class="prose dark:prose-invert max-w-none custom-md">-->
     <!--<div class="max-w-none custom-md">-->
     <slot/>
@@ -20,10 +16,10 @@ const className = Astro.props.class;
 <script>
   const observer = new MutationObserver(addPreCopyButton);
   observer.observe(document.body, { childList: true, subtree: true });
-  
+
   function addPreCopyButton() {
     observer.disconnect();
-    
+
     let codeBlocks = Array.from(document.querySelectorAll("pre"));
 
     for (let codeBlock of codeBlocks) {
@@ -62,7 +58,7 @@ const className = Astro.props.class;
         }, 1000);
       });
     }
-    
+
     observer.observe(document.body, { childList: true, subtree: true });
   }
 </script>

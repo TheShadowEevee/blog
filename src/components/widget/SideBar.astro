@@ -1,16 +1,4 @@
 ---
-<<<<<<< HEAD
-import Profile from './Profile.astro'
-import Tag from './Tags.astro'
-import Categories from './Categories.astro'
-
-interface Props {
-    class? : string
-}
-
-const className = Astro.props.class
-
-=======
 import type { MarkdownHeading } from "astro";
 import Categories from "./Categories.astro";
 import Profile from "./Profile.astro";
@@ -22,7 +10,6 @@ interface Props {
 }
 
 const className = Astro.props.class;
->>>>>>> template/main
 ---
 <div id="sidebar" class:list={[className, "w-full"]}>
     <div class="flex flex-col w-full gap-4 mb-4">

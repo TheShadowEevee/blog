@@ -3,7 +3,6 @@ import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 
 export const LinkPresets: { [key in LinkPreset]: NavBarLink } = {
-<<<<<<< HEAD
   [LinkPreset.Home]: {
     name: i18n(I18nKey.home),
     url: "/",
@@ -16,18 +15,4 @@ export const LinkPresets: { [key in LinkPreset]: NavBarLink } = {
     name: i18n(I18nKey.archive),
     url: "/archive/",
   },
-=======
-	[LinkPreset.Home]: {
-		name: i18n(I18nKey.home),
-		url: "/",
-	},
-	[LinkPreset.About]: {
-		name: i18n(I18nKey.about),
-		url: "/about/",
-	},
-	[LinkPreset.Archive]: {
-		name: i18n(I18nKey.archive),
-		url: "/archive/",
-	},
->>>>>>> template/main
 };

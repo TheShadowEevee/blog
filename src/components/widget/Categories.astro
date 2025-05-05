@@ -1,11 +1,9 @@
 ---
 import WidgetLayout from "./WidgetLayout.astro";
-
-<<<<<<< HEAD
-import { i18n } from '@i18n/translation'
-import I18nKey from '@i18n/i18nKey'
-import { getCategoryUrl } from '@utils/url-utils'
-import ButtonLink from '@components/control/ButtonLink.astro'
+import I18nKey from "../../i18n/i18nKey";
+import { i18n } from "../../i18n/translation";
+import { getCategoryUrl } from "../../utils/url-utils";
+import ButtonLink from "../control/ButtonLink.astro";
 import { GET as getCategories } from "@/pages/api/posts/fetchAllCategories"
 
 const initResponse = await getCategories(Astro);
@@ -16,15 +14,6 @@ let categories: [] = []
 if (response.success === true) {
     categories = response.result
 }
-=======
-import I18nKey from "../../i18n/i18nKey";
-import { i18n } from "../../i18n/translation";
-import { getCategoryList } from "../../utils/content-utils";
-import { getCategoryUrl } from "../../utils/url-utils";
-import ButtonLink from "../control/ButtonLink.astro";
-
-const categories = await getCategoryList();
->>>>>>> template/main
 
 const COLLAPSED_HEIGHT = "7.5rem";
 const COLLAPSE_THRESHOLD = 5;
