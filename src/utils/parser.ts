@@ -23,7 +23,7 @@ import { checkUpdated, parseExtendedValue } from "./content-utils";
 import { externalAnchorPlugin } from "@/plugins/external-anchor";
 import type { MarkdownPost, Post, ReadingTime, Headings } from "@/types/posts";
 import type { VFile } from "vfile";
-import type { Root, Element, Node } from "hast";
+import remarkImageCaption from "@/plugins/remark-image-caption.ts";
 
 export async function parse(mdposts: Map<string, MarkdownPost>) {
   const posts: Map<string, Post> = new Map();
@@ -39,6 +39,7 @@ export async function parse(mdposts: Map<string, MarkdownPost>) {
         .use(remarkReadingTime, {}) // Empty second param to appease Typescript while leaving defaults
         .use(remarkGithubAdmonitionsToDirectives)
         .use(remarkDirective)
+        .use(remarkImageCaption, { className: "image-caption" })
         .use(remarkHeadings)
         .use(remarkSectionize)
         .use(parseDirectiveNode)
