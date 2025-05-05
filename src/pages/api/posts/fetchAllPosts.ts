@@ -22,7 +22,8 @@ export const GET: APIRoute = async (Astro) => {
       if (
         matches &&
         matches.length === 5 &&
-        record // If no visibility field, assume public
+        record &&
+        (record.visibility === "public" || !record.visibility) // If no visibility field, assume public
       ) {
         allPosts.set(rkey, {
           title: record.title,
