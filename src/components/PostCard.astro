@@ -74,10 +74,16 @@ const coverWidth = '28%'
 
         <!-- word count and read time  -->
         <div class="text-sm text-black/30 dark:text-white/30 flex gap-4 transition">
-            <div>{readingTime.words} {" " + i18n(I18nKey.wordsCount)}</div>
-            <div>|</div>
-            <div>{Math.round(readingTime.minutes)} {" " + i18n(I18nKey.minutesCount)}</div>
-        </div>
+			<div>
+				{readingTime.words} {" "}
+				{readingTime.words === 1 ? i18n(I18nKey.wordCount) : i18n(I18nKey.wordsCount)}
+			</div>
+			<div>|</div>
+			<div>
+				{Math.round(readingTime.minutes)} {" "}
+				{Math.round(readingTime.minutes) === 1 ? i18n(I18nKey.minuteCount) : i18n(I18nKey.minutesCount)}
+			</div>
+		</div>
 
     </div>
 

@@ -86,33 +86,27 @@ const jsonLd = {
         {},
       ]}
     >
-      <!-- word count and reading time -->
-      <div
-        class="flex flex-row text-black/30 dark:text-white/30 gap-5 mb-3 transition onload-animation"
-      >
-        <div class="flex flex-row items-center">
-          <div
-            class="transition h-6 w-6 rounded-md bg-black/5 dark:bg-white/10 text-black/50 dark:text-white/50 flex items-center justify-center mr-2"
-          >
-            <Icon name="material-symbols:notes-rounded" />
-          </div>
-          <div class="text-sm">
-            {blogPost?.extendedData?.readingTime?.words}
-            {" " + i18n(I18nKey.wordsCount)}
-          </div>
-        </div>
-        <div class="flex flex-row items-center">
-          <div
-            class="transition h-6 w-6 rounded-md bg-black/5 dark:bg-white/10 text-black/50 dark:text-white/50 flex items-center justify-center mr-2"
-          >
-            <Icon name="material-symbols:schedule-outline-rounded" />
-          </div>
-          <div class="text-sm">
-            {Math.round(blogPost?.extendedData?.readingTime?.minutes as number)}
-            {" " + i18n(I18nKey.minutesCount)}
-          </div>
-        </div>
-      </div>
+        <!-- word count and reading time -->
+			<div class="flex flex-row text-black/30 dark:text-white/30 gap-5 mb-3 transition onload-animation">
+				<div class="flex flex-row items-center">
+					<div class="transition h-6 w-6 rounded-md bg-black/5 dark:bg-white/10 text-black/50 dark:text-white/50 flex items-center justify-center mr-2">
+						<Icon name="material-symbols:notes-rounded"></Icon>
+					</div>
+					<div class="text-sm">
+						{blogPost?.extendedData?.readingTime?.words} {" "}
+						{blogPost?.extendedData?.readingTime?.words === 1 ? i18n(I18nKey.wordCount) : i18n(I18nKey.wordsCount)}
+					</div>
+				</div>
+				<div class="flex flex-row items-center">
+					<div class="transition h-6 w-6 rounded-md bg-black/5 dark:bg-white/10 text-black/50 dark:text-white/50 flex items-center justify-center mr-2">
+						<Icon name="material-symbols:schedule-outline-rounded"></Icon>
+					</div>
+					<div class="text-sm">
+					    {Math.round(blogPost?.extendedData?.readingTime?.minutes as number)}
+						{Math.round(blogPost?.extendedData?.readingTime?.minutes as number) === 1 ? i18n(I18nKey.minuteCount) : i18n(I18nKey.minutesCount)}
+					</div>
+				</div>
+			</div>
 
       <!-- title -->
       <div class="relative onload-animation">
