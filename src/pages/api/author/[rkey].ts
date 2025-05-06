@@ -1,7 +1,5 @@
-import type { Profile, MarkdownPost, Post } from "@/types/posts";
 import { getProfile } from "@utils/content-utils";
 import type { APIRoute } from "astro";
-import { GET as cacheGET, POST as cachePOST } from "../cache/[rkey]";
 
 export const prerender = false;
 
@@ -17,7 +15,12 @@ export const GET: APIRoute = async ({ params }) => {
         })
       );
     }
-    throw "'item' is null or undefined";
+    return new Response(
+      JSON.stringify({
+        success: false,
+        result: "No rkey provided.",
+      })
+    );
   } catch (error) {
     return new Response(
       JSON.stringify({

@@ -1,11 +1,10 @@
 ---
-import type { MarkdownHeading } from "astro";
 import { siteConfig } from "../../config";
 import type { Headings } from '@/types/posts';
 
 interface Props {
 	class?: string;
-	headings: MarkdownHeading[];
+	headings: Headings[];
 }
 
 let { headings = [] } = Astro.props;

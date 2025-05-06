@@ -1,5 +1,4 @@
 import type { VFile } from "node_modules/rehype-raw/lib";
-import type { MarkdownHeading } from "astro";
 
 export interface Profile {
   avatar: string;
@@ -66,7 +65,7 @@ export interface PostExtended {
   draft?: boolean;
   pinned?: boolean;
   readingTime?: ReadingTime;
-  headings?: MarkdownHeading[];
+  headings?: Headings[];
   nextSlug?: string;
   nextTitle?: string;
   prevSlug?: string;

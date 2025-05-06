@@ -6,7 +6,7 @@ import type { APIRoute } from "astro";
 
 export const prerender = false;
 
-export const GET: APIRoute = async (Astro) => {
+export const GET: APIRoute = async () => {
   try {
     const profile: Profile = await getProfile(profileConfig.did);
 

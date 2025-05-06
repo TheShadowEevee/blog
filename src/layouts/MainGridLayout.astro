@@ -3,10 +3,10 @@ import Footer from "@components/Footer.astro";
 import Navbar from "@components/Navbar.astro";
 import BackToTop from "@components/control/BackToTop.astro";
 import SideBar from "@components/widget/SideBar.astro";
-import type { MarkdownHeading } from "astro";
 import { Icon } from "astro-icon/components";
 import ImageWrapper from "../components/misc/ImageWrapper.astro";
 import TOC from "../components/widget/TOC.astro";
+import type { Headings } from "@/types/posts";
 import { siteConfig } from "../config";
 import {
 	BANNER_HEIGHT,
@@ -21,7 +21,7 @@ interface Props {
 	description?: string;
 	lang?: string;
 	setOGTypeArticle?: boolean;
-	headings?: MarkdownHeading[];
+	headings?: Headings[];
 }
 
 const {

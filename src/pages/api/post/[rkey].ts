@@ -56,7 +56,7 @@ export const GET: APIRoute = async (Astro) => {
           post = await parse(mdposts);
 
           if (record.visibility === "public") {
-            const rkeyPost = await fetch(
+            await fetch(
               `${import.meta.env.NEXT_PUBLIC_URL}/api/cache/post-${rkey}`,
               {
                 method: "POST",
@@ -67,12 +67,6 @@ export const GET: APIRoute = async (Astro) => {
                 }),
               }
             );
-
-            const rkeyPostRes = await rkeyPost.json();
-
-            if (!rkeyPostRes.success) {
-              throw `Error caching the post: ${rkeyPostRes.result}`;
-            }
           }
 
           return new Response(
@@ -82,6 +76,13 @@ export const GET: APIRoute = async (Astro) => {
             })
           );
         }
+        return new Response(
+          JSON.stringify({
+            success: false,
+            result: "Unknown Error Fetching Post",
+          }),
+          { status: 400 }
+        );
       }
       return new Response(
         JSON.stringify({
@@ -91,6 +92,12 @@ export const GET: APIRoute = async (Astro) => {
         { status: 400 }
       );
     }
-    throw "'item' is null or undefined";
   }
+  return new Response(
+    JSON.stringify({
+      success: false,
+      result: "No rkey provided",
+    }),
+    { status: 400 }
+  );
 };

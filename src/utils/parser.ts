@@ -16,7 +16,7 @@ import remarkSectionize from "remark-sectionize";
 import { parseDirectiveNode } from "../plugins/remark-directive-rehype";
 import remarkReadingTime from "remark-reading-time";
 import remarkHeadings from "@vcarl/remark-headings";
-import { type Plugin, unified } from "unified";
+import { unified } from "unified";
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import { checkUpdated, parseExtendedValue } from "./content-utils";

@@ -16,7 +16,7 @@ interface DirectiveNode extends Node {
 }
 
 export function parseDirectiveNode() {
-  return (tree: Node, { data }: { data: any }) => {
+  return (tree: Node, {}: { data: any }) => {
     visit(tree, (node: Node) => {
       if (
         node.type === "containerDirective" ||
@@ -39,7 +39,7 @@ export function parseDirectiveNode() {
 
         const hast = h(
           directiveNode.name,
-          directiveNode.attributes as Properties,
+          directiveNode.attributes as Properties
         ) as Element;
 
         directiveNode.data.hName = hast.tagName;
