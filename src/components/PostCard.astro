@@ -38,9 +38,9 @@ const {
 } = Astro.props
 const className = Astro.props.class
 
-const hasCover = image !== undefined && image !== null && image !== "";
+const hasCover = image !== undefined && image !== null && image !== ''
 
-const coverWidth = "28%";
+const coverWidth = '28%'
 
 ---
 <div class:list={["card-base flex flex-col-reverse md:flex-col w-full rounded-[var(--radius-large)] overflow-hidden relative", className]} style={style}>

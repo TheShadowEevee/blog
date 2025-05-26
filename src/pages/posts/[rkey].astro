@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ---
 export const prerender = false;
 
@@ -230,3 +231,237 @@ const jsonLd = {
     animation-delay: calc(var(--content-delay) + 325ms);
   }
 </style>
+=======
+---
+export const prerender = false;
+
+import License from "@components/misc/License.astro";
+import Markdown from "@components/misc/Markdown.astro";
+import MainGridLayout from "@layouts/MainGridLayout.astro";
+import { getPostUrlBySlug } from "@utils/url-utils";
+// @ts-ignore : This module exists
+import { Icon } from "astro-icon/components";
+import { licenseConfig } from "src/config";
+import PostMetadata from "../../components/PostMeta.astro";
+import ImageWrapper from "../../components/misc/ImageWrapper.astro";
+import { profileConfig, siteConfig } from "../../config";
+import { formatDateToYYYYMMDD } from "../../utils/date-utils";
+import { i18n } from "@i18n/translation";
+import I18nKey from "@i18n/i18nKey";
+import type { Post } from "@/types/posts";
+import { GET as getPost } from '../api/post/[rkey]'
+
+let blogPost: Post = {};
+
+const initResponse = await getPost(Astro);
+const response = await initResponse.json();
+
+if ((response.success === true) && (blogPost.title !== "undefined")) {
+    blogPost = response.result
+} else {
+  return new Response(null, { status: 404 })
+}
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: blogPost?.title,
+  description: blogPost?.extendedData?.description || blogPost?.title,
+  keywords: blogPost?.extendedData?.tags ?? [],
+  author: {
+    "@type": "Person",
+    name: profileConfig.name,
+    url: Astro.site,
+  },
+  datePublished: formatDateToYYYYMMDD(
+    new Date(blogPost?.extendedData?.published ?? 0)
+  ),
+  inLanguage: blogPost?.extendedData?.lang
+    ? blogPost?.extendedData?.lang?.replace("_", "-")
+    : siteConfig.lang.replace("_", "-"),
+};
+---
+
+<MainGridLayout
+  title={blogPost?.extendedData?.title}
+  description={blogPost?.extendedData?.description}
+  lang={blogPost?.extendedData?.lang ?? "en"}
+  setOGTypeArticle={true}
+  headings={blogPost?.extendedData?.headings}
+>
+  <script
+    is:inline
+    slot="head"
+    type="application/ld+json"
+    set:html={JSON.stringify(jsonLd)}
+  />
+  <div
+    class="flex w-full rounded-[var(--radius-large)] overflow-hidden relative mb-4"
+  >
+    <div
+      id="post-container"
+      class:list={[
+        "card-base z-10 px-6 md:px-9 pt-6 pb-4 relative w-full ",
+        {},
+      ]}
+    >
+      <!-- word count and reading time -->
+      <div
+        class="flex flex-row text-black/30 dark:text-white/30 gap-5 mb-3 transition onload-animation"
+      >
+        <div class="flex flex-row items-center">
+          <div
+            class="transition h-6 w-6 rounded-md bg-black/5 dark:bg-white/10 text-black/50 dark:text-white/50 flex items-center justify-center mr-2"
+          >
+            <Icon name="material-symbols:notes-rounded" />
+          </div>
+          <div class="text-sm">
+            {blogPost?.extendedData?.readingTime?.words}
+            {" " + i18n(I18nKey.wordsCount)}
+          </div>
+        </div>
+        <div class="flex flex-row items-center">
+          <div
+            class="transition h-6 w-6 rounded-md bg-black/5 dark:bg-white/10 text-black/50 dark:text-white/50 flex items-center justify-center mr-2"
+          >
+            <Icon name="material-symbols:schedule-outline-rounded" />
+          </div>
+          <div class="text-sm">
+            {Math.round(blogPost?.extendedData?.readingTime?.minutes as number)}
+            {" " + i18n(I18nKey.minutesCount)}
+          </div>
+        </div>
+      </div>
+
+      <!-- title -->
+      <div class="relative onload-animation">
+        <div
+          class="transition w-full block font-bold mb-3
+                    text-3xl md:text-[2.25rem]/[2.75rem]
+                    text-black/90 dark:text-white/90
+                    md:before:w-1 before:h-5 before:rounded-md before:bg-[var(--primary)]
+                    before:absolute before:top-[0.75rem] before:left-[-1.125rem]"
+        >
+          {
+            blogPost?.extendedData?.draft
+              ? blogPost?.extendedData?.title
+              : "DRAFT: " + blogPost?.extendedData?.title
+          }
+        </div>
+      </div>
+
+      <!-- metadata -->
+      <div class="onload-animation">
+        <PostMetadata
+          class="mb-5"
+          published={new Date(blogPost?.extendedData?.published ?? 0)}
+          tags={blogPost?.extendedData?.tags ?? []}
+          category={blogPost?.extendedData?.category ?? ""}
+        />
+        {
+          !blogPost?.extendedData?.image && (
+            <div class="border-[var(--line-divider)] border-dashed border-b-[1px] mb-5" />
+          )
+        }
+      </div>
+
+      {
+        blogPost?.extendedData?.image && (
+          <ImageWrapper
+            id="post-cover"
+            src={blogPost?.extendedData?.image}
+            class="mb-8 rounded-xl banner-container onload-animation"
+          />
+        )
+      }
+
+      <Markdown class="mb-6 markdown-content onload-animation">
+        <p set:html={blogPost?.content} />
+      </Markdown>
+
+      {
+        licenseConfig.enable && (
+          <License
+            title={blogPost?.extendedData?.title ?? "Post does not exist"}
+            pubDate={new Date(blogPost?.extendedData?.published ?? 0)}
+            class="mb-6 rounded-xl license-container onload-animation"
+          />
+        )
+      }
+    </div>
+  </div>
+
+  <div
+    class="flex flex-col md:flex-row justify-between mb-4 gap-4 overflow-hidden w-full"
+  >
+    <a
+      href={blogPost?.nextPost?.slug
+        ? getPostUrlBySlug(blogPost?.nextPost?.slug)
+        : "#"}
+      class:list={[
+        "w-full font-bold overflow-hidden active:scale-95",
+        { "pointer-events-none": !blogPost?.nextPost?.slug },
+      ]}
+    >
+      {
+        blogPost?.nextPost?.slug && (
+          <div class="btn-card rounded-2xl w-full h-[3.75rem] max-w-full px-4 flex items-center justify-start gap-4">
+            <Icon
+              name="material-symbols:chevron-left-rounded"
+              class="text-[2rem] text-[var(--primary)]"
+            />
+            <div class="overflow-hidden transition overflow-ellipsis whitespace-nowrap max-w-[calc(100%_-_3rem)] text-black/75 dark:text-white/75">
+              {blogPost?.nextPost?.title}
+            </div>
+          </div>
+        )
+      }
+    </a>
+
+    <a
+      href={blogPost?.prevPost?.slug
+        ? getPostUrlBySlug(blogPost?.prevPost?.slug)
+        : "#"}
+      class:list={[
+        "w-full font-bold overflow-hidden active:scale-95",
+        { "pointer-events-none": !blogPost?.prevPost?.slug },
+      ]}
+    >
+      {
+        blogPost?.prevPost?.slug && (
+          <div class="btn-card rounded-2xl w-full h-[3.75rem] max-w-full px-4 flex items-center justify-end gap-4">
+            <div class="overflow-hidden transition overflow-ellipsis whitespace-nowrap max-w-[calc(100%_-_3rem)] text-black/75 dark:text-white/75">
+              {blogPost?.prevPost?.title}
+            </div>
+            <Icon
+              name="material-symbols:chevron-right-rounded"
+              class="text-[2rem] text-[var(--primary)]"
+            />
+          </div>
+        )
+      }
+    </a>
+  </div>
+</MainGridLayout>
+
+<style is:global>
+  #post-container :nth-child(1) {
+    animation-delay: calc(var(--content-delay) + 0ms);
+  }
+  #post-container :nth-child(2) {
+    animation-delay: calc(var(--content-delay) + 50ms);
+  }
+  #post-container :nth-child(3) {
+    animation-delay: calc(var(--content-delay) + 100ms);
+  }
+  #post-container :nth-child(4) {
+    animation-delay: calc(var(--content-delay) + 175ms);
+  }
+  #post-container :nth-child(5) {
+    animation-delay: calc(var(--content-delay) + 250ms);
+  }
+  #post-container :nth-child(6) {
+    animation-delay: calc(var(--content-delay) + 325ms);
+  }
+</style>
+>>>>>>> 8919243 (changes)

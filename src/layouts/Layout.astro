@@ -7,18 +7,18 @@ import { profileConfig, siteConfig } from '@/config'
 import ConfigCarrier from '@components/ConfigCarrier.astro'
 import {
   AUTO_MODE,
-  DARK_MODE,
-  DEFAULT_THEME,
-  LIGHT_MODE,
   BANNER_HEIGHT,
   BANNER_HEIGHT_EXTEND,
   BANNER_HEIGHT_HOME,
+  DARK_MODE,
+  DEFAULT_THEME,
+  LIGHT_MODE,
   PAGE_WIDTH,
-} from "../constants/constants";
-import { defaultFavicons } from "../constants/icon";
-import type { Favicon } from "../types/config";
-import { url, pathsEqual } from "../utils/url-utils";
-//import '@/styles/globals.css'
+} from '../constants/constants'
+import { defaultFavicons } from '../constants/icon'
+import type { Favicon } from '../types/config'
+import { url, pathsEqual } from '../utils/url-utils'
+import 'katex/dist/katex.css'
 
 interface Props {
   title?: string
@@ -145,24 +145,18 @@ const bannerOffset =
 
 		<slot name="head"></slot>
 
-    <link
-      rel="alternate"
-      type="application/rss+xml"
-      title={profileConfig.name}
-      href={`${Astro.site}rss.xml`}
-    />
-  </head>
-  <body
-    class="min-h-screen transition"
-    class:list={[{ "lg:is-home": isHomePage, "enable-banner": enableBanner }]}
-    data-overlayscrollbars-initialize
-  >
-    <ConfigCarrier />
-    <slot />
+		<link rel="alternate" type="application/rss+xml" title={profileConfig.name} href={`${Astro.site}rss.xml`}/>
 
-    <!-- increase the page height during page transition to prevent the scrolling animation from jumping -->
-    <div id="page-height-extend" class="hidden h-[300vh]"></div>
-  </body>
+	</head>
+	<body class=" min-h-screen transition " class:list={[{"lg:is-home": isHomePage, "enable-banner": enableBanner}]}
+		  data-overlayscrollbars-initialize
+	>
+		<ConfigCarrier></ConfigCarrier>
+		<slot />
+
+		<!-- increase the page height during page transition to prevent the scrolling animation from jumping -->
+		<div id="page-height-extend" class="hidden h-[300vh]"></div>
+	</body>
 </html>
 
 <style is:global define:vars={{
@@ -293,11 +287,45 @@ function loadHue() {
 	setHue(getHue())
 }
 
-  const setup = () => {
-    
-    window.swup.hooks.on("link:click", () => {
-      // Remove the delay for the first time page load
-      document.documentElement.style.setProperty("--content-delay", "0ms");
+function initCustomScrollbar() {
+	const bodyElement = document.querySelector('body');
+	if (!bodyElement) return;
+	OverlayScrollbars(
+		// docs say that a initialization to the body element would affect native functionality like window.scrollTo
+		// but just leave it here for now
+		{
+			target: bodyElement,
+			cancel: {
+				nativeScrollbarsOverlaid: true,    // don't initialize the overlay scrollbar if there is a native one
+			}
+		}, {
+		scrollbars: {
+			theme: 'scrollbar-base scrollbar-auto py-1',
+			autoHide: 'move',
+			autoHideDelay: 500,
+			autoHideSuspend: false,
+		},
+	});
+	const preElements = document.querySelectorAll('pre');
+	preElements.forEach((ele) => {
+		OverlayScrollbars(ele, {
+			scrollbars: {
+				theme: 'scrollbar-base scrollbar-dark px-2',
+				autoHide: 'leave',
+				autoHideDelay: 500,
+				autoHideSuspend: false
+			}
+		});
+	});
+	const katexElements = document.querySelectorAll('.katex-display') as NodeListOf<HTMLElement>;
+	katexElements.forEach((ele) => {
+		OverlayScrollbars(ele, {
+			scrollbars: {
+				theme: 'scrollbar-base scrollbar-auto py-1',
+			}
+		});
+	});
+}
 
 function showBanner() {
 	if (!siteConfig.banner.enable) {
@@ -322,25 +350,22 @@ function init() {
 /* Load settings when entering the site */
 init();
 
-        // Just make the transition looks better
-        const toc = document.getElementById("toc-wrapper");
-        if (toc) {
-          toc.classList.remove("toc-not-ready");
-        }
-      }, 200);
-    });
-  };
-  if (window?.swup?.hooks) {
-    setup();
-  } else {
-    document.addEventListener("swup:enable", setup);
-  }
-
-  let backToTopBtn = document.getElementById("back-to-top-btn");
-  let toc = document.getElementById("toc-wrapper");
-  let navbar = document.getElementById("navbar-wrapper");
-  function scrollFunction() {
-    let bannerHeight = window.innerHeight * (BANNER_HEIGHT / 100);
+const setup = () => {
+	// TODO: temp solution to change the height of the banner
+/*
+	window.swup.hooks.on('animation:out:start', () => {
+		const path = window.location.pathname
+		const body = document.querySelector('body')
+		if (path[path.length - 1] === '/' && !body.classList.contains('is-home')) {
+			body.classList.add('is-home')
+		} else if (path[path.length - 1] !== '/' && body.classList.contains('is-home')) {
+			body.classList.remove('is-home')
+		}
+	})
+*/
+	window.swup.hooks.on('link:click', () => {
+		// Remove the delay for the first time page load
+		document.documentElement.style.setProperty('--content-delay', '0ms')
 
 		// prevent elements from overlapping the navbar
 		if (!bannerEnabled) {
