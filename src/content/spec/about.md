@@ -1,6 +1,6 @@
 # About
 
-Hello! I'm Michael (@TheShadowEevee). I'm a cybersec/virtual reality/technology enthusiast with a general interest in many technology-oriented topics and a passion for learning other areas as they intrigue me.
+Hello! I'm Lumi (@TheShadowEevee). I'm a cybersec/virtual reality/technology enthusiast with a general interest in many technology-oriented topics and a passion for learning other areas as they intrigue me.
 
 I am at [Purdue University](https://purdue.edu) studying [Cybersecurity](https://polytechnic.purdue.edu/degrees/cybersecurity) and [Computing Infrastructure and Network Engineering Technology](https://polytechnic.purdue.edu/degrees/computing-infrastructure-and-network-engineering-technology), with minors in Forensic Sciences and Law and Society. While I primarily work in these areas, I don't let that restrict my skills; I continue to learn more across many fields, letting new experiences and projects guide my learning outside class.
 
