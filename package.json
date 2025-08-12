@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
+    "check": "astro check",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
@@ -45,8 +46,7 @@
     "katex": "^0.16.22",
     "markdown-it": "^14.1.0",
     "mdast-util-to-string": "^4.0.0",
-    "next": "^15.1.6",
-    "overlayscrollbars": "^2.11.0",
+    "overlayscrollbars": "^2.11.4",
     "photoswipe": "^5.4.4",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
