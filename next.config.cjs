@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ["@mdxeditor/editor"],
   reactStrictMode: true,
   webpack: (config) => {
     // this will override the experiments
