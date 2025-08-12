@@ -1,6 +1,7 @@
 import type { AUTO_MODE, DARK_MODE, LIGHT_MODE } from "@constants/constants";
 
 export type SiteConfig = {
+<<<<<<< HEAD
   title: string;
   subtitle: string;
 
@@ -32,12 +33,55 @@ export type Favicon = {
   src: string;
   theme?: "light" | "dark";
   sizes?: string;
+=======
+	title: string;
+	subtitle: string;
+
+	lang:
+		| "en"
+		| "zh_CN"
+		| "zh_TW"
+		| "ja"
+		| "ko"
+		| "es"
+		| "th"
+		| "vi"
+		| "tr"
+		| "id";
+
+	themeColor: {
+		hue: number;
+		fixed: boolean;
+	};
+	banner: {
+		enable: boolean;
+		src: string;
+		position?: "top" | "center" | "bottom";
+		credit: {
+			enable: boolean;
+			text: string;
+			url?: string;
+		};
+	};
+	toc: {
+		enable: boolean;
+		depth: 1 | 2 | 3;
+	};
+
+	favicon: Favicon[];
+};
+
+export type Favicon = {
+	src: string;
+	theme?: "light" | "dark";
+	sizes?: string;
+>>>>>>> template/main
 };
 
 export enum LinkPreset {
-  Home = 0,
-  Archive = 1,
-  About = 2,
+	Home = 0,
+	Archive = 1,
+	About = 2,
 }
 
 export type NavBarLink = {
@@ -85,4 +129,8 @@ export type BlogPostData = {
   prevSlug?: string;
   nextTitle?: string;
   nextSlug?: string;
+};
+
+export type ExpressiveCodeConfig = {
+	theme: string;
 };
