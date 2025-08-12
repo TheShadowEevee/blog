@@ -126,27 +126,11 @@
   .btn-regular-dark {
     @apply flex items-center justify-center
         bg-[oklch(0.45_0.01_var(--hue))] hover:bg-[oklch(0.50_0.01_var(--hue))] active:bg-[oklch(0.55_0.01_var(--hue))]
-        dark:bg-[oklch(0.30_0.02_var(--hue))] dark:hover:bg-[oklch(0.35_0.03_var(--hue))] dark:active:bg-[oklch(0.40_0.03_var(--hue))];
-  }
-  .btn-regular-dark.success {
-    @apply bg-[oklch(0.75_0.14_var(--hue))] dark:bg-[oklch(0.75_0.14_var(--hue))];
-  }
-
-  .copy-btn-icon {
-    @apply absolute top-1/2 left-1/2 transition -translate-x-1/2 -translate-y-1/2;
-  }
-  .copy-btn .copy-icon {
-    @apply opacity-100 fill-white dark:fill-white/75;
-  }
-  .copy-btn.success .copy-icon {
-    @apply opacity-0 fill-[var(--deep-text)];
-  }
-  .copy-btn .success-icon {
-    @apply opacity-0;
-  }
-  .copy-btn.success .success-icon {
-    @apply opacity-100;
-  }
+        dark:bg-[oklch(0.30_0.02_var(--hue))] dark:hover:bg-[oklch(0.35_0.03_var(--hue))] dark:active:bg-[oklch(0.40_0.03_var(--hue))]
+    }
+    .btn-regular-dark.success {
+        @apply bg-[oklch(0.75_0.14_var(--hue))] dark:bg-[oklch(0.75_0.14_var(--hue))]
+    }
 }
 
 .custom-md img,
@@ -175,5 +159,5 @@
 }
 
 .collapsed {
-  height: var(--collapsedHeight);
+    height: var(--collapsedHeight);
 }
