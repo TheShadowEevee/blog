@@ -23,6 +23,7 @@ import { remarkReadingTime } from "./src/plugins/remark-reading-time.mjs";
 import { externalAnchorPlugin } from "./src/plugins/external-anchor.ts";
 import { expressiveCodeConfig } from "./src/config.ts";
 import { pluginLanguageBadge } from "./src/plugins/expressive-code/language-badge.ts";
+import { pluginCustomCopyButton } from "./src/plugins/expressive-code/custom-copy-button.js";
 
 import node from "@astrojs/node";
 
@@ -111,20 +112,10 @@ export default defineConfig({
     sitemap({
       includeByDefault: true,
     }),
-    Compress({
-      CSS: false,
-      Image: false,
-      Action: {
-        Passed: async () => true, // https://github.com/PlayForm/Compress/issues/376
-      },
-    }),
     umami({
       id: "6bae5cfe-012e-48cf-8b3e-d96b0518ab72",
       endpointUrl: "https://umami.shad.moe",
       hostUrl: "https://umami.shad.moe",
-    }),
-    react({
-      include: ["**/MDXEditor.tsx"],
     }),
   ],
   markdown: {

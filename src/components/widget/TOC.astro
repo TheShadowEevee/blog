@@ -1,40 +1,45 @@
 ---
-import type { MarkdownHeading } from "astro";
 import { siteConfig } from "../../config";
-import { url } from "../../utils/url-utils";
+import type { Headings } from '@/types/posts';
 
 interface Props {
-	class?: string;
-	headings: MarkdownHeading[];
+  class?: string
+  headings: Headings[]
 }
 
-let { headings = [] } = Astro.props;
+const { headings = []  } = Astro.props;
 
 let minDepth = 10;
 for (const heading of headings) {
-	minDepth = Math.min(minDepth, heading.depth);
+    minDepth = Math.min(minDepth, heading.depth);
 }
 
-const className = Astro.props.class;
-const isPostsRoute = Astro.url.pathname.startsWith(url("/posts/"));
+const className = Astro.props.class
 
 const removeTailingHash = (text: string) => {
-	let lastIndexOfHash = text.lastIndexOf("#");
-	if (lastIndexOfHash !== text.length - 1) {
-		return text;
-	}
+    const lastIndexOfHash = text.lastIndexOf('#');
+    if (lastIndexOfHash !== text.length - 1) {
+        return text;
+    }
 
-	return text.substring(0, lastIndexOfHash);
-};
+    return text.substring(0, lastIndexOfHash);
+}
 
+// biome-ignore lint/style/useConst: <explanation>
 let heading1Count = 1;
 
 const maxLevel = siteConfig.toc.depth;
+
 ---
-{isPostsRoute &&
 <table-of-contents class:list={[className, "group"]}>
     {headings.filter((heading) => heading.depth < minDepth + maxLevel).map((heading) =>
-            <a href={`#${heading.slug}`} class="px-2 flex gap-2 relative transition w-full min-h-9 rounded-xl
+            <a href={`#${heading.value
+            .toLowerCase()
+            .replace(/ /g, "-")
+            // This next replace is a bit icky, but it works for what it needs to. Just don't use <.*> headings.
+            // This is intended to parse out HTML like <sup />, For example in "January 1<sup>st</sup>"
+            .replaceAll(/<[^>]*>/g, "")
+            .replace(/[^a-zA-Z0-9\-]/g, "")}`} class="px-2 flex gap-2 relative transition w-full min-h-9 rounded-xl
         hover:bg-[var(--toc-btn-hover)] active:bg-[var(--toc-btn-active)] py-2
     ">
                 <div class:list={["transition w-5 h-5 shrink-0 rounded-lg text-xs flex items-center justify-center font-bold",
@@ -52,12 +57,13 @@ const maxLevel = siteConfig.toc.depth;
                 <div class:list={["transition text-sm", {
                     "text-50": heading.depth == minDepth || heading.depth == minDepth + 1,
                     "text-30": heading.depth == minDepth + 2,
-                }]}>{removeTailingHash(heading.text)}</div>
+                }]}>{removeTailingHash(heading.value).replaceAll(/<[^>]*>/g, "")}</div>
             </a>
     )}
-    <div id="active-indicator" style="opacity: 0" class:list={[{'hidden': headings.length == 0}, "-z-10 absolute bg-[var(--toc-btn-hover)] left-0 right-0 rounded-xl transition-all " +
+    <div id="active-indicator" class:list={[{'hidden': headings.length == 0}, "-z-10 absolute bg-[var(--toc-btn-hover)] left-0 right-0 rounded-xl transition-all " +
         "group-hover:bg-transparent border-2 border-[var(--toc-btn-hover)] group-hover:border-[var(--toc-btn-active)] border-dashed"]}></div>
-</table-of-contents>}
+</table-of-contents>
+
 
 <script>
 class TableOfContents extends HTMLElement {
@@ -97,7 +103,7 @@ class TableOfContents extends HTMLElement {
 
     toggleActiveHeading = () => {
         let i = this.active.length - 1;
-        let min = this.active.length - 1, max = -1;
+        let min = this.active.length - 1, max = 0;
         while (i >= 0 && !this.active[i]) {
             this.tocEntries[i].classList.remove(this.visibleClass);
             i--;
@@ -112,15 +118,11 @@ class TableOfContents extends HTMLElement {
             this.tocEntries[i].classList.remove(this.visibleClass);
             i--;
         }
-        if (min > max) {
-            this.activeIndicator?.setAttribute("style", `opacity: 0`);
-        } else {
-            let parentOffset = this.tocEl?.getBoundingClientRect().top || 0;
-            let scrollOffset = this.tocEl?.scrollTop || 0;
-            let top = this.tocEntries[min].getBoundingClientRect().top - parentOffset + scrollOffset;
-            let bottom = this.tocEntries[max].getBoundingClientRect().bottom - parentOffset + scrollOffset;
-            this.activeIndicator?.setAttribute("style", `top: ${top}px; height: ${bottom - top}px`);
-        }
+        let parentOffset = this.tocEl?.getBoundingClientRect().top || 0;
+        let scrollOffset = this.tocEl?.scrollTop || 0;
+        let top = this.tocEntries[min].getBoundingClientRect().top - parentOffset + scrollOffset;
+        let bottom = this.tocEntries[max].getBoundingClientRect().bottom - parentOffset + scrollOffset;
+        this.activeIndicator?.setAttribute("style", `top: ${top}px; height: ${bottom - top}px`);
     };
 
     scrollToActiveHeading = () => {
@@ -208,7 +210,7 @@ class TableOfContents extends HTMLElement {
                 this.init();
             }, { once: true });
         } else {
-            console.debug('Animation element not found');
+            console.warn('Animation element not found');
         }
     };
 
@@ -262,7 +264,6 @@ class TableOfContents extends HTMLElement {
     };
 }
 
-if (!customElements.get("table-of-contents")) {
-    customElements.define("table-of-contents", TableOfContents);
-}
+customElements.define("table-of-contents", TableOfContents);
+
 </script>
