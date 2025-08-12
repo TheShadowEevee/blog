@@ -2,10 +2,9 @@ import Key from "../i18nKey";
 import type { Translation } from "../translation";
 
 export const th: Translation = {
-  [Key.home]: "หน้าแรก",
-  [Key.about]: "เกี่ยวกับ",
-  [Key.archive]: "คลัง",
-  [Key.search]: "ค้นหา",
+	[Key.home]: "หน้าแรก",
+	[Key.about]: "เกี่ยวกับ",
+	[Key.archive]: "คลัง",
 
   [Key.tags]: "ป้ายกำกับ",
   [Key.categories]: "หมวดหมู่",

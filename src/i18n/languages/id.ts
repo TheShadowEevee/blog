@@ -5,8 +5,6 @@ export const id: Translation = {
 	[Key.home]: "Beranda",
 	[Key.about]: "Tentang",
 	[Key.archive]: "Arsip",
-	[Key.search]: "Cari",
-	[Key.friends]: "Tautan Ramah",
 
 	[Key.tags]: "Tag",
 	[Key.categories]: "Kategori",
@@ -36,4 +34,6 @@ export const id: Translation = {
 	[Key.author]: "Penulis",
 	[Key.publishedAt]: "Diterbitkan pada",
 	[Key.license]: "Lisensi",
+	  
+	[Key.fourohfour]: "404",
 };
