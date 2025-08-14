@@ -35,5 +35,9 @@ export const th: Translation = {
   [Key.publishedAt]: "เผยแพร่เมื่อ",
   [Key.license]: "สัญญาอนุญาต",
 
-  [Key.fourohfour]: "404",
+	[Key.author]: "ผู้เขียน",
+	[Key.publishedAt]: "เผยแพร่เมื่อ",
+	[Key.license]: "สัญญาอนุญาต",
+
+	[Key.fourohfour]: "404",
 };

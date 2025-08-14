@@ -35,5 +35,9 @@ export const ko: Translation = {
   [Key.publishedAt]: "게시일",
   [Key.license]: "라이선스",
 
-  [Key.fourohfour]: "404",
+	[Key.author]: "저자",
+	[Key.publishedAt]: "게시일",
+	[Key.license]: "라이선스",
+
+	[Key.fourohfour]: "404",
 };

@@ -62,6 +62,26 @@ export default defineConfig({
         'fa6-solid': ['*'],
       },
     }),
+    expressiveCode({
+      themes: [expressiveCodeConfig.theme, expressiveCodeConfig.theme],
+      plugins: [
+        pluginCollapsibleSections(),
+        pluginLineNumbers(),
+        pluginLanguageBadge(),
+        pluginCustomCopyButton(),
+      ],
+      defaultProps: {
+        wrap: true,
+        overridesByLang: {
+          shellsession: {
+            showLineNumbers: false,
+          },
+        },
+      },
+      frames: {
+        showCopyToClipboardButton: false,
+      },
+    }),
     svelte(),
     sitemap({
       includeByDefault: true,

@@ -28,11 +28,11 @@ enum I18nKey {
 
   more = "more",
 
-  author = "author",
-  publishedAt = "publishedAt",
-  license = "license",
-  
-  fourohfour = "404",
+	author = "author",
+	publishedAt = "publishedAt",
+	license = "license",
+
+	fourohfour = "404",
 }
 
 export default I18nKey;
