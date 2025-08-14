@@ -1,8 +1,11 @@
 ---
 export const prerender = false;
 
+import type { Post } from "@/types/posts";
 import License from "@components/misc/License.astro";
 import Markdown from "@components/misc/Markdown.astro";
+import I18nKey from "@i18n/i18nKey";
+import { i18n } from "@i18n/translation";
 import MainGridLayout from "@layouts/MainGridLayout.astro";
 import { getPostUrlBySlug } from "@utils/url-utils";
 // @ts-ignore : This module exists
@@ -12,39 +15,36 @@ import PostMetadata from "../../components/PostMeta.astro";
 import ImageWrapper from "../../components/misc/ImageWrapper.astro";
 import { profileConfig, siteConfig } from "../../config";
 import { formatDateToYYYYMMDD } from "../../utils/date-utils";
-import { i18n } from "@i18n/translation";
-import I18nKey from "@i18n/i18nKey";
-import type { Post } from "@/types/posts";
-import { GET as getPost } from '../api/post/[rkey]'
+import { GET as getPost } from "../api/post/[rkey]";
 
 let blogPost: Post = {};
 
 const initResponse = await getPost(Astro);
 const response = await initResponse.json();
 
-if ((response.success === true) && (blogPost.title !== "undefined")) {
-    blogPost = response.result
+if (response.success === true && blogPost.title !== "undefined") {
+	blogPost = response.result;
 } else {
-  return new Response(null, { status: 404 })
+	return new Response(null, { status: 404 });
 }
 
 const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  headline: blogPost?.title,
-  description: blogPost?.extendedData?.description || blogPost?.title,
-  keywords: blogPost?.extendedData?.tags ?? [],
-  author: {
-    "@type": "Person",
-    name: profileConfig.name,
-    url: Astro.site,
-  },
-  datePublished: formatDateToYYYYMMDD(
-    new Date(blogPost?.extendedData?.published ?? 0)
-  ),
-  inLanguage: blogPost?.extendedData?.lang
-    ? blogPost?.extendedData?.lang?.replace("_", "-")
-    : siteConfig.lang.replace("_", "-"),
+	"@context": "https://schema.org",
+	"@type": "BlogPosting",
+	headline: blogPost?.title,
+	description: blogPost?.extendedData?.description || blogPost?.title,
+	keywords: blogPost?.extendedData?.tags ?? [],
+	author: {
+		"@type": "Person",
+		name: profileConfig.name,
+		url: Astro.site,
+	},
+	datePublished: formatDateToYYYYMMDD(
+		new Date(blogPost?.extendedData?.published ?? 0),
+	),
+	inLanguage: blogPost?.extendedData?.lang
+		? blogPost?.extendedData?.lang?.replace("_", "-")
+		: siteConfig.lang.replace("_", "-"),
 };
 ---
 
@@ -142,7 +142,7 @@ const jsonLd = {
       }
 
       <Markdown class="mb-6 markdown-content onload-animation">
-        <p set:html={blogPost?.content} />
+          <Fragment set:html={blogPost?.content} />
       </Markdown>
 
       {
