@@ -1,7 +1,7 @@
 ---
+import type { Post } from "@/types/posts";
 import { getPostUrlBySlug } from "@utils/url-utils";
 import PostCard from "./PostCard.astro";
-import type { Post } from "@/types/posts";
 
 const page: Record<string, Post> = Astro.props.page;
 

@@ -64,50 +64,26 @@ export default defineConfig({
         "fa6-solid": ["*"],
       },
     }),
-	expressiveCode({
-		themes: [expressiveCodeConfig.theme, expressiveCodeConfig.theme],
-		plugins: [
-			pluginCollapsibleSections(),
-			pluginLineNumbers(),
-			pluginLanguageBadge(),
-			pluginCustomCopyButton()
-		],
-		defaultProps: {
-			wrap: true,
-			overridesByLang: {
-				'shellsession': {
-					showLineNumbers: false,
-				},
-			},
-		},
-		styleOverrides: {
-			codeBackground: "var(--codeblock-bg)",
-			borderRadius: "0.75rem",
-			borderColor: "none",
-			codeFontSize: "0.875rem",
-			codeFontFamily: "'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
-			codeLineHeight: "1.5rem",
-			frames: {
-				editorBackground: "var(--codeblock-bg)",
-				terminalBackground: "var(--codeblock-bg)",
-				terminalTitlebarBackground: "var(--codeblock-topbar-bg)",
-				editorTabBarBackground: "var(--codeblock-topbar-bg)",
-				editorActiveTabBackground: "none",
-				editorActiveTabIndicatorBottomColor: "var(--primary)",
-				editorActiveTabIndicatorTopColor: "none",
-				editorTabBarBorderBottomColor: "var(--codeblock-topbar-bg)",
-				terminalTitlebarBorderBottomColor: "none"
-			},
-			textMarkers: {
-				delHue: 0,
-				insHue: 180,
-				markHue: 250
-			}
-		},
-		frames: {
-			showCopyToClipboardButton: false,
-		}
-	}),
+    expressiveCode({
+      themes: [expressiveCodeConfig.theme, expressiveCodeConfig.theme],
+      plugins: [
+        pluginCollapsibleSections(),
+        pluginLineNumbers(),
+        pluginLanguageBadge(),
+        pluginCustomCopyButton(),
+      ],
+      defaultProps: {
+        wrap: true,
+        overridesByLang: {
+          shellsession: {
+            showLineNumbers: false,
+          },
+        },
+      },
+      frames: {
+        showCopyToClipboardButton: false,
+      },
+    }),
     svelte(),
     sitemap({
       includeByDefault: true,
