@@ -43,7 +43,7 @@ All data collected is non-identifiable. If you have specific questions about the
 
 ### Umami Analytics
 
-This site uses [Umami Analytics](https://umami.is/docs). No identifying data is stored. Analytics are publically available on [umami.shad.moe](https://umami.shad.moe/share/jVANlMTIiXenw4ae/shad.moe).
+This site uses [Umami Analytics](https://umami.is/docs). No identifying data is stored. Analytics are publically available on [umami.shad.moe](https://umami.shad.moe/share/HqYVQyua92lQjgMg/shad.moe).
 
 Umami Analytics is used to monitor number of visitors, and popular posts on the blog. Accessible data includes:
 
