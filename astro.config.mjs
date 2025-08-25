@@ -87,7 +87,7 @@ export default defineConfig({
       includeByDefault: true,
     }),
     umami({
-      id: "6bae5cfe-012e-48cf-8b3e-d96b0518ab72",
+      id: "492d838f-0aae-4aa8-8b73-c4ea0cd943bd",
       endpointUrl: "https://umami.shad.moe",
       hostUrl: "https://umami.shad.moe",
     }),
