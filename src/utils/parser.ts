@@ -29,145 +29,147 @@ import { checkUpdated, parseExtendedValue } from "./content-utils";
 // https://github.com/whtwnd/whitewind-blog/blob/7eb8d4623eea617fd562b93d66a0e235323a2f9a/frontend/src/services/DocProvider.tsx#L90
 // In theory we could also use their cache, but I'd like to rely on their API as little as possible, opting to pull from the PDS instead.
 const upgradeImage = (child: Node): void => {
-	if (child.type !== "element") {
-		return;
-	}
-	const elem = child as Element;
-	if (elem.tagName === "img") {
-		// Ensure https
-		const src = elem.properties.src;
-		if (src !== undefined && typeof src === "string") {
-			elem.properties.src = src.replace(/http\:\/\//, "https://");
-		}
-	}
-	for (const child of elem.children) {
-		upgradeImage(child);
-	}
+  if (child.type !== "element") {
+    return;
+  }
+  const elem = child as Element;
+  if (elem.tagName === "img") {
+    // Ensure https
+    const src = elem.properties.src;
+    if (src !== undefined && typeof src === "string") {
+      elem.properties.src = src.replace(/http\:\/\//, "https://");
+    }
+  }
+  for (const child of elem.children) {
+    upgradeImage(child);
+  }
 };
 
 const rehypeUpgradeImage: Plugin<[], Root> = () => {
-	// biome-ignore lint/suspicious/noExplicitAny: DOM Node
-	return (tree: { children: any[] }) => {
-		for (const child of tree.children) {
-			upgradeImage(child);
-		}
-	};
+  // biome-ignore lint/suspicious/noExplicitAny: DOM Node
+  return (tree: { children: any[] }) => {
+    for (const child of tree.children) {
+      upgradeImage(child);
+    }
+  };
 };
 
 export async function parse(mdposts: Map<string, MarkdownPost>) {
-	const posts: Map<string, Post> = new Map();
-	for (const [rkey, post] of mdposts) {
-		posts.set(rkey, {
-			title: post.title,
-			rkey: post.rkey,
-			createdAt: post.createdAt,
-			content: await unified()
-				.use(remarkParse, { fragment: true }) // Parse the MD
-				.use(remarkGfm) // Parse GH specific MD
-				.use(remarkMath)
-				.use(remarkReadingTime, {}) // Empty second param to appease Typescript while leaving defaults
-				.use(remarkGithubAdmonitionsToDirectives)
-				.use(remarkDirective)
-				.use(remarkHeadings)
-				.use(remarkSectionize)
-				.use(parseDirectiveNode)
-				.use(externalAnchorPlugin) // See https://tomoviktor.com/posts/astro-external-anchor/
-				.use(remarkRehype, { allowDangerousHtml: true }) // Convert to HTML
-				.use(rehypeRaw) // Parse HTML that exists as raw text leftover from MD parse
-				.use(rehypeUpgradeImage)
-				.use(rehypeStringify)
-				.use(rehypeKatex)
-				.use(rehypeSlug)
-				.use(rehypeComponents, {
-					components: {
-						github: GithubCardComponent,
-						note: (x, y) => AdmonitionComponent(x, y, "note"),
-						tip: (x, y) => AdmonitionComponent(x, y, "tip"),
-						important: (x, y) => AdmonitionComponent(x, y, "important"),
-						caution: (x, y) => AdmonitionComponent(x, y, "caution"),
-						warning: (x, y) => AdmonitionComponent(x, y, "warning"),
-					},
-				})
-				.use(rehypeAutolinkHeadings, {
-					behavior: "append",
-					properties: {
-						className: ["anchor"],
-					},
-					content: {
-						type: "element",
-						tagName: "span",
-						properties: {
-							className: ["anchor-icon"],
-						},
-						children: [
-							{
-								type: "text",
-								value: "#",
-							},
-						],
-					},
-				})
-				.process(post.mdcontent),
-			visibility: post.visibility !== "author",
-			ogp: post.ogp,
-			extendedData: {
-				title: post.title,
-				published: parseExtendedValue(post.mdcontent)?.published,
-				updated: checkUpdated(
-					parseExtendedValue(post.mdcontent)?.published,
-					post.createdAt,
-				),
-				description: parseExtendedValue(post.mdcontent)?.description,
-				image: parseExtendedValue(post.mdcontent)?.image,
-				tags: parseExtendedValue(post.mdcontent)?.tags,
-				category:
-					parseExtendedValue(post.mdcontent)?.category ??
-					i18n(I18nKey.uncategorized),
-				draft: post.visibility !== "publicr",
-				readingTime: {
-					text: 0,
-					minutes: 0,
-					time: 0,
-					words: 0,
-				},
-				headings: [],
-				lang: "en",
-				nextSlug: "",
-				nextTitle: "",
-				prevSlug: "",
-				prevTitle: "",
-			},
-			nextPost: {
-				title: undefined,
-				slug: undefined,
-			},
-			prevPost: {
-				title: undefined,
-				slug: undefined,
-			},
-		});
-		posts.set(rkey, {
-			content: String(posts.get(rkey)?.content),
-			extendedData: {
-				title: posts.get(rkey)?.extendedData?.title,
-				published: posts.get(rkey)?.extendedData?.published,
-				updated: posts.get(rkey)?.extendedData?.updated,
-				description: posts.get(rkey)?.extendedData?.description,
-				image: posts.get(rkey)?.extendedData?.image,
-				tags: posts.get(rkey)?.extendedData?.tags,
-				category: posts.get(rkey)?.extendedData?.category,
-				readingTime: (posts.get(rkey)?.content as VFile)?.data
-					.readingTime as ReadingTime,
-				headings: (posts.get(rkey)?.content as VFile)?.data
-					.headings as Headings[],
-				lang: posts.get(rkey)?.extendedData?.lang,
-				draft: posts.get(rkey)?.extendedData?.draft,
-				nextSlug: posts.get(rkey)?.extendedData?.nextSlug,
-				nextTitle: posts.get(rkey)?.extendedData?.nextTitle,
-				prevSlug: posts.get(rkey)?.extendedData?.prevSlug,
-				prevTitle: posts.get(rkey)?.extendedData?.prevTitle,
-			},
-		});
-	}
-	return posts;
+  const posts: Map<string, Post> = new Map();
+  for (const [rkey, post] of mdposts) {
+    posts.set(rkey, {
+      title: post.title,
+      rkey: post.rkey,
+      createdAt: post.createdAt,
+      content: await unified()
+        .use(remarkParse, { fragment: true }) // Parse the MD
+        .use(remarkGfm) // Parse GH specific MD
+        .use(remarkMath)
+        .use(remarkReadingTime, {}) // Empty second param to appease Typescript while leaving defaults
+        .use(remarkGithubAdmonitionsToDirectives)
+        .use(remarkDirective)
+        .use(remarkHeadings)
+        .use(remarkSectionize)
+        .use(parseDirectiveNode)
+        .use(externalAnchorPlugin) // See https://tomoviktor.com/posts/astro-external-anchor/
+        .use(remarkRehype, { allowDangerousHtml: true }) // Convert to HTML
+        .use(rehypeRaw) // Parse HTML that exists as raw text leftover from MD parse
+        .use(rehypeUpgradeImage)
+        .use(rehypeStringify)
+        .use(rehypeKatex)
+        .use(rehypeSlug)
+        .use(rehypeComponents, {
+          components: {
+            github: GithubCardComponent,
+            note: (x, y) => AdmonitionComponent(x, y, "note"),
+            tip: (x, y) => AdmonitionComponent(x, y, "tip"),
+            important: (x, y) => AdmonitionComponent(x, y, "important"),
+            caution: (x, y) => AdmonitionComponent(x, y, "caution"),
+            warning: (x, y) => AdmonitionComponent(x, y, "warning"),
+          },
+        })
+        .use(rehypeAutolinkHeadings, {
+          behavior: "append",
+          properties: {
+            className: ["anchor"],
+          },
+          content: {
+            type: "element",
+            tagName: "span",
+            properties: {
+              className: ["anchor-icon"],
+            },
+            children: [
+              {
+                type: "text",
+                value: "#",
+              },
+            ],
+          },
+        })
+        .process(post.mdcontent),
+      visibility: post.visibility !== "author",
+      ogp: post.ogp,
+      extendedData: {
+        title: post.title,
+        published: parseExtendedValue(post.mdcontent)?.published,
+        updated: checkUpdated(
+          parseExtendedValue(post.mdcontent)?.published,
+          post.createdAt
+        ),
+        description: parseExtendedValue(post.mdcontent)?.description,
+        image: parseExtendedValue(post.mdcontent)?.image,
+        tags: parseExtendedValue(post.mdcontent)?.tags,
+        authors: parseExtendedValue(post.mdcontent)?.authors,
+        category:
+          parseExtendedValue(post.mdcontent)?.category ??
+          i18n(I18nKey.uncategorized),
+        draft: post.visibility !== "public",
+        readingTime: {
+          text: 0,
+          minutes: 0,
+          time: 0,
+          words: 0,
+        },
+        headings: [],
+        lang: "en",
+        nextSlug: "",
+        nextTitle: "",
+        prevSlug: "",
+        prevTitle: "",
+      },
+      nextPost: {
+        title: undefined,
+        slug: undefined,
+      },
+      prevPost: {
+        title: undefined,
+        slug: undefined,
+      },
+    });
+    posts.set(rkey, {
+      content: String(posts.get(rkey)?.content),
+      extendedData: {
+        title: posts.get(rkey)?.extendedData?.title,
+        published: posts.get(rkey)?.extendedData?.published,
+        updated: posts.get(rkey)?.extendedData?.updated,
+        description: posts.get(rkey)?.extendedData?.description,
+        image: posts.get(rkey)?.extendedData?.image,
+        tags: posts.get(rkey)?.extendedData?.tags,
+        authors: posts.get(rkey)?.extendedData?.authors,
+        category: posts.get(rkey)?.extendedData?.category,
+        readingTime: (posts.get(rkey)?.content as VFile)?.data
+          .readingTime as ReadingTime,
+        headings: (posts.get(rkey)?.content as VFile)?.data
+          .headings as Headings[],
+        lang: posts.get(rkey)?.extendedData?.lang,
+        draft: posts.get(rkey)?.extendedData?.draft,
+        nextSlug: posts.get(rkey)?.extendedData?.nextSlug,
+        nextTitle: posts.get(rkey)?.extendedData?.nextTitle,
+        prevSlug: posts.get(rkey)?.extendedData?.prevSlug,
+        prevTitle: posts.get(rkey)?.extendedData?.prevTitle,
+      },
+    });
+  }
+  return posts;
 }
