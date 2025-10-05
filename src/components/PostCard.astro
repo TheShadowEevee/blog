@@ -17,6 +17,7 @@ interface Props {
 	published: Date;
 	updated?: Date;
 	tags: string[];
+	authors: string[];
 	category: string;
 	image: string;
 	description: string;
@@ -31,6 +32,7 @@ const {
 	published,
 	updated,
 	tags,
+	authors,
 	category,
 	image,
 	description,
@@ -58,7 +60,7 @@ const coverWidth = "28%";
         </a>
 
         <!-- metadata -->
-        <PostMetadata published={published ?? new Date()} updated={updated ?? new Date()} tags={tags} category={category} hideTagsForMobile={true} hideUpdateDate={true} class="mb-4"></PostMetadata>
+        <PostMetadata published={published ?? new Date()} updated={updated ?? new Date()} tags={tags} authors={authors} category={category} hideTagsForMobile={true} hideUpdateDate={true} class="mb-4"></PostMetadata>
 
         <!-- description -->
         <div class:list={["transition text-75 mb-3.5 pr-4", {"line-clamp-2 md:line-clamp-1": !description}]}>
