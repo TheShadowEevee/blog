@@ -22,6 +22,7 @@ const interval = 50;
             tags={entry.extendedData?.tags ?? []}
             category={entry.extendedData?.category ?? "Uncatagorized"}
             published={new Date(entry.extendedData?.published ?? 0)}
+            authors={entry.extendedData?.authors ?? []}
             updated={entry.extendedData?.updated}
             url={getPostUrlBySlug(rkey)}
             image={entry.extendedData?.image ?? ""}

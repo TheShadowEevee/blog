@@ -270,7 +270,7 @@ const jsonLd = {
 	keywords: blogPost?.extendedData?.tags ?? [],
 	author: {
 		"@type": "Person",
-		name: profileConfig.name,
+		name: blogPost?.extendedData?.authors ?? profileConfig.name,
 		url: Astro.site,
 	},
 	datePublished: formatDateToYYYYMMDD(
@@ -356,6 +356,7 @@ const jsonLd = {
           class="mb-5"
           published={new Date(blogPost?.extendedData?.published ?? 0)}
           tags={blogPost?.extendedData?.tags ?? []}
+          authors={blogPost?.extendedData?.authors ?? []}
           category={blogPost?.extendedData?.category ?? ""}
         />
         {
