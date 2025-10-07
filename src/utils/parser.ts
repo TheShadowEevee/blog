@@ -22,6 +22,7 @@ import remarkReadingTime from "remark-reading-time";
 import remarkRehype from "remark-rehype";
 import remarkSectionize from "remark-sectionize";
 import { type Plugin, unified } from "unified";
+// @ts-ignore - This type exists
 import type { VFile } from "vfile";
 import { checkUpdated, parseExtendedValue } from "./content-utils";
 
@@ -126,7 +127,7 @@ export async function parse(mdposts: Map<string, MarkdownPost>) {
           i18n(I18nKey.uncategorized),
         draft: post.visibility !== "public",
         readingTime: {
-          text: 0,
+          text: "0",
           minutes: 0,
           time: 0,
           words: 0,

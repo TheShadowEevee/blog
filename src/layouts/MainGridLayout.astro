@@ -3,7 +3,7 @@ import Footer from "@components/Footer.astro";
 import Navbar from "@components/Navbar.astro";
 import BackToTop from "@components/control/BackToTop.astro";
 import SideBar from "@components/widget/SideBar.astro";
-import type { MarkdownHeading } from "astro";
+import type { Headings } from "@/types/posts";
 import { Icon } from "astro-icon/components";
 import ImageWrapper from "../components/misc/ImageWrapper.astro";
 import TOC from "../components/widget/TOC.astro";
@@ -12,12 +12,12 @@ import {BANNER_HEIGHT, BANNER_HEIGHT_EXTEND, MAIN_PANEL_OVERLAPS_BANNER_HEIGHT} 
 import type { Headings } from '@/types/posts'
 
 interface Props {
-  title?: string
-  banner?: string
-  description?: string
-  lang?: string
-  setOGTypeArticle?: boolean;
-  headings? : Headings[]
+	title?: string;
+	banner?: string;
+	description?: string;
+	lang?: string;
+	setOGTypeArticle?: boolean;
+	headings?: Headings[];
 }
 
 const { title, banner, description, lang, setOGTypeArticle, headings = [] } = Astro.props
