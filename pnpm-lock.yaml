@@ -21,8 +21,8 @@ importers:
         specifier: ^4.0.12
         version: 4.0.12
       '@astrojs/sitemap':
-        specifier: ^3.4.2
-        version: 3.4.2
+        specifier: ^3.6.0
+        version: 3.6.0
       '@astrojs/svelte':
         specifier: 7.1.0
         version: 7.1.0(@types/node@24.6.2)(astro@5.13.1(@types/node@24.6.2)(ioredis@5.7.0)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0))(jiti@1.21.7)(lightningcss@1.28.2)(sass@1.81.0)(stylus@0.64.0)(svelte@5.38.1)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0)
@@ -284,8 +284,8 @@ packages:
   '@astrojs/rss@4.0.12':
     resolution: {integrity: sha512-O5yyxHuDVb6DQ6VLOrbUVFSm+NpObulPxjs6XT9q3tC+RoKbN4HXMZLpv0LvXd1qdAjzVgJ1NFD+zKHJNDXikw==}
 
-  '@astrojs/sitemap@3.4.2':
-    resolution: {integrity: sha512-wfN2dZzdkto6yaMtOFa/J9gc60YE3wl3rgSBoNJ+MU3lJVUMsDY9xf9uAVi8Mp/zEQKFDSJlQzBvqQUpw0Hf6g==}
+  '@astrojs/sitemap@3.6.0':
+    resolution: {integrity: sha512-4aHkvcOZBWJigRmMIAJwRQXBS+ayoP5z40OklTXYXhUDhwusz+DyDl+nSshY6y9DvkVEavwNcFO8FD81iGhXjg==}
 
   '@astrojs/svelte@7.1.0':
     resolution: {integrity: sha512-nNAO7iFgCZXCN31N4xBSS/k7vZAZxeZ/v8V6VWZOKG47gVlxeAJBHzn2GlXMMVkxIamr6dhrkDrhYFKIPzoGpw==}
@@ -2118,9 +2118,6 @@ packages:
 
   '@types/node@17.0.45':
     resolution: {integrity: sha512-w+tIMs3rq2afQdsPJlODhoUEKzFP1ayaoyl1CcnwtIlsVe7K7bA1NGm4s3PraqTLlXnbIN84zuBlxBWo1u9BLw==}
-
-  '@types/node@22.10.5':
-    resolution: {integrity: sha512-F8Q+SeGimwOo86fiovQh8qiXfFEh2/ocYv7tU5pJ3EXMSSxk1Joj5wefpFK2fHTf/N6HKGSxIDBT9f3gCxXPkQ==}
 
   '@types/node@24.6.2':
     resolution: {integrity: sha512-d2L25Y4j+W3ZlNAeMKcy7yDsK425ibcAOO2t7aPTz6gNMH0z2GThtwENCDc0d/Pw9wgyRqE5Px1wkV7naz8ang==}
@@ -5231,9 +5228,6 @@ packages:
   uncrypto@0.1.3:
     resolution: {integrity: sha512-Ql87qFHB3s/De2ClA9e0gsnS6zXG27SkTiSJwjCc9MebbfapQfuPzumMIUMi38ezPZVNFcHI9sUIepeQfw8J8Q==}
 
-  undici-types@6.20.0:
-    resolution: {integrity: sha512-Ny6QZ2Nju20vw1SRHe3d9jVu6gJ+4e3+MMpqu7pqE5HT6WsTSlce++GQmK5UXS8mzV8DSYHrQH+Xrf2jVcuKNg==}
-
   undici-types@7.13.0:
     resolution: {integrity: sha512-Ov2Rr9Sx+fRgagJ5AX0qvItZG/JKKoBRAVITs1zk7IqZGTJUwgUr7qoYBpWwakpWilTZFM98rG/AFRocu10iIQ==}
 
@@ -5893,7 +5887,7 @@ snapshots:
       fast-xml-parser: 5.2.5
       kleur: 4.1.5
 
-  '@astrojs/sitemap@3.4.2':
+  '@astrojs/sitemap@3.6.0':
     dependencies:
       sitemap: 8.0.0
       stream-replace-string: 2.0.0
@@ -7225,7 +7219,7 @@ snapshots:
 
   '@inox-tools/sitemap-ext@0.6.0(@types/node@24.6.2)(astro@5.13.1(@types/node@24.6.2)(ioredis@5.7.0)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0))(jiti@1.21.7)(lightningcss@1.28.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(yaml@2.6.0)':
     dependencies:
-      '@astrojs/sitemap': 3.4.2
+      '@astrojs/sitemap': 3.6.0
       '@inox-tools/aik-route-config': 0.10.0(@types/node@24.6.2)(astro-integration-kit@0.18.0(astro@5.13.1(@types/node@24.6.2)(ioredis@5.7.0)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0)))(astro@5.13.1(@types/node@24.6.2)(ioredis@5.7.0)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0))(jiti@1.21.7)(lightningcss@1.28.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(yaml@2.6.0)
       astro: 5.13.1(@types/node@24.6.2)(ioredis@5.7.0)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0)
       astro-integration-kit: 0.18.0(astro@5.13.1(@types/node@24.6.2)(ioredis@5.7.0)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0))
@@ -7864,10 +7858,6 @@ snapshots:
 
   '@types/node@17.0.45': {}
 
-  '@types/node@22.10.5':
-    dependencies:
-      undici-types: 6.20.0
-
   '@types/node@24.6.2':
     dependencies:
       undici-types: 7.13.0
@@ -7892,11 +7882,11 @@ snapshots:
 
   '@types/sax@1.2.7':
     dependencies:
-      '@types/node': 22.10.5
+      '@types/node': 24.6.2
 
   '@types/tar@6.1.13':
     dependencies:
-      '@types/node': 22.10.5
+      '@types/node': 24.6.2
       minipass: 4.2.8
 
   '@types/unist@2.0.11': {}
@@ -11766,8 +11756,6 @@ snapshots:
       which-boxed-primitive: 1.0.2
 
   uncrypto@0.1.3: {}
-
-  undici-types@6.20.0: {}
 
   undici-types@7.13.0: {}
 
