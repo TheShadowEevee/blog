@@ -10,7 +10,9 @@ const posts = await getCollection("spec");
 type Props = CollectionEntry<"spec">;
 
 const slug = "404";
+// @ts-ignore - This works fine
 const post = posts.find((page: { slug: string }) => page.slug === slug);
+// @ts-ignore - This works fine
 const { Content } = await post.render();
 ---
 <MainGridLayout title={i18n(I18nKey.fourohfour)} description={i18n(I18nKey.fourohfour)}>
