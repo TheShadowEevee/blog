@@ -1,8 +1,5 @@
-import type { MarkdownPost, Post, Profile } from "@/types/posts";
-import { getAuthorProfile, safeFetch } from "@utils/content-utils";
-import { parse } from "@utils/parser";
+import { safeFetch } from "@utils/content-utils";
 import type { APIRoute } from "astro";
-import { GET as cacheGET, POST as cachePOST } from "../cache/[rkey]";
 
 export const prerender = false;
 
@@ -11,29 +8,6 @@ export const GET: APIRoute = async (Astro) => {
     const rkey = Astro.params.rkey;
 
     if (rkey) {
-      // https://stackoverflow.com/a/75664821
-      const domain = Astro.request.url.match(
-        /^(?<protocol>https?:\/\/)(?=(?<fqdn>[^:/]+))(?:(?<service>www|ww\d|cdn|ftp|mail|pop\d?|ns\d?|git)\.)?(?:(?<subdomain>[^:/]+)\.)*(?<domain>[^:/]+\.?[a-z0-9]+)(?::(?<port>\d+))?(?<path>\/[^?]*)?(?:\?(?<query>[^#]*))?(?:#(?<hash>.*))?/i
-      );
-
-      const cacheURL = `${
-        (domain?.groups?.protocol ?? "") +
-        (domain?.groups?.fqdn ?? "") +
-        (domain?.groups?.port ? `:${domain?.groups?.port}` : "")
-      }/api/cache/`;
-
-      const initResponse = await cacheGET(Astro);
-      const response = await initResponse.json();
-
-      if (response.success === true) {
-        return new Response(
-          JSON.stringify({
-            success: true,
-            result: JSON.parse(response.result),
-          })
-        );
-      }
-
       const profileResponse = await safeFetch(
         `https://public.api.bsky.app/xrpc/app.bsky.actor.getProfile?actor=${rkey}`
       );
