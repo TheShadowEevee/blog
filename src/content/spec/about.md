@@ -1,30 +1,43 @@
 # About
 
-Hello! I'm Lumi (@TheShadowEevee). I'm a cybersec/virtual reality/technology enthusiast with a general interest in many technology-oriented topics and a passion for learning other areas as they intrigue me.
+Hello! I'm Lumi (@TheShadowEevee). I'm a cybersec/virtual reality/technology enthusiast with a
+general interest in many technology-oriented topics and a passion for learning other areas as they
+intrigue me.
 
-I am at [Purdue University](https://purdue.edu) studying [Cybersecurity](https://polytechnic.purdue.edu/degrees/cybersecurity) and [Computing Infrastructure and Network Engineering Technology](https://polytechnic.purdue.edu/degrees/computing-infrastructure-and-network-engineering-technology), with minors in Forensic Sciences and Law and Society. While I primarily work in these areas, I don't let that restrict my skills; I continue to learn more across many fields, letting new experiences and projects guide my learning outside class.
+I am at [Purdue University](https://purdue.edu) studying
+[Cybersecurity](https://polytechnic.purdue.edu/degrees/cybersecurity) and
+[Computing Infrastructure and Network Engineering Technology](https://polytechnic.purdue.edu/degrees/computing-infrastructure-and-network-engineering-technology),
+with minors in Forensic Sciences and Law and Society. While I primarily work in these areas, I don't
+let that restrict my skills; I continue to learn more across many fields, letting new experiences
+and projects guide my learning outside class.
 
-If you ever want to get in touch with me, feel free! I can be reached on [Bluesky](https://bsky.app/profile/theshadoweevee.konpeki.solutions) or via email at [theshadoweevee@shad.moe](mailto:theshadoweevee@shad.moe) OR [theshadoweevee@konpeki.solutions](mailto:theshadoweevee@konpeki.solutions).
+If you ever want to get in touch with me, feel free! I can be reached on
+[Bluesky](https://bsky.app/profile/theshadoweevee.konpeki.solutions) or via email at
+[theshadoweevee@shad.moe](mailto:theshadoweevee@shad.moe) OR
+[theshadoweevee@konpeki.solutions](mailto:theshadoweevee@konpeki.solutions).
 
 ## What's up with the post URLs?
 
-If you've looked at the address bar while reading one of my posts, you may have noticed a random jumble of letters and numbers. This is actually a unique ID for the post!
+If you've looked at the address bar while reading one of my posts, you may have noticed a random
+jumble of letters and numbers. This is actually a unique ID for the post!
 
-Each of my posts is hosted on the AT Protocol. I talked about this in my post [Welcome to the ATmosphere](https://shad.moe/posts/3lgbnigwdzk2r/) in more detail. The quick TL;DR is that posts are stored very similarly to a post on [Bluesky](https://bsky.social), using the [WhiteWind](https://whtwnd.com) Schema.
+Each of my posts is hosted on the AT Protocol. I talked about this in my post
+[Welcome to the ATmosphere](https://shad.moe/posts/3lgbnigwdzk2r/) in more detail. The quick TL;DR
+is that posts are stored very similarly to a post on [Bluesky](https://bsky.social), using the
+[WhiteWind](https://whtwnd.com) Schema.
 
-View the source code for this blog!
-::github{repo="TheShadowEevee/blog"}
+View the source code for this blog! ::github{repo="TheShadowEevee/blog"}
 
 <details><summary>Credits</summary>
 
 > ### Theme
 >
-> This site uses the Fuwari theme (based on Astro)
-> ::github{repo="saicaca/fuwari"}
+> This site uses the Fuwari theme (based on Astro) ::github{repo="saicaca/fuwari"}
 
 > ### Post Storage
 >
-> Posts are stored and retrieved using the [AT Protocol](https://atproto.com/), using the [Whitewind](https://whtwnd.com/) schema.
+> Posts are stored and retrieved using the [AT Protocol](https://atproto.com/), using the
+> [Whitewind](https://whtwnd.com/) schema.
 
 > ### Libraries
 >
@@ -39,13 +52,17 @@ View the source code for this blog!
 
 <details><summary>Analytics Disclaimer</summary>
 
-All data collected is non-identifiable. If you have specific questions about the below statements, email [privacy@shad.moe](mailto:privacy@shad.moe).
+All data collected is non-identifiable. If you have specific questions about the below statements,
+email [privacy@shad.moe](mailto:privacy@shad.moe).
 
 ### Umami Analytics
 
-This site uses [Umami Analytics](https://umami.is/docs). No identifying data is stored. Analytics are publically available on [umami.shad.moe](https://umami.shad.moe/share/HqYVQyua92lQjgMg/shad.moe).
+This site uses [Umami Analytics](https://umami.is/docs). No identifying data is stored. Analytics
+are publically available on
+[umami.shad.moe](https://umami.shad.moe/share/HqYVQyua92lQjgMg/shad.moe).
 
-Umami Analytics is used to monitor number of visitors, and popular posts on the blog. Accessible data includes:
+Umami Analytics is used to monitor number of visitors, and popular posts on the blog. Accessible
+data includes:
 
 - Path Visited
 - Referrer
@@ -55,9 +72,12 @@ Umami Analytics is used to monitor number of visitors, and popular posts on the 
 
 ### Cloudflare Analytics
 
-This site uses [Cloudflare DNS Analytics](https://developers.cloudflare.com/dns/additional-options/analytics/). Collected personal data is limited to the IP Address of the connecting device.
+This site uses
+[Cloudflare DNS Analytics](https://developers.cloudflare.com/dns/additional-options/analytics/).
+Collected personal data is limited to the IP Address of the connecting device.
 
-Cloudflare DNS Analytics is used to monitor number of visitors across `*.shad.moe`. Accessible data includes:
+Cloudflare DNS Analytics is used to monitor number of visitors across `*.shad.moe`. Accessible data
+includes:
 
 - Query name
 - Query type (same as DNS record type)

@@ -1,5 +1,5 @@
-import type { APIRoute } from "astro";
-import Redis from "ioredis";
+import type { APIRoute } from 'astro';
+import Redis from 'ioredis';
 
 export const prerender = false;
 
@@ -22,7 +22,7 @@ export const GET: APIRoute = async ({ params }) => {
 						JSON.stringify({
 							success: false,
 							result: `Resource '${rkey}' does not exist`,
-						}),
+						})
 					);
 				}
 
@@ -31,14 +31,14 @@ export const GET: APIRoute = async ({ params }) => {
 						success: true,
 						result: result,
 					}),
-					{ status: 200 },
+					{ status: 200 }
 				);
 			} catch {
 				return new Response(
 					JSON.stringify({
 						success: false,
-						result: "Failed to fetch.",
-					}),
+						result: 'Failed to fetch.',
+					})
 				);
 			}
 		} else {
@@ -49,7 +49,7 @@ export const GET: APIRoute = async ({ params }) => {
 			JSON.stringify({
 				success: false,
 				result: `Failed to get data: ${error}`,
-			}),
+			})
 		);
 	}
 };
@@ -58,17 +58,17 @@ export const POST: APIRoute = async ({ params, request }) => {
 	try {
 		const key = params.rkey;
 
-		if (request.headers.get("Content-Type") === "application/json" && key) {
+		if (request.headers.get('Content-Type') === 'application/json' && key) {
 			const body = await request.json();
 			const type = body.type;
 			const content = body.content;
 
-			if (type === "blogPost") {
+			if (type === 'blogPost') {
 				const result = await redis.set(
 					key,
 					JSON.stringify(content),
-					"EX",
-					import.meta.env.POST_CACHE_SECONDS,
+					'EX',
+					import.meta.env.POST_CACHE_SECONDS
 				);
 
 				return new Response(
@@ -78,7 +78,7 @@ export const POST: APIRoute = async ({ params, request }) => {
 					}),
 					{
 						status: 200,
-					},
+					}
 				);
 			}
 		}
@@ -89,7 +89,7 @@ export const POST: APIRoute = async ({ params, request }) => {
 				success: false,
 				result: `Failed to post data: ${error}`,
 			}),
-			{ status: 400 },
+			{ status: 400 }
 		);
 	}
 };

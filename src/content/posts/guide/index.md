@@ -1,14 +1,15 @@
 ---
 title: Simple Guides for Fuwari
 published: 2024-04-01
-description: "How to use this blog template."
-image: "./cover.png"
-tags: ["Fuwari", "Blogging", "Customization"]
+description: 'How to use this blog template.'
+image: './cover.png'
+tags: ['Fuwari', 'Blogging', 'Customization']
 category: Guides
 draft: true
 ---
 
-This blog template is built with [Astro](https://astro.build/). For the things that are not mentioned in this guide, you may find the answers in the [Astro Docs](https://docs.astro.build/).
+This blog template is built with [Astro](https://astro.build/). For the things that are not
+mentioned in this guide, you may find the answers in the [Astro Docs](https://docs.astro.build/).
 
 ## Front-matter of Posts
 
@@ -36,7 +37,8 @@ draft: false
 
 ## Where to Place the Post Files
 
-Your post files should be placed in `src/content/posts/` directory. You can also create sub-directories to better organize your posts and assets.
+Your post files should be placed in `src/content/posts/` directory. You can also create
+sub-directories to better organize your posts and assets.
 
 ```
 src/content/posts/
