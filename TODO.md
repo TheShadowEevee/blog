@@ -14,10 +14,10 @@
 - [x] Admonition Titles not working
 - [x] TOC not lining up wth page view
 - [ ] Finish Editor
-  - [x] Remove toolbar options that don't work due to rendering issues
-  - [ ] Fix Toolbar theming
-  - [ ] Fix code block theming
-  - [ ] Github Cards
+    - [x] Remove toolbar options that don't work due to rendering issues
+    - [ ] Fix Toolbar theming
+    - [ ] Fix code block theming
+    - [ ] Github Cards
 - [ ] Add Editor Button
 - [ ] Add Login via PDS
 - [ ] Allow Post

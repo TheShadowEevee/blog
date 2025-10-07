@@ -1,6 +1,6 @@
-import type { Post } from "@/types/posts";
-import type { APIRoute } from "astro";
-import { GET as getPosts } from "../posts/fetchAllPosts";
+import type { Post } from '@/types/posts';
+import type { APIRoute } from 'astro';
+import { GET as getPosts } from '../posts/fetchAllPosts';
 
 export const prerender = false;
 
@@ -34,14 +34,14 @@ export const GET: APIRoute = async (Astro) => {
 			}),
 			{
 				status: 200,
-			},
+			}
 		);
 	} catch (error) {
 		return new Response(
 			JSON.stringify({
 				success: false,
 				result: `Failed to get data: ${error}`,
-			}),
+			})
 		);
 	}
 };

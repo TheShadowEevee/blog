@@ -1,11 +1,11 @@
 name: Custom Issue
 description: Describe your issue here.
-title: "[Other]: "
+title: '[Other]: '
 body:
-  - type: textarea
-    id: issue-description
-    attributes:
-      label: Issue Description
-      description: Please describe your issue.
-    validations:
-      required: true
+    - type: textarea
+      id: issue-description
+      attributes:
+          label: Issue Description
+          description: Please describe your issue.
+      validations:
+          required: true
