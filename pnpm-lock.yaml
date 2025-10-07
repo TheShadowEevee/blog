@@ -13,7 +13,7 @@ importers:
         version: 0.9.4(typescript@5.9.3)
       '@astrojs/node':
         specifier: ^9.4.4
-        version: 9.4.4(astro@5.13.1(@types/node@24.6.2)(ioredis@5.7.0)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0))
+        version: 9.4.4(astro@5.13.1(@types/node@24.6.2)(ioredis@5.8.1)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0))
       '@astrojs/react':
         specifier: ^4.3.0
         version: 4.3.0(@types/node@24.6.2)(@types/react-dom@19.1.7(@types/react@19.1.10))(@types/react@19.1.10)(jiti@1.21.7)(lightningcss@1.28.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(yaml@2.6.0)
@@ -25,10 +25,10 @@ importers:
         version: 3.6.0
       '@astrojs/svelte':
         specifier: 7.2.0
-        version: 7.2.0(@types/node@24.6.2)(astro@5.13.1(@types/node@24.6.2)(ioredis@5.7.0)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0))(jiti@1.21.7)(lightningcss@1.28.2)(sass@1.81.0)(stylus@0.64.0)(svelte@5.39.9)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0)
+        version: 7.2.0(@types/node@24.6.2)(astro@5.13.1(@types/node@24.6.2)(ioredis@5.8.1)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0))(jiti@1.21.7)(lightningcss@1.28.2)(sass@1.81.0)(stylus@0.64.0)(svelte@5.39.9)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0)
       '@astrojs/tailwind':
         specifier: ^6.0.2
-        version: 6.0.2(astro@5.13.1(@types/node@24.6.2)(ioredis@5.7.0)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0))(tailwindcss@3.4.18(yaml@2.6.0))
+        version: 6.0.2(astro@5.13.1(@types/node@24.6.2)(ioredis@5.8.1)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0))(tailwindcss@3.4.18(yaml@2.6.0))
       '@expressive-code/core':
         specifier: ^0.41.3
         version: 0.41.3
@@ -61,7 +61,7 @@ importers:
         version: 4.2.0(svelte@5.39.9)
       '@inox-tools/sitemap-ext':
         specifier: ^0.6.0
-        version: 0.6.0(@types/node@24.6.2)(astro@5.13.1(@types/node@24.6.2)(ioredis@5.7.0)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0))(jiti@1.21.7)(lightningcss@1.28.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(yaml@2.6.0)
+        version: 0.6.0(@types/node@24.6.2)(astro@5.13.1(@types/node@24.6.2)(ioredis@5.8.1)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0))(jiti@1.21.7)(lightningcss@1.28.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(yaml@2.6.0)
       '@swup/astro':
         specifier: ^1.7.0
         version: 1.7.0(@types/babel__core@7.20.5)
@@ -73,13 +73,13 @@ importers:
         version: 0.1.0
       '@yeskunall/astro-umami':
         specifier: ^0.0.7
-        version: 0.0.7(astro@5.13.1(@types/node@24.6.2)(ioredis@5.7.0)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0))
+        version: 0.0.7(astro@5.13.1(@types/node@24.6.2)(ioredis@5.8.1)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0))
       astro:
         specifier: 5.13.1
-        version: 5.13.1(@types/node@24.6.2)(ioredis@5.7.0)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0)
+        version: 5.13.1(@types/node@24.6.2)(ioredis@5.8.1)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0)
       astro-expressive-code:
         specifier: ^0.41.3
-        version: 0.41.3(astro@5.13.1(@types/node@24.6.2)(ioredis@5.7.0)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0))
+        version: 0.41.3(astro@5.13.1(@types/node@24.6.2)(ioredis@5.8.1)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0))
       astro-icon:
         specifier: ^1.1.5
         version: 1.1.5
@@ -87,8 +87,8 @@ importers:
         specifier: ^9.0.1
         version: 9.0.1
       ioredis:
-        specifier: ^5.7.0
-        version: 5.7.0
+        specifier: ^5.8.1
+        version: 5.8.1
       katex:
         specifier: ^0.16.23
         version: 0.16.23
@@ -1482,8 +1482,8 @@ packages:
   '@inox-tools/utils@0.6.0':
     resolution: {integrity: sha512-R8sYd4G+SA7Jy1YLmIZkKnE9UKx+0lzmn3uEfOXvzNWXjJAKTad1/9G1p19KY/AhkwfcATupyiKayueH6mlnfA==}
 
-  '@ioredis/commands@1.3.0':
-    resolution: {integrity: sha512-M/T6Zewn7sDaBQEqIZ8Rb+i9y8qfGmq+5SDFSf9sA2lUZTmdDLVdOiQaeDp+Q4wElZ9HG1GAX5KhDaidp6LQsQ==}
+  '@ioredis/commands@1.4.0':
+    resolution: {integrity: sha512-aFT2yemJJo+TZCmieA7qnYGQooOS7QfNmYrzGtsYd3g9j5iDP8AimYYAesf79ohjbLG12XxC4nG5DyEnC88AsQ==}
 
   '@isaacs/cliui@8.0.2':
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
@@ -2669,15 +2669,6 @@ packages:
       supports-color:
         optional: true
 
-  debug@4.4.1:
-    resolution: {integrity: sha512-KcKCqiftBJcZr++7ykoDIEwSa3XWowTfNPo92BYxjXiyYEVrUQh2aLyhxBCwww+heortUFxEJYcRzosstTEBYQ==}
-    engines: {node: '>=6.0'}
-    peerDependencies:
-      supports-color: '*'
-    peerDependenciesMeta:
-      supports-color:
-        optional: true
-
   debug@4.4.3:
     resolution: {integrity: sha512-RGwwWnwQvkVfavKVt22FGLw+xYSdzARwm0ru6DhTVA3umU5hZc28V3kO4stgYryrTlLpuvgI9GiijltAjNbcqA==}
     engines: {node: '>=6.0'}
@@ -3322,8 +3313,8 @@ packages:
     resolution: {integrity: sha512-agE4QfB2Lkp9uICn7BAqoscw4SZP9kTE2hxiFI3jBPmXJfdqiahTbUuKGsMoN2GtqL9AxhYioAcVvgsb1HvRbA==}
     engines: {node: '>= 0.10'}
 
-  ioredis@5.7.0:
-    resolution: {integrity: sha512-NUcA93i1lukyXU+riqEyPtSEkyFq8tX90uL659J+qpCZ3rEdViB/APC58oAhIh3+bJln2hzdlZbBZsGNrlsR8g==}
+  ioredis@5.8.1:
+    resolution: {integrity: sha512-Qho8TgIamqEPdgiMadJwzRMW3TudIg6vpg4YONokGDudy4eqRIJtDbVX72pfLBcWxvbn3qm/40TyGUObdW4tLQ==}
     engines: {node: '>=12.22.0'}
 
   iron-webcrypto@1.2.1:
@@ -5818,10 +5809,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@astrojs/node@9.4.4(astro@5.13.1(@types/node@24.6.2)(ioredis@5.7.0)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0))':
+  '@astrojs/node@9.4.4(astro@5.13.1(@types/node@24.6.2)(ioredis@5.8.1)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0))':
     dependencies:
       '@astrojs/internal-helpers': 0.7.3
-      astro: 5.13.1(@types/node@24.6.2)(ioredis@5.7.0)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0)
+      astro: 5.13.1(@types/node@24.6.2)(ioredis@5.8.1)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0)
       send: 1.2.0
       server-destroy: 1.0.1
     transitivePeerDependencies:
@@ -5865,10 +5856,10 @@ snapshots:
       stream-replace-string: 2.0.0
       zod: 3.25.76
 
-  '@astrojs/svelte@7.2.0(@types/node@24.6.2)(astro@5.13.1(@types/node@24.6.2)(ioredis@5.7.0)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0))(jiti@1.21.7)(lightningcss@1.28.2)(sass@1.81.0)(stylus@0.64.0)(svelte@5.39.9)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0)':
+  '@astrojs/svelte@7.2.0(@types/node@24.6.2)(astro@5.13.1(@types/node@24.6.2)(ioredis@5.8.1)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0))(jiti@1.21.7)(lightningcss@1.28.2)(sass@1.81.0)(stylus@0.64.0)(svelte@5.39.9)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0)':
     dependencies:
       '@sveltejs/vite-plugin-svelte': 5.1.1(svelte@5.39.9)(vite@6.3.6(@types/node@24.6.2)(jiti@1.21.7)(lightningcss@1.28.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(yaml@2.6.0))
-      astro: 5.13.1(@types/node@24.6.2)(ioredis@5.7.0)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0)
+      astro: 5.13.1(@types/node@24.6.2)(ioredis@5.8.1)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0)
       svelte: 5.39.9
       svelte2tsx: 0.7.44(svelte@5.39.9)(typescript@5.9.3)
       typescript: 5.9.3
@@ -5887,9 +5878,9 @@ snapshots:
       - tsx
       - yaml
 
-  '@astrojs/tailwind@6.0.2(astro@5.13.1(@types/node@24.6.2)(ioredis@5.7.0)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0))(tailwindcss@3.4.18(yaml@2.6.0))':
+  '@astrojs/tailwind@6.0.2(astro@5.13.1(@types/node@24.6.2)(ioredis@5.8.1)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0))(tailwindcss@3.4.18(yaml@2.6.0))':
     dependencies:
-      astro: 5.13.1(@types/node@24.6.2)(ioredis@5.7.0)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0)
+      astro: 5.13.1(@types/node@24.6.2)(ioredis@5.8.1)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0)
       autoprefixer: 10.4.21(postcss@8.5.6)
       postcss: 8.5.6
       postcss-load-config: 4.0.2(postcss@8.5.6)
@@ -7167,11 +7158,11 @@ snapshots:
   '@img/sharp-win32-x64@0.34.4':
     optional: true
 
-  '@inox-tools/aik-route-config@0.10.0(@types/node@24.6.2)(astro-integration-kit@0.18.0(astro@5.13.1(@types/node@24.6.2)(ioredis@5.7.0)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0)))(astro@5.13.1(@types/node@24.6.2)(ioredis@5.7.0)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0))(jiti@1.21.7)(lightningcss@1.28.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(yaml@2.6.0)':
+  '@inox-tools/aik-route-config@0.10.0(@types/node@24.6.2)(astro-integration-kit@0.18.0(astro@5.13.1(@types/node@24.6.2)(ioredis@5.8.1)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0)))(astro@5.13.1(@types/node@24.6.2)(ioredis@5.8.1)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0))(jiti@1.21.7)(lightningcss@1.28.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(yaml@2.6.0)':
     dependencies:
       '@inox-tools/utils': 0.6.0
-      astro: 5.13.1(@types/node@24.6.2)(ioredis@5.7.0)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0)
-      astro-integration-kit: 0.18.0(astro@5.13.1(@types/node@24.6.2)(ioredis@5.7.0)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0))
+      astro: 5.13.1(@types/node@24.6.2)(ioredis@5.8.1)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0)
+      astro-integration-kit: 0.18.0(astro@5.13.1(@types/node@24.6.2)(ioredis@5.8.1)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0))
       debug: 4.4.3
       recast: 0.23.11
       vite: 7.1.9(@types/node@24.6.2)(jiti@1.21.7)(lightningcss@1.28.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(yaml@2.6.0)
@@ -7189,12 +7180,12 @@ snapshots:
       - tsx
       - yaml
 
-  '@inox-tools/sitemap-ext@0.6.0(@types/node@24.6.2)(astro@5.13.1(@types/node@24.6.2)(ioredis@5.7.0)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0))(jiti@1.21.7)(lightningcss@1.28.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(yaml@2.6.0)':
+  '@inox-tools/sitemap-ext@0.6.0(@types/node@24.6.2)(astro@5.13.1(@types/node@24.6.2)(ioredis@5.8.1)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0))(jiti@1.21.7)(lightningcss@1.28.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(yaml@2.6.0)':
     dependencies:
       '@astrojs/sitemap': 3.6.0
-      '@inox-tools/aik-route-config': 0.10.0(@types/node@24.6.2)(astro-integration-kit@0.18.0(astro@5.13.1(@types/node@24.6.2)(ioredis@5.7.0)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0)))(astro@5.13.1(@types/node@24.6.2)(ioredis@5.7.0)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0))(jiti@1.21.7)(lightningcss@1.28.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(yaml@2.6.0)
-      astro: 5.13.1(@types/node@24.6.2)(ioredis@5.7.0)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0)
-      astro-integration-kit: 0.18.0(astro@5.13.1(@types/node@24.6.2)(ioredis@5.7.0)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0))
+      '@inox-tools/aik-route-config': 0.10.0(@types/node@24.6.2)(astro-integration-kit@0.18.0(astro@5.13.1(@types/node@24.6.2)(ioredis@5.8.1)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0)))(astro@5.13.1(@types/node@24.6.2)(ioredis@5.8.1)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0))(jiti@1.21.7)(lightningcss@1.28.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(yaml@2.6.0)
+      astro: 5.13.1(@types/node@24.6.2)(ioredis@5.8.1)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0)
+      astro-integration-kit: 0.18.0(astro@5.13.1(@types/node@24.6.2)(ioredis@5.8.1)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0))
       sitemap: 8.0.0
     transitivePeerDependencies:
       - '@types/node'
@@ -7212,7 +7203,7 @@ snapshots:
 
   '@inox-tools/utils@0.6.0': {}
 
-  '@ioredis/commands@1.3.0': {}
+  '@ioredis/commands@1.4.0': {}
 
   '@isaacs/cliui@8.0.2':
     dependencies:
@@ -7924,9 +7915,9 @@ snapshots:
 
   '@vscode/l10n@0.0.18': {}
 
-  '@yeskunall/astro-umami@0.0.7(astro@5.13.1(@types/node@24.6.2)(ioredis@5.7.0)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0))':
+  '@yeskunall/astro-umami@0.0.7(astro@5.13.1(@types/node@24.6.2)(ioredis@5.8.1)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0))':
     dependencies:
-      astro: 5.13.1(@types/node@24.6.2)(ioredis@5.7.0)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0)
+      astro: 5.13.1(@types/node@24.6.2)(ioredis@5.8.1)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0)
 
   acorn@8.15.0: {}
 
@@ -7990,9 +7981,9 @@ snapshots:
     dependencies:
       tslib: 2.8.0
 
-  astro-expressive-code@0.41.3(astro@5.13.1(@types/node@24.6.2)(ioredis@5.7.0)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0)):
+  astro-expressive-code@0.41.3(astro@5.13.1(@types/node@24.6.2)(ioredis@5.8.1)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0)):
     dependencies:
-      astro: 5.13.1(@types/node@24.6.2)(ioredis@5.7.0)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0)
+      astro: 5.13.1(@types/node@24.6.2)(ioredis@5.8.1)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0)
       rehype-expressive-code: 0.41.3
 
   astro-icon@1.1.5:
@@ -8004,13 +7995,13 @@ snapshots:
       - debug
       - supports-color
 
-  astro-integration-kit@0.18.0(astro@5.13.1(@types/node@24.6.2)(ioredis@5.7.0)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0)):
+  astro-integration-kit@0.18.0(astro@5.13.1(@types/node@24.6.2)(ioredis@5.8.1)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0)):
     dependencies:
-      astro: 5.13.1(@types/node@24.6.2)(ioredis@5.7.0)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0)
+      astro: 5.13.1(@types/node@24.6.2)(ioredis@5.8.1)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0)
       pathe: 1.1.2
       recast: 0.23.11
 
-  astro@5.13.1(@types/node@24.6.2)(ioredis@5.7.0)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0):
+  astro@5.13.1(@types/node@24.6.2)(ioredis@5.8.1)(jiti@1.21.7)(lightningcss@1.28.2)(rollup@2.79.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(typescript@5.9.3)(yaml@2.6.0):
     dependencies:
       '@astrojs/compiler': 2.13.0
       '@astrojs/internal-helpers': 0.7.1
@@ -8064,7 +8055,7 @@ snapshots:
       ultrahtml: 1.6.0
       unifont: 0.5.2
       unist-util-visit: 5.0.0
-      unstorage: 1.17.1(ioredis@5.7.0)
+      unstorage: 1.17.1(ioredis@5.8.1)
       vfile: 6.0.3
       vite: 6.3.6(@types/node@24.6.2)(jiti@1.21.7)(lightningcss@1.28.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(yaml@2.6.0)
       vitefu: 1.1.1(vite@6.3.6(@types/node@24.6.2)(jiti@1.21.7)(lightningcss@1.28.2)(sass@1.81.0)(stylus@0.64.0)(terser@5.37.0)(yaml@2.6.0))
@@ -8569,10 +8560,6 @@ snapshots:
       is-data-view: 1.0.1
 
   debug@4.4.0:
-    dependencies:
-      ms: 2.1.3
-
-  debug@4.4.1:
     dependencies:
       ms: 2.1.3
 
@@ -9379,11 +9366,11 @@ snapshots:
 
   interpret@1.4.0: {}
 
-  ioredis@5.7.0:
+  ioredis@5.8.1:
     dependencies:
-      '@ioredis/commands': 1.3.0
+      '@ioredis/commands': 1.4.0
       cluster-key-slot: 1.1.2
-      debug: 4.4.1
+      debug: 4.4.3
       denque: 2.1.0
       lodash.defaults: 4.2.0
       lodash.isarguments: 3.1.0
@@ -11816,7 +11803,7 @@ snapshots:
 
   universalify@2.0.1: {}
 
-  unstorage@1.17.1(ioredis@5.7.0):
+  unstorage@1.17.1(ioredis@5.8.1):
     dependencies:
       anymatch: 3.1.3
       chokidar: 4.0.3
@@ -11827,7 +11814,7 @@ snapshots:
       ofetch: 1.4.1
       ufo: 1.6.1
     optionalDependencies:
-      ioredis: 5.7.0
+      ioredis: 5.8.1
 
   update-browserslist-db@1.1.1(browserslist@4.24.2):
     dependencies:
