@@ -1,6 +1,6 @@
 /// <reference types="mdast" />
-import type { Properties, RootContent } from "hast";
-import { h } from "hastscript";
+import type { Properties, RootContent } from 'hast';
+import { h } from 'hastscript';
 
 /**
  * Creates an admonition component.
@@ -14,28 +14,28 @@ import { h } from "hastscript";
 export function AdmonitionComponent(
 	properties: Properties,
 	children: RootContent[],
-	type: "tip" | "note" | "important" | "caution" | "warning",
+	type: 'tip' | 'note' | 'important' | 'caution' | 'warning'
 ) {
 	let newChildren: RootContent[] = [];
 
 	if (!Array.isArray(children) || children.length === 0)
 		return h(
-			"div",
-			{ class: "hidden" },
-			'Invalid admonition directive. (Admonition directives must be of block type ":::note{name="name"} <content> :::")',
+			'div',
+			{ class: 'hidden' },
+			'Invalid admonition directive. (Admonition directives must be of block type ":::note{name="name"} <content> :::")'
 		);
 
 	let label = null;
-	if (properties && properties["has-directive-label"] !== undefined) {
+	if (properties && properties['has-directive-label'] !== undefined) {
 		// *Should* be true, but is returning string ''. So... we do this
 		label = children[0]; // The first child is the label
 		newChildren = children.slice(1);
 		// @ts-ignore
-		label.tagName = "div"; // Change the tag <p> to <div>
+		label.tagName = 'div'; // Change the tag <p> to <div>
 	}
 
-	return h("blockquote", { class: `admonition bdm-${type}` }, [
-		h("span", { class: "bdm-title" }, label ? label : type.toUpperCase()),
+	return h('blockquote', { class: `admonition bdm-${type}` }, [
+		h('span', { class: 'bdm-title' }, label ? label : type.toUpperCase()),
 		...newChildren,
 	]);
 }

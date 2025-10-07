@@ -1,8 +1,8 @@
-import type { Post } from "@/types/posts";
-import I18nKey from "@i18n/i18nKey";
-import { i18n } from "@i18n/translation";
-import type { APIRoute } from "astro";
-import { GET as getPosts } from "../posts/fetchAllPosts";
+import type { Post } from '@/types/posts';
+import I18nKey from '@i18n/i18nKey';
+import { i18n } from '@i18n/translation';
+import type { APIRoute } from 'astro';
+import { GET as getPosts } from '../posts/fetchAllPosts';
 
 export const prerender = false;
 
@@ -53,14 +53,14 @@ export const GET: APIRoute = async (Astro) => {
 			}),
 			{
 				status: 200,
-			},
+			}
 		);
 	} catch (error) {
 		return new Response(
 			JSON.stringify({
 				success: false,
-				result: [{ name: "Failed to get categories.", count: 0 }],
-			}),
+				result: [{ name: 'Failed to get categories.', count: 0 }],
+			})
 		);
 	}
 };

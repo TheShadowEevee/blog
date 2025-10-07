@@ -147,7 +147,7 @@
 }
 
 .dash-line::before {
-	content: "";
+	content: '';
 	position: absolute;
 	width: 10%;
 	height: 100%;

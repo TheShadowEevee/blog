@@ -4,25 +4,25 @@ import type {
 	NavBarConfig,
 	ProfileConfig,
 	SiteConfig,
-} from "./types/config";
-import { LinkPreset } from "./types/config";
+} from './types/config';
+import { LinkPreset } from './types/config';
 
 export const siteConfig: SiteConfig = {
 	title: "TheShadowEevee's Blog",
-	subtitle: "A place where I post some of the dumb things I do",
-	lang: "en", // 'en', 'zh_CN', 'zh_TW', 'ja', 'ko'
+	subtitle: 'A place where I post some of the dumb things I do',
+	lang: 'en', // 'en', 'zh_CN', 'zh_TW', 'ja', 'ko'
 	themeColor: {
 		hue: 285, // Default hue for the theme color, from 0 to 360. e.g. red: 0, teal: 200, cyan: 250, pink: 345
 		fixed: true, // Hide the theme color picker for visitors
 	},
 	banner: {
 		enable: false,
-		src: "assets/images/demo-banner.png", // Relative to the /src directory. Relative to the /public directory if it starts with '/'
-		position: "center", // Equivalent to object-position, only supports 'top', 'center', 'bottom'. 'center' by default
+		src: 'assets/images/demo-banner.png', // Relative to the /src directory. Relative to the /public directory if it starts with '/'
+		position: 'center', // Equivalent to object-position, only supports 'top', 'center', 'bottom'. 'center' by default
 		credit: {
 			enable: false, // Display the credit text of the banner image
-			text: "", // Credit text to be displayed
-			url: "", // (Optional) URL link to the original artwork or artist's page
+			text: '', // Credit text to be displayed
+			url: '', // (Optional) URL link to the original artwork or artist's page
 		},
 	},
 	toc: {
@@ -45,43 +45,43 @@ export const navBarConfig: NavBarConfig = {
 		//LinkPreset.Archive, // Remove Archive until Fixed
 		LinkPreset.About,
 		{
-			name: "GitHub",
-			url: "https://github.com/TheShadowEevee/blog", // Internal links should not include the base path, as it is automatically added
+			name: 'GitHub',
+			url: 'https://github.com/TheShadowEevee/blog', // Internal links should not include the base path, as it is automatically added
 			external: true, // Show an external link icon and will open in a new tab
 		},
 	],
 };
 
 export const profileConfig: ProfileConfig = {
-	avatar: "assets/images/avatar.png", // Relative to the /src directory. Relative to the /public directory if it starts with '/'
-	name: "TheShadowEevee",
+	avatar: 'assets/images/avatar.png', // Relative to the /src directory. Relative to the /public directory if it starts with '/'
+	name: 'TheShadowEevee',
 	bio: "Hi! I'm Lumi. I do dumb things. Sometimes you'll get to hear about them!",
 	links: [
 		{
-			name: "Bluesky",
-			icon: "fa6-brands:bluesky", // Visit https://icones.js.org/ for icon codes
+			name: 'Bluesky',
+			icon: 'fa6-brands:bluesky', // Visit https://icones.js.org/ for icon codes
 			// You will need to install the corresponding icon set if it's not already included
 			// `pnpm add @iconify-json/<icon-set-name>`
-			url: "https://bsky.app/profile/did:plc:krbzbucjaj76xjob6ju47ilo",
+			url: 'https://bsky.app/profile/did:plc:krbzbucjaj76xjob6ju47ilo',
 		},
 		{
-			name: "GitHub",
-			icon: "fa6-brands:github",
-			url: "https://github.com/TheShadowEevee",
+			name: 'GitHub',
+			icon: 'fa6-brands:github',
+			url: 'https://github.com/TheShadowEevee',
 		},
 	],
 };
 
 export const licenseConfig: LicenseConfig = {
 	enable: true,
-	name: "CC BY 4.0",
-	url: "https://creativecommons.org/licenses/by/4.0/",
+	name: 'CC BY 4.0',
+	url: 'https://creativecommons.org/licenses/by/4.0/',
 };
 
 export const expressiveCodeConfig: ExpressiveCodeConfig = {
 	// Note: Some styles (such as background color) are being overridden, see the astro.config.mjs file.
 	// Please select a dark theme, as this blog theme currently only supports dark background color
-	theme: "github-dark",
+	theme: 'github-dark',
 };
 
-export const public_handle: string = "theshadoweevee.konpeki.solutions";
+export const public_handle: string = 'theshadoweevee.konpeki.solutions';
