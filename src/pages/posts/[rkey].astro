@@ -109,7 +109,7 @@ const jsonLd = {
                     before:absolute before:top-[0.75rem] before:left-[-1.125rem]"
         >
           {
-            blogPost?.extendedData?.draft
+            !blogPost?.extendedData?.draft
               ? blogPost?.extendedData?.title
               : "DRAFT: " + blogPost?.extendedData?.title
           }
@@ -231,3 +231,4 @@ const jsonLd = {
     animation-delay: calc(var(--content-delay) + 325ms);
   }
 </style>
+
