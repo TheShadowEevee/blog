@@ -26,7 +26,7 @@ Each of my posts is hosted on the AT Protocol. I talked about this in my post
 is that posts are stored very similarly to a post on [Bluesky](https://bsky.social), using the
 [WhiteWind](https://whtwnd.com) Schema.
 
-View the source code for this blog! ::github{repo="TheShadowEevee/blog"}
+View the source code for this blog on my [Forgejo Instance](https://git.konpeki.solutions/TheShadowEevee/blog).
 
 <details><summary>Credits</summary>
 
