@@ -7,6 +7,12 @@ const redis = new Redis({
 	host: import.meta.env.REDIS_IP, // Local Redis server IP
 	port: import.meta.env.REDIS_PORT, // Local Redis server port
 	password: import.meta.env.REDIS_PASSWORD, // Optional, if your Redis instance requires authentication
+	maxRetriesPerRequest: 1,
+});
+
+redis.on('error', (err) => {
+	console.error('Redis error:', err.message);
+	redis.disconnect();
 });
 
 export const GET: APIRoute = async ({ params }) => {
