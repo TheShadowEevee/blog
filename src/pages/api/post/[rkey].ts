@@ -80,7 +80,7 @@ export const GET: APIRoute = async (Astro) => {
 						const rkeyPostRes = await rkeyPost.json();
 
 						if (!rkeyPostRes.success) {
-							throw `Error caching the post: ${rkeyPostRes.result}`;
+							console.log(`Error caching the post: ${rkeyPostRes.result}`);
 						}
 					}
 
