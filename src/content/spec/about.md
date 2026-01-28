@@ -55,6 +55,23 @@ View the source code for this blog!
 All data collected is non-identifiable. If you have specific questions about the below statements,
 email [privacy@shad.moe](mailto:privacy@shad.moe).
 
+### Tianji Analytics
+
+This site uses [Tianji Analytics](https://tianji.dev/). No identifying data is stored. Analytics
+are publically available on
+[tianji.konpeki.solutions](https://tianji.konpeki.solutions/website/public/qeqxzq57g9x2e0oh9crrkcbh).
+
+Tianji Analytics is used to monitor number of visitors, and popular posts on the blog. Accessible
+data includes:
+
+- Page/Path Visited
+- Referrer
+- Country of Origin
+- Browser Type
+- Device (Desktop, Mobile, etc.)
+- Operating System (Listed as Windows, iOS, etc.)
+- Visit Time
+
 ### Cloudflare Analytics
 
 This site uses
