@@ -7,6 +7,7 @@ import swup from '@swup/astro';
 import expressiveCode from 'astro-expressive-code';
 import icon from 'astro-icon';
 import { defineConfig } from 'astro/config';
+import umami from '@yeskunall/astro-umami';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeComponents from 'rehype-components'; /* Render the custom directive content */
 import rehypeKatex from 'rehype-katex';
@@ -26,11 +27,11 @@ import { pluginCustomCopyButton } from './src/plugins/expressive-code/custom-cop
 
 import node from '@astrojs/node';
 
-import react from '@astrojs/react';
+const isProduction = process.env.NODE_ENV === 'production';
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://shad.moe/',
+	site: isProduction ? 'https://shad.moe/' : 'http://localhost:4321',
 	base: '/',
 	output: 'server',
 	trailingSlash: 'ignore',
@@ -86,6 +87,18 @@ export default defineConfig({
 		svelte(),
 		sitemap({
 			includeByDefault: true,
+		}),
+		// This essentially bashes in Tianji analytics, which shockingly "just works":tm:
+		umami({
+			id: 'cmh46fy3j000486djkbzv2vit',
+			// If in development, loop traffic back to the local server to force a 404 and not skew statistics
+			// This is required for Tianji, as umami-astro's method of this doesn't work for non-Umami instances
+			endpointUrl: isProduction
+				? 'https://tianji.konpeki.solutions/'
+				: 'https://localhost:4321/',
+			hostUrl: isProduction ? 'https://tianji.konpeki.solutions/' : 'https://localhost:4321/',
+			doNotTrack: true,
+			trackerScriptName: 'tracker.js',
 		}),
 	],
 	markdown: {
