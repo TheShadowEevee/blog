@@ -7,7 +7,9 @@ import { getPostUrlBySlug } from "../utils/url-utils";
 
 export let tags: string[] = [];
 export let categories: string[] = [];
-export const sortedPosts: Post[] = [];
+export let sortedPosts: Post[] = [];
+
+const apiURL = `https://shad.moe/api/`;
 
 const params = new URLSearchParams(window.location.search);
 tags = params.has("tag") ? params.getAll("tag") : [];
@@ -42,7 +44,43 @@ function formatTag(tagList: string[]) {
 }
 
 onMount(async () => {
-	let filteredPosts: Post[] = sortedPosts;
+    try {
+          const response = await fetch('http://localhost:4321/api/posts/fetchAllPosts');
+          if (!response.ok) {
+            throw new Error('Failed to fetch data');
+          }
+    const postList = await response.json();
+	const posts = new Array();
+
+	for (const rkey in postList.result) {
+		posts.push({
+			slug: rkey,
+			body: postList.result[rkey].content,
+			data: postList.result[rkey].extendedData ?? {},
+			lastUpdate: postList.result[rkey].createdAt,
+		});
+	}
+
+	posts.sort((a, b) => {
+		const dateA = new Date(a.data?.published ?? 0).getTime();
+		const dateB = new Date(b.data?.published ?? 0).getTime();
+		return dateB - dateA;
+	});
+
+	for (let i = 1; i < posts.length; i++) {
+		// biome-ignore lint/style/noNonNullAssertion: These kinda need to be non-null : biome-ignore-start/end are failing so this is copied 4 times
+		posts[i].data!.nextSlug = posts[i - 1].slug;
+		// biome-ignore lint/style/noNonNullAssertion: These kinda need to be non-null : biome-ignore-start/end are failing so this is copied 4 times
+		posts[i].data!.nextTitle = posts[i - 1].data?.title ?? '';
+	}
+	for (let i = 0; i < posts.length - 1; i++) {
+		// biome-ignore lint/style/noNonNullAssertion: These kinda need to be non-null : biome-ignore-start/end are failing so this is copied 4 times
+		posts[i].data!.prevSlug = posts[i + 1].slug;
+		// biome-ignore lint/style/noNonNullAssertion: These kinda need to be non-null : biome-ignore-start/end are failing so this is copied 4 times
+		posts[i].data!.prevTitle = posts[i + 1].data?.title ?? '';
+	}
+
+	let filteredPosts: Post[] = posts;
 
 	if (tags.length > 0) {
 		filteredPosts = filteredPosts.filter(
@@ -64,7 +102,8 @@ onMount(async () => {
 
 	const grouped = filteredPosts.reduce(
 		(acc, post) => {
-			const year = post.data.published.getFullYear();
+		console.log(post.data.published)
+			const year = (new Date(post.data.published)).getFullYear();
 			if (!acc[year]) {
 				acc[year] = [];
 			}
@@ -82,6 +121,9 @@ onMount(async () => {
 	groupedPostsArray.sort((a, b) => b.year - a.year);
 
 	groups = groupedPostsArray;
+    } catch (err) {
+      console.log(err.message);
+    }
 });
 </script>
 
@@ -112,7 +154,7 @@ onMount(async () => {
                     <div class="flex flex-row justify-start items-center h-full">
                         <!-- date -->
                         <div class="w-[15%] md:w-[10%] transition text-sm text-right text-50">
-                            {formatDate(post.data.published)}
+                            {formatDate(new Date(post.data.published))}
                         </div>
 
                         <!-- dot and line -->
