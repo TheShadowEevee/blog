@@ -344,8 +344,8 @@ const jsonLd = {
         >
           {
             blogPost?.extendedData?.draft
-              ? blogPost?.extendedData?.title
-              : "DRAFT: " + blogPost?.extendedData?.title
+              ? "DRAFT: " + blogPost?.extendedData?.title
+              : blogPost?.extendedData?.title
           }
         </div>
       </div>
