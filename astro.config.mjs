@@ -7,7 +7,6 @@ import swup from '@swup/astro';
 import expressiveCode from 'astro-expressive-code';
 import icon from 'astro-icon';
 import { defineConfig } from 'astro/config';
-import umami from '@yeskunall/astro-umami';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeComponents from 'rehype-components'; /* Render the custom directive content */
 import rehypeKatex from 'rehype-katex';
@@ -87,11 +86,6 @@ export default defineConfig({
 		svelte(),
 		sitemap({
 			includeByDefault: true,
-		}),
-		umami({
-			id: '492d838f-0aae-4aa8-8b73-c4ea0cd943bd',
-			endpointUrl: 'https://umami.shad.moe',
-			hostUrl: 'https://umami.shad.moe',
 		}),
 	],
 	markdown: {

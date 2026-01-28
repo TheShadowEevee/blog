@@ -26,13 +26,13 @@ Each of my posts is hosted on the AT Protocol. I talked about this in my post
 is that posts are stored very similarly to a post on [Bluesky](https://bsky.social), using the
 [WhiteWind](https://whtwnd.com) Schema.
 
-View the source code for this blog! ::github{repo="TheShadowEevee/blog"}
+View the source code for this blog!
 
 <details><summary>Credits</summary>
 
 > ### Theme
 >
-> This site uses the Fuwari theme (based on Astro) ::github{repo="saicaca/fuwari"}
+> This site uses the [Fuwari](https://github.com/saicaca/fuwari) theme (based on Astro)
 
 > ### Post Storage
 >
@@ -41,7 +41,7 @@ View the source code for this blog! ::github{repo="TheShadowEevee/blog"}
 
 > ### Libraries
 >
-> ::github{repo="withastro/astro"}
+> - [Astro](https://github.com/withastro/astro")
 
 > ### Sources of images used in this site
 >
@@ -54,21 +54,6 @@ View the source code for this blog! ::github{repo="TheShadowEevee/blog"}
 
 All data collected is non-identifiable. If you have specific questions about the below statements,
 email [privacy@shad.moe](mailto:privacy@shad.moe).
-
-### Umami Analytics
-
-This site uses [Umami Analytics](https://umami.is/docs). No identifying data is stored. Analytics
-are publically available on
-[umami.shad.moe](https://umami.shad.moe/share/HqYVQyua92lQjgMg/shad.moe).
-
-Umami Analytics is used to monitor number of visitors, and popular posts on the blog. Accessible
-data includes:
-
-- Path Visited
-- Referrer
-- Country of Origin
-- Device (Desktop, Mobile, etc.)
-- Operating System (Listed as Windows, iOS, etc.)
 
 ### Cloudflare Analytics
 
