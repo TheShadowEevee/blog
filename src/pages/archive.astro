@@ -3,12 +3,11 @@ import ArchivePanel from "@components/ArchivePanel.svelte";
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import MainGridLayout from "@layouts/MainGridLayout.astro";
-import { getSortedPosts } from "../utils/content-utils";
+/*import { getSortedPosts } from "../utils/content-utils";
 
-const sortedPostsList = await getSortedPosts();
+const sortedPostsList = await getSortedPosts();*/
 ---
 
 <MainGridLayout title={i18n(I18nKey.archive)}>
-    <ArchivePanel sortedPosts={sortedPostsList} client:only="svelte"></ArchivePanel>
+    <ArchivePanel client:only="svelte"></ArchivePanel>
 </MainGridLayout>
-

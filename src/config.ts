@@ -42,10 +42,10 @@ export const siteConfig: SiteConfig = {
 export const navBarConfig: NavBarConfig = {
 	links: [
 		LinkPreset.Home,
-		//LinkPreset.Archive, // Remove Archive until Fixed
+		LinkPreset.Archive,
 		LinkPreset.About,
 		{
-			name: 'GitHub',
+			name: 'Blog Source',
 			url: 'https://github.com/TheShadowEevee/blog', // Internal links should not include the base path, as it is automatically added
 			external: true, // Show an external link icon and will open in a new tab
 		},
