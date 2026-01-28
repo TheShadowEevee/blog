@@ -8,12 +8,12 @@ import { getPostUrlBySlug } from "../utils/url-utils";
 export let tags: string[] = [];
 export let categories: string[] = [];
 export let sortedPosts: Post[] = [];
-
-const apiURL = `https://shad.moe/api/`;
+export let filterCategory: string = "";
+export let filterTag: string = "";
 
 const params = new URLSearchParams(window.location.search);
-tags = params.has("tag") ? params.getAll("tag") : [];
-categories = params.has("category") ? params.getAll("category") : [];
+filterCategory ? categories.push(filterCategory) : [];
+filterTag ? tags.push(filterTag) : [];
 const uncategorized = params.get("uncategorized");
 
 interface Post {
@@ -102,7 +102,6 @@ onMount(async () => {
 
 	const grouped = filteredPosts.reduce(
 		(acc, post) => {
-		console.log(post.data.published)
 			const year = (new Date(post.data.published)).getFullYear();
 			if (!acc[year]) {
 				acc[year] = [];
