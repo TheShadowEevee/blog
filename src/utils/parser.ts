@@ -125,6 +125,7 @@ export async function parse(mdposts: Map<string, MarkdownPost>) {
 				category:
 					parseExtendedValue(post.mdcontent)?.category ?? i18n(I18nKey.uncategorized),
 				draft: post.visibility !== 'public',
+				linkedPost: parseExtendedValue(post.mdcontent)?.linkedPost,
 				readingTime: {
 					text: '0',
 					minutes: 0,

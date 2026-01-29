@@ -41,6 +41,19 @@ export interface MarkdownPost {
 	data: any;
 }
 
+export interface Author {
+	type: string;
+	did?: string;
+	name?: string;
+	avatar?: string;
+	url?: string;
+}
+
+export interface BlueskyPostRef {
+	name: string;
+	rkey: string;
+}
+
 export interface ReadingTime {
 	text: string;
 	minutes: number;
@@ -61,9 +74,10 @@ export interface PostExtended {
 	image?: string;
 	tags?: string[];
 	category?: string;
-	authors?: string[];
+	authors?: string[] | Author[];
 	lang?: string;
 	draft?: boolean;
+	linkedPost?: BlueskyPostRef;
 	readingTime?: ReadingTime;
 	headings?: Headings[];
 	nextSlug?: string;
