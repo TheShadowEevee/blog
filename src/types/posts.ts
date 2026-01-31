@@ -50,7 +50,7 @@ export interface Author {
 }
 
 export interface BlueskyPostRef {
-	name: string;
+	user: string;
 	rkey: string;
 }
 

@@ -249,7 +249,7 @@ import PostMetadata from "../../components/PostMeta.astro";
 import ImageWrapper from "../../components/misc/ImageWrapper.astro";
 import { profileConfig, siteConfig } from "../../config";
 import { formatDateToYYYYMMDD } from "../../utils/date-utils";
-import { GET as getPost } from "../api/post/[rkey]";
+import { GET as getPost } from "../api/v2/post/[rkey]";
 
 let blogPost: Post = {};
 
@@ -358,6 +358,7 @@ const jsonLd = {
           tags={blogPost?.extendedData?.tags ?? []}
           authors={blogPost?.extendedData?.authors ?? []}
           category={blogPost?.extendedData?.category ?? ""}
+          linkedPost={blogPost?.extendedData?.linkedPost ?? {user: "", rkey: ""}}
         />
         {
           !blogPost?.extendedData?.image && (

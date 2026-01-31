@@ -163,6 +163,7 @@ export async function parse(mdposts: Map<string, MarkdownPost>) {
 				headings: (posts.get(rkey)?.content as VFile)?.data.headings as Headings[],
 				lang: posts.get(rkey)?.extendedData?.lang,
 				draft: posts.get(rkey)?.extendedData?.draft,
+				linkedPost: posts.get(rkey)?.extendedData?.linkedPost,
 				nextSlug: posts.get(rkey)?.extendedData?.nextSlug,
 				nextTitle: posts.get(rkey)?.extendedData?.nextTitle,
 				prevSlug: posts.get(rkey)?.extendedData?.prevSlug,

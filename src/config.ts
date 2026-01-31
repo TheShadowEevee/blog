@@ -65,9 +65,14 @@ export const profileConfig: ProfileConfig = {
 			url: 'https://bsky.app/profile/did:plc:krbzbucjaj76xjob6ju47ilo',
 		},
 		{
+			name: 'Fediverse',
+			icon: 'fa6-brands:mastodon',
+			url: 'https://infosec.exchange/@TheShadowEevee',
+		},
+		{
 			name: 'GitHub',
-			icon: 'fa6-brands:github',
-			url: 'https://github.com/TheShadowEevee',
+			icon: 'fa6-brands:git-alt',
+			url: 'https://git.konpeki.solutions/TheShadowEevee',
 		},
 	],
 };

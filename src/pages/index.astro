@@ -6,7 +6,7 @@ import MainGridLayout from "../layouts/MainGridLayout.astro";
 import { safeFetch } from "../utils/content-utils";
 
 const response = await safeFetch(
-	`${import.meta.env.NEXT_PUBLIC_URL}/api/posts/fetchAllPosts`,
+	`${import.meta.env.NEXT_PUBLIC_URL}/api/v2/posts/fetchAllPosts`,
 );
 
 let postList: Post[] = [];

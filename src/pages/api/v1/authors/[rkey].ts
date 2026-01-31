@@ -30,6 +30,7 @@ export const GET: APIRoute = async (Astro) => {
 										handle: profileResponse.handle,
 										description: profileResponse.description,
 										pds: service.serviceEndpoint,
+										url: `https://bsky.app/profile/${profileResponse.did}`,
 									})
 								);
 							}

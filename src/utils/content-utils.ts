@@ -2,7 +2,9 @@ import { public_handle } from '@/config';
 import type { PostList, Profile } from '@/types/posts';
 
 export async function getSortedPosts() {
-	const response = await safeFetch(`${import.meta.env.NEXT_PUBLIC_URL}/api/posts/fetchAllPosts`);
+	const response = await safeFetch(
+		`${import.meta.env.NEXT_PUBLIC_URL}/api/v2/posts/fetchAllPosts`
+	);
 
 	const postList = response.result;
 	const posts: PostList[] = new Array();

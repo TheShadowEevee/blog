@@ -6,14 +6,16 @@ import { formatDateToYYYYMMDD } from "../utils/date-utils";
 import { url } from "../utils/url-utils";
 import { safeFetch } from "../utils/content-utils";
 import { public_handle } from "@/config";
+import type { Author, BlueskyPostRef } from "src/types/posts"
 
 interface Props {
 	class: string;
 	published: Date;
 	updated?: Date;
 	tags: string[];
-	authors: string[];
+	authors: string[] | Author[];
 	category: string;
+	linkedPost: BlueskyPostRef[];
 	hideTagsForMobile?: boolean;
 	hideUpdateDate?: boolean;
 }
@@ -23,21 +25,64 @@ const {
 	tags,
 	authors,
 	category,
+	linkedPost,
 	hideTagsForMobile = false,
 	hideUpdateDate = false,
 } = Astro.props;
 const className = Astro.props.class;
 
-let authorResponses = [];
+let authorsArray = [];
+let postsArray = [];
+let totalLikes = 0;
+let totalReplies = 0;
+let totalReposts = 0;
 
 if (authors && authors.length > 0) {
     for (const i in authors) {
-        const authorRkey = authors[i];
-        const response = await safeFetch(
-            `${import.meta.env.NEXT_PUBLIC_URL}/api/authors/${authorRkey}`,
-        );
-        authorResponses.push(response);
+        // Check if type is string here to persist backwards-compatibility with old string[]/DID based author system
+        if (typeof(authors[i]) == "string") {
+            const authorResponse = await safeFetch(
+                `${import.meta.env.NEXT_PUBLIC_URL}/api/protocols/atproto/authors/${authors[i]}`,
+            );
+            authorsArray.push(authorResponse);
+        } else if (authors[i].type == "static") {
+                const author = authors[i]
+                authorsArray.push(
+                    {
+                        avatar: `${author.avatar ?? ""}`,
+                        name: `${author.name ?? "Unknown Author"}`,
+                        url: `${author.url ?? "#"}`
+                    }
+                )
+        } else {
+                const authorResponse = await safeFetch(
+                    `${import.meta.env.NEXT_PUBLIC_URL}/api/v2/protocols/${authors[i].type}/authors/${authors[i].id}`,
+                );
+                authorsArray.push(
+                    {
+                        avatar: `${authors[i].avatar ?? authorResponse.avatar ?? ""}`,
+                        name: `${authors[i].name ?? authorResponse.name ?? "Unknown Author"}`,
+                        url: `${authors[i].url ?? authorResponse.url ?? "#"}`
+                    }
+                )
+            }
     }
+}
+
+if (linkedPost && linkedPost.length > 0) {
+    for (const i in linkedPost) {
+        const postResponse = await safeFetch(
+            `${import.meta.env.NEXT_PUBLIC_URL}/api/v2/protocols/${linkedPost[i].type}/post/${linkedPost[i].user}-${linkedPost[i].id}`,
+        );
+        postsArray.push(postResponse)
+    }
+}
+
+for (const i in postsArray) {
+    totalLikes += postsArray[i].likeCount
+    totalReplies += postsArray[i].replyCount
+    totalReposts += postsArray[i].repostCount
+    totalReposts += postsArray[i].quoteCount
 }
 
 ---
@@ -96,28 +141,76 @@ if (authors && authors.length > 0) {
             {!(tags && tags.length > 0) && <div class="transition text-50 text-sm font-medium">{i18n(I18nKey.noTags)}</div>}
         </div>
     </div>
+{ (authorsArray && authorsArray.length > 0 && !(authorsArray.length === 1 && authorsArray[0].handle === public_handle)) && (
+    <!-- authors -->
+    <div class:list={["items-center", {"flex": !hideTagsForMobile, "hidden md:flex": hideTagsForMobile}]}>
+        <div class="meta-icon"
+        >
+            <Icon name="material-symbols:group-rounded" class="text-xl"></Icon>
+        </div>
+        <div class="flex flex-row flex-nowrap items-center">
+            {(authorsArray && authorsArray.length > 0) && authorsArray.map((author, i) => (
+                <div class:list={[{"hidden": i == 0}, "mx-1.5 text-[var(--meta-divider)] text-sm"]}>/</div>
+                <img class:list={["w-7 h-7 rounded-full"]} src={author.avatar} />
+                <p>&nbsp;</p>
+                <a href={`${author.url}`} aria-label=`View Authors Profile`
+                class="link-lg transition text-50 text-sm font-medium
+                                hover:text-[var(--primary)] dark:hover:text-[var(--primary)] whitespace-nowrap">
+                    {author.name}
+                </a>
+            ))}
+        </div>
+    </div>
+    )}
 </div>
 
-{ (authorResponses && authorResponses.length > 0 && !(authorResponses.length === 1 && authorResponses[0].handle === public_handle)) && (
+{ (postsArray[0]) && (
     <div class:list={["flex flex-wrap text-neutral-500 dark:text-neutral-400 items-center gap-4 gap-x-4 gap-y-2", className]}>
-        <!-- authors -->
+        <!-- linkedPost Metadata -->
         <div class:list={["items-center", {"flex": !hideTagsForMobile, "hidden md:flex": hideTagsForMobile}]}>
             <div class="meta-icon"
             >
-                <Icon name="material-symbols:group-rounded" class="text-xl"></Icon>
+                <Icon name="material-symbols:favorite-rounded" class="text-xl"></Icon>
             </div>
             <div class="flex flex-row flex-nowrap items-center">
-                {(authorResponses && authorResponses.length > 0) && authorResponses.map((author, i) => (
-                    <div class:list={[{"hidden": i == 0}, "mx-1.5 text-[var(--meta-divider)] text-sm"]}>/</div>
-                    <img class:list={["w-7 h-7 rounded-full"]} src={author.avatar} />
-                    <p>&nbsp;</p>
-                    <a href={`https://bsky.app/profile/${author.did}`} aria-label=`View Authors Bluesky Profile`
-                    class="link-lg transition text-50 text-sm font-medium
-                                    hover:text-[var(--primary)] dark:hover:text-[var(--primary)] whitespace-nowrap">
-                        {author.displayName}
-                    </a>
-                ))}
+                { (totalLikes != 1) ? (
+                    <p>{totalLikes} Likes</p>
+                ) : (
+                    <p>{totalLikes} Like</p>
+                )}
             </div>
         </div>
+        <div class:list={["items-center", {"flex": !hideTagsForMobile, "hidden md:flex": hideTagsForMobile}]}>
+            <div class="meta-icon"
+            >
+                <Icon name="material-symbols:comment-rounded" class="text-xl"></Icon>
+            </div>
+            <div class="flex flex-row flex-nowrap items-center">
+                { (totalReplies != 1) ? (
+                    <p>{totalReplies} Replies</p>
+                ) : (
+                    <p>{totalReplies} Reply</p>
+                )}
+            </div>
+        </div>
+        <div class:list={["items-center", {"flex": !hideTagsForMobile, "hidden md:flex": hideTagsForMobile}]}>
+            <div class="meta-icon"
+            >
+                <Icon name="material-symbols:repeat-rounded" class="text-xl"></Icon>
+            </div>
+            <div class="flex flex-row flex-nowrap items-center">
+                { (totalReposts != 1) ? (
+                    <p>{totalReposts} Reposts</p>
+                ) : (
+                    <p>{totalReposts} Repost</p>
+                )}
+            </div>
+        </div>
+        { (postsArray.length > 1) && (
+            <div class:list={["text-neutral-700 dark:text-neutral-600"]}>
+                <!-- This currently only supports two posts lmao : This currently prints posts raw type lmao -->
+                <p>*Post statistics aggregated between {postsArray[0].postType} and {postsArray[1].postType}</p>
+            </div>
+        )}
     </div>
 )}
