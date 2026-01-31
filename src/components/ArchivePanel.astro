@@ -4,7 +4,7 @@ import I18nKey from '../i18n/i18nKey'
 import { i18n } from '../i18n/translation'
 import { getPostUrlBySlug } from '../utils/url-utils'
 import type { Post } from '@/types/posts'
-import { GET as getPosts } from "@/pages/api/posts/fetchAllPosts"
+import { GET as getPosts } from "@/pages/api/v2/posts/fetchAllPosts"
 
 
 interface Props {
@@ -62,7 +62,7 @@ const groups: { year: number; posts: typeof posts }[] = (() => {
 
   const groupedPostsArray = Object.keys(groupedPosts).map(key => {
     const year = Number.parseInt(key);
-    groupedPosts[year].sort((a, b) => 
+    groupedPosts[year].sort((a, b) =>
       new Date(b[1].extendedData?.published ?? 0).getTime() - new Date(a[1].extendedData?.published ?? 0).getTime()
     );
     return { year, posts: groupedPosts[year] };

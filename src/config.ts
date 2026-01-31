@@ -1,4 +1,5 @@
 import type {
+	FriendsConfig,
 	ExpressiveCodeConfig,
 	LicenseConfig,
 	NavBarConfig,
@@ -44,6 +45,7 @@ export const navBarConfig: NavBarConfig = {
 		LinkPreset.Home,
 		LinkPreset.Archive,
 		LinkPreset.About,
+		LinkPreset.Friends,
 		{
 			name: 'Blog Source',
 			url: 'https://git.konpeki.solutions/TheShadowEevee/blog', // Internal links should not include the base path, as it is automatically added
@@ -53,7 +55,7 @@ export const navBarConfig: NavBarConfig = {
 };
 
 export const profileConfig: ProfileConfig = {
-	avatar: 'assets/images/avatar.png', // Relative to the /src directory. Relative to the /public directory if it starts with '/'
+	avatar: '/images/avatar.png', // Relative to the /src directory. Relative to the /public directory if it starts with '/'
 	name: 'TheShadowEevee',
 	bio: "Hi! I'm Lumi. I do dumb things. Sometimes you'll get to hear about them!",
 	links: [
@@ -88,5 +90,14 @@ export const expressiveCodeConfig: ExpressiveCodeConfig = {
 	// Please select a dark theme, as this blog theme currently only supports dark background color
 	theme: 'github-dark',
 };
+
+export const friendsConfig: FriendsConfig[] = [
+	{
+		siteTitle: 'Lorem Ipsum',
+		siteDesc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+		siteUrl: 'https://github.com/saicaca/fuwari/',
+		siteIcon: '',
+	},
+];
 
 export const public_handle: string = 'theshadoweevee.konpeki.solutions';

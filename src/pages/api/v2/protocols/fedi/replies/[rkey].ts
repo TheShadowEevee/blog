@@ -9,8 +9,6 @@ export const GET: APIRoute = async (Astro) => {
 		const rkey = Astro.params.rkey?.split('-')[1];
 		const instance = user?.replace('^@', '').split('@')[2];
 
-		// https://infosec.exchange/api/v1/statuses/115981504902066653
-
 		if (user && rkey) {
 			const postResponse = await safeFetch(
 				`https://${instance}/api/v1/statuses/${rkey}/context`

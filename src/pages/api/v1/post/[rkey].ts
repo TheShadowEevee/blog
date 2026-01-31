@@ -20,7 +20,7 @@ export const GET: APIRoute = async (Astro) => {
 				(domain?.groups?.protocol ?? '') +
 				(domain?.groups?.fqdn ?? '') +
 				(domain?.groups?.port ? `:${domain?.groups?.port}` : '')
-			}/api/cache/`;
+			}/api/v2/cache/`;
 
 			const initResponse = await cacheGET(Astro);
 			const response = await initResponse.json();

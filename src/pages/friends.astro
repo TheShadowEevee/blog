@@ -4,7 +4,7 @@ import Markdown from "@components/misc/Markdown.astro";
 import I18nKey from "../i18n/i18nKey";
 import {i18n} from "../i18n/translation";
 import MainGridLayout from "../layouts/MainGridLayout.astro";
-import friendsItems from "../_data/friends.json";
+import { friendsConfig } from "src/config";
 
 const friendsPage = await getEntry("spec", "friends");
 
@@ -14,7 +14,7 @@ if (!friendsPage) {
 
 const {Content} = await render(friendsPage);
 
-const items = friendsItems;
+const items = friendsConfig;
 ---
 <MainGridLayout title={i18n(I18nKey.friends)} description={i18n(I18nKey.friends)}>
     <div class="flex w-full rounded-[var(--radius-large)] overflow-hidden relative min-h-32 mb-4">
