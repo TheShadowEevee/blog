@@ -42,7 +42,7 @@ if (authors && authors.length > 0) {
         // Check if type is string here to persist backwards-compatibility with old string[]/DID based author system
         if (typeof(authors[i]) == "string") {
             const authorResponse = await safeFetch(
-                `${import.meta.env.NEXT_PUBLIC_URL}/api/protocols/atproto/authors/${authors[i]}`,
+                `${import.meta.env.NEXT_PUBLIC_URL}/api/v1/authors/${authors[i]}`,
             );
             authorsArray.push(authorResponse);
         } else if (authors[i].type == "static") {
