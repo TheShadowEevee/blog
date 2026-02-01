@@ -2,7 +2,6 @@ import type { MarkdownPost, Post, Profile } from '@/types/posts';
 import { getProfile, safeFetch } from '@utils/content-utils';
 import { parse } from '@utils/parser';
 import type { APIRoute } from 'astro';
-import { GET as cacheGET } from '../../../cache/blob';
 
 export const prerender = false;
 
@@ -11,16 +10,7 @@ export const GET: APIRoute = async (Astro) => {
 		const rkey = Astro.params.rkey;
 
 		if (rkey) {
-			// https://stackoverflow.com/a/75664821
-			const domain = Astro.request.url.match(
-				/^(?<protocol>https?:\/\/)(?=(?<fqdn>[^:/]+))(?:(?<service>www|ww\d|cdn|ftp|mail|pop\d?|ns\d?|git)\.)?(?:(?<subdomain>[^:/]+)\.)*(?<domain>[^:/]+\.?[a-z0-9]+)(?::(?<port>\d+))?(?<path>\/[^?]*)?(?:\?(?<query>[^#]*))?(?:#(?<hash>.*))?/i
-			);
-
-			const cacheURL = `${
-				(domain?.groups?.protocol ?? '') +
-				(domain?.groups?.fqdn ?? '') +
-				(domain?.groups?.port ? `:${domain?.groups?.port}` : '')
-			}/api/v2/blog/cache/blob?type=entry&id=${rkey}`;
+			const cacheURL = `${import.meta.env.API_DOMAIN}/api/v2/blog/cache/blob?type=entry&id=${rkey}`;
 
 			const cacheResponse = await fetch(cacheURL);
 
@@ -63,7 +53,6 @@ export const GET: APIRoute = async (Astro) => {
 						post = await parse(mdposts);
 
 						if (record.visibility === 'public') {
-							// It would be nice to get rid of this, but "cachePOST" doesn't seem to work atm.
 							const rkeyPost = await fetch(cacheURL, {
 								method: 'POST',
 								headers: { 'Content-Type': 'application/json' },
