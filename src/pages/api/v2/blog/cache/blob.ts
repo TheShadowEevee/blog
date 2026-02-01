@@ -20,6 +20,7 @@ export const GET: APIRoute = async ({ url }) => {
 		const blobId = url.searchParams.get('id');
 		const blobType = url.searchParams.get('type');
 
+		console.log(`blog:${blobType}:${blobId}`);
 		const result = await redis.get(`blog:${blobType}:${blobId}`);
 
 		if (!result) {

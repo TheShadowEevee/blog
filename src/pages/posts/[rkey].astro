@@ -22,8 +22,8 @@ let blogPost: Post = {};
 const initResponse = await getPost(Astro);
 const response = await initResponse.json();
 
-if (response.success === true && blogPost.title !== "undefined") {
-	blogPost = response.result;
+if (response && response.title !== "undefined") {
+	blogPost = response;
 } else {
 	return new Response(null, { status: 404 });
 }

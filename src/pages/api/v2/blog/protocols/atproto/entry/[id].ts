@@ -22,17 +22,12 @@ export const GET: APIRoute = async (Astro) => {
 				(domain?.groups?.port ? `:${domain?.groups?.port}` : '')
 			}/api/v2/blog/cache/blob?type=entry&id=${rkey}`;
 
-			const initResponse = await cacheGET(Astro);
+			const cacheResponse = await fetch(cacheURL);
 
-			if (initResponse.status == 200) {
-				const response = await initResponse.json();
+			if (cacheResponse.status == 200) {
+				const response = await cacheResponse.json();
 
-				return new Response(
-					JSON.stringify({
-						success: true,
-						result: JSON.parse(response.result),
-					})
-				);
+				return new Response(response);
 			} else {
 				const profile: Profile = await getProfile();
 
