@@ -77,12 +77,7 @@ export const GET: APIRoute = async (Astro) => {
 							}
 						}
 
-						return new Response(
-							JSON.stringify({
-								success: true,
-								result: post.get(rkey),
-							})
-						);
+						return new Response(JSON.stringify(post.get(rkey)));
 					}
 				}
 				return new Response(
