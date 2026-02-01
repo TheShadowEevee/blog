@@ -54,12 +54,20 @@ export const POST: APIRoute = async ({ request, url }) => {
 				import.meta.env.POST_CACHE_SECONDS
 			);
 
-			return new Response(
-				`Data has been successfully cached for ${import.meta.env.POST_CACHE_SECONDS} seconds.`,
-				{
-					status: 200,
-				}
-			);
+			if (result == 'OK') {
+				return new Response(
+					`Data has been successfully cached for ${import.meta.env.POST_CACHE_SECONDS} seconds.`,
+					{
+						status: 200,
+					}
+				);
+			} else {
+				console.log(`Redis returned unexpected status ${result}`);
+				return new Response(
+					'An error occurred while processing your query. Please try again later.',
+					{ status: 500 }
+				);
+			}
 		} else if (blobId && blobType) {
 			return new Response("The parameters 'type' and 'id' must be provided.", {
 				status: 400,

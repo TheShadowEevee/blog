@@ -1,4 +1,4 @@
-import type { MarkdownPost, Post, Profile } from '@/types/posts';
+import type { MarkdownPost, Profile } from '@/types/posts';
 import { getProfile, safeFetch } from '@utils/content-utils';
 import { parse } from '@utils/parser';
 import type { APIRoute } from 'astro';
@@ -35,7 +35,7 @@ export const GET: APIRoute = async (Astro) => {
 							body: JSON.stringify(post?.get(rkey)),
 						});
 
-						if (!rkeyPost.status == 200) {
+						if (rkeyPost.status != 200) {
 							console.log(
 								`Error caching the post. Check the logs on the API server for more information.`
 							);

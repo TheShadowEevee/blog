@@ -31,6 +31,7 @@ const interval = 50;
             class:list="onload-animation"
             style={`animation-delay: calc(var(--content-delay) + ${delay++ * interval}ms);`}
             readingTime={entry.extendedData?.readingTime ?? {text: "", minutes: 0, time: 0, words: 0}}
+            linkedPost={entry.extendedData?.linkedPost ?? []}
           />
         );
       }

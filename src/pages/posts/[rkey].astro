@@ -1,7 +1,7 @@
 ---
 export const prerender = false;
 
-import type { Post } from "@/types/posts";
+import type { BlueskyPostRef, Post } from "@/types/posts";
 import License from "@components/misc/License.astro";
 import Markdown from "@components/misc/Markdown.astro";
 import I18nKey from "@i18n/i18nKey";
@@ -124,7 +124,7 @@ const jsonLd = {
           tags={blogPost?.extendedData?.tags ?? []}
           authors={blogPost?.extendedData?.authors ?? []}
           category={blogPost?.extendedData?.category ?? ""}
-          linkedPost={blogPost?.extendedData?.linkedPost ?? {user: "", rkey: ""}}
+          linkedPost={blogPost?.extendedData?.linkedPost ?? [{type: "", user: "", id: ""}] as BlueskyPostRef[]}
         />
         {
           !blogPost?.extendedData?.image && (

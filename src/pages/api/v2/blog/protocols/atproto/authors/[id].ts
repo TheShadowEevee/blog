@@ -40,7 +40,7 @@ export const GET: APIRoute = async (Astro) => {
 										}),
 									});
 
-									if (!authorPost.status == 200) {
+									if (authorPost.status != 200) {
 										console.log(
 											`Error caching the post. Check the logs on the API server for more information.`
 										);
@@ -72,7 +72,7 @@ export const GET: APIRoute = async (Astro) => {
 										}),
 									});
 
-									if (!authorPost.status == 200) {
+									if (authorPost.status != 200) {
 										console.log(
 											`Error caching the post. Check the logs on the API server for more information.`
 										);

@@ -1,6 +1,6 @@
 ---
 import path from "node:path";
-import type { ReadingTime } from "@/types/posts";
+import type { Author, BlueskyPostRef, ReadingTime } from "@/types/posts";
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import { Icon } from "astro-icon/components";
@@ -17,13 +17,14 @@ interface Props {
 	published: Date;
 	updated?: Date;
 	tags: string[];
-	authors: string[];
+	authors: Author[];
 	category: string;
 	image: string;
 	description: string;
 	draft: boolean;
 	style: string;
 	readingTime: ReadingTime;
+	linkedPost: BlueskyPostRef[];
 }
 const {
 	entry,
@@ -38,6 +39,7 @@ const {
 	description,
 	style,
 	readingTime,
+	linkedPost,
 } = Astro.props;
 const className = Astro.props.class;
 
@@ -60,7 +62,7 @@ const coverWidth = "28%";
         </a>
 
         <!-- metadata -->
-        <PostMetadata published={published ?? new Date()} updated={updated ?? new Date()} tags={tags} authors={authors} category={category} hideTagsForMobile={true} hideUpdateDate={true} class="mb-4"></PostMetadata>
+        <PostMetadata published={published ?? new Date()} updated={updated ?? new Date()} tags={tags} authors={authors} category={category} linkedPost={linkedPost} hideTagsForMobile={true} hideUpdateDate={true} class="mb-4"></PostMetadata>
 
         <!-- description -->
         <div class:list={["transition text-75 mb-3.5 pr-4", {"line-clamp-2 md:line-clamp-1": !description}]}>

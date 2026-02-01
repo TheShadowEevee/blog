@@ -209,7 +209,7 @@ import {
 	BANNER_HEIGHT_HOME,
 	BANNER_HEIGHT_EXTEND,
 	MAIN_PANEL_OVERLAPS_BANNER_HEIGHT,
-	PAGE_WIDTH
+	// PAGE_WIDTH
 } from "../constants/constants";
 import { siteConfig } from '@/config';
 
@@ -409,7 +409,7 @@ const setup = () => {
 			heightExtend.classList.remove('hidden')
 		}
 	});
-	window.swup.hooks.on('visit:end', (visit: {to: {url: string}}) => {
+	window.swup.hooks.on('visit:end', (_visit: {to: {url: string}}) => {
 		setTimeout(() => {
 			const heightExtend = document.getElementById('page-height-extend')
 			if (heightExtend) {

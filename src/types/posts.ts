@@ -43,15 +43,16 @@ export interface MarkdownPost {
 
 export interface Author {
 	type: string;
-	did?: string;
+	id?: string;
 	name?: string;
 	avatar?: string;
 	url?: string;
 }
 
 export interface BlueskyPostRef {
+	type: string;
 	user: string;
-	rkey: string;
+	id: string;
 }
 
 export interface ReadingTime {
@@ -74,10 +75,10 @@ export interface PostExtended {
 	image?: string;
 	tags?: string[];
 	category?: string;
-	authors?: string[] | Author[];
+	authors?: Author[];
 	lang?: string;
 	draft?: boolean;
-	linkedPost?: BlueskyPostRef;
+	linkedPost?: BlueskyPostRef[];
 	readingTime?: ReadingTime;
 	headings?: Headings[];
 	nextSlug?: string;
