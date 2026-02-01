@@ -124,7 +124,7 @@ const jsonLd = {
           tags={blogPost?.extendedData?.tags ?? []}
           authors={blogPost?.extendedData?.authors ?? []}
           category={blogPost?.extendedData?.category ?? ""}
-          linkedPost={blogPost?.extendedData?.linkedPost ?? [{type: "", user: "", id: ""}] as BlueskyPostRef[]}
+          linkedPost={blogPost?.extendedData?.linkedPost ?? []}
         />
         {
           !blogPost?.extendedData?.image && (
