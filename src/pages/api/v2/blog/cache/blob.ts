@@ -20,7 +20,7 @@ export const GET: APIRoute = async ({ url }) => {
 		const blobId = url.searchParams.get('id');
 		const blobType = url.searchParams.get('type');
 
-		const result = await redis.get(`blog:${blobType}:${blobId}`);
+		const result = await redis.get(`moe.shad.api:blog:${blobType}:${blobId}`);
 
 		if (!result) {
 			return new Response(
@@ -48,7 +48,7 @@ export const POST: APIRoute = async ({ request, url }) => {
 			const body = await request.json();
 
 			const result = await redis.set(
-				`blog:${blobType}:${blobId}`,
+				`moe.shad.api:blog:${blobType}:${blobId}`,
 				JSON.stringify(body),
 				'EX',
 				import.meta.env.POST_CACHE_SECONDS

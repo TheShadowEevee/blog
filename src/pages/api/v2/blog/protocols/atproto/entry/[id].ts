@@ -26,58 +26,34 @@ export const GET: APIRoute = async (Astro) => {
 				);
 
 				if (!postResponse.error) {
-					const mdposts: Map<string, MarkdownPost> = new Map();
-					let post: Map<string, Post>;
+					let post = await parsePost(postResponse);
 
-					const matches = postResponse.uri.split('/');
-					const rkey = matches[matches.length - 1];
-					const record = postResponse.value;
-					if (
-						matches &&
-						matches.length === 5 &&
-						record &&
-						(record.visibility === 'public' ||
-							record.visibility === 'url' ||
-							!record.visibility)
-					) {
-						mdposts.set(rkey, {
-							title: record.title,
-							createdAt: new Date(record.createdAt),
-							mdcontent: record.content,
-							rkey,
-							visibility: record.visibility,
-							ogp: record.ogp,
-							data: '',
+					if (postResponse.value.visibility === 'public') {
+						const rkeyPost = await fetch(cacheURL, {
+							method: 'POST',
+							headers: { 'Content-Type': 'application/json' },
+							body: JSON.stringify(post?.get(rkey)),
 						});
 
-						post = await parse(mdposts);
-
-						if (record.visibility === 'public') {
-							const rkeyPost = await fetch(cacheURL, {
-								method: 'POST',
-								headers: { 'Content-Type': 'application/json' },
-								body: JSON.stringify(post.get(rkey)),
-							});
-
-							if (!rkeyPost.status == 200) {
-								console.log(
-									`Error caching the post. Check the logs on the API server for more information.`
-								);
-							}
+						if (!rkeyPost.status == 200) {
+							console.log(
+								`Error caching the post. Check the logs on the API server for more information.`
+							);
 						}
-
-						return new Response(JSON.stringify(post.get(rkey)));
 					}
+
+					return new Response(JSON.stringify(post?.get(rkey)));
 				}
-				return new Response(
-					JSON.stringify({
-						success: false,
-						result: 'Unknown Error Fetching Post',
-					}),
-					{ status: 400 }
-				);
 			}
+			return new Response(
+				JSON.stringify({
+					success: false,
+					result: 'Unknown Error Fetching Post',
+				}),
+				{ status: 400 }
+			);
 		}
+
 		throw "Entries 'id' is null or undefined";
 	} catch (error) {
 		return new Response(
@@ -88,3 +64,29 @@ export const GET: APIRoute = async (Astro) => {
 		);
 	}
 };
+
+async function parsePost(postResponse: any) {
+	const mdposts: Map<string, MarkdownPost> = new Map();
+
+	const matches = postResponse.uri.split('/');
+	const rkey = matches[matches.length - 1];
+	const record = postResponse.value;
+	if (
+		matches &&
+		matches.length === 5 &&
+		record &&
+		(record.visibility === 'public' || record.visibility === 'url' || !record.visibility)
+	) {
+		mdposts.set(rkey, {
+			title: record.title,
+			createdAt: new Date(record.createdAt),
+			mdcontent: record.content,
+			rkey,
+			visibility: record.visibility,
+			ogp: record.ogp,
+			data: '',
+		});
+
+		return await parse(mdposts);
+	}
+}
