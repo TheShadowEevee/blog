@@ -2,7 +2,7 @@ import type { MarkdownPost, Post, Profile } from '@/types/posts';
 import { getProfile, safeFetch } from '@utils/content-utils';
 import { parse } from '@utils/parser';
 import type { APIRoute } from 'astro';
-import { GET as cacheGET } from '../cache/[rkey]';
+import { GET as cacheGET } from '../../../cache/[rkey]';
 
 export const prerender = false;
 
@@ -20,7 +20,7 @@ export const GET: APIRoute = async (Astro) => {
 				(domain?.groups?.protocol ?? '') +
 				(domain?.groups?.fqdn ?? '') +
 				(domain?.groups?.port ? `:${domain?.groups?.port}` : '')
-			}/api/v2/cache/`;
+			}/api/v2/blog/cache/`;
 
 			const initResponse = await cacheGET(Astro);
 			const response = await initResponse.json();

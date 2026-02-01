@@ -3,7 +3,7 @@ import type { PostList, Profile } from '@/types/posts';
 
 export async function getSortedPosts() {
 	const response = await safeFetch(
-		`${import.meta.env.NEXT_PUBLIC_URL}/api/v2/posts/fetchAllPosts`
+		`${import.meta.env.NEXT_PUBLIC_URL}/api/v2/blog/protocols/atproto/posts/fetchAllPosts`
 	);
 
 	const postList = response.result;

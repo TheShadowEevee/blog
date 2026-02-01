@@ -1,0 +1,294 @@
+openapi: 3.1.0
+info:
+    title: OpenAPI Sample Doc for shad.moe v1 API
+    description: |-
+        This is a description
+
+        ### It's multi-line and supports Markdown
+
+    termsOfService: https://swagger.io/terms/
+    contact:
+        email: apiteam@swagger.io
+    license:
+        name: Apache 2.0
+        url: https://www.apache.org/licenses/LICENSE-2.0.html
+    version: 1.0.0
+externalDocs:
+    description: Find out more about Swagger
+    url: https://swagger.io
+servers:
+    - url: https://blog.shad.moe/api/v1
+    - url: https://api.shad.moe/api/v1
+tags:
+    - name: blog
+      description: Endpoints for the shad.moe blog
+    - name: pet
+      description: Everything about your Pets
+      externalDocs:
+          description: Find out more
+          url: http://swagger.io
+    - name: store
+      description: Access to Petstore orders
+      externalDocs:
+          description: Find out more about our store
+          url: http://swagger.io
+    - name: user
+      description: Operations about user
+paths:
+    /blog/authors/{authorId}:
+        get:
+            tags:
+                - blog
+            summary: Fetch information about an author via the ATProtocol
+            operationId: getAuthorById
+            parameters:
+                - name: authorId
+                  in: path
+                  description: ATProtocol Handle or DID
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                '200':
+                    description: successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Blog/Author'
+                default:
+                    description: Unexpected error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+    /blog/cache/{rkey}:
+        get:
+            tags:
+                - blog
+            summary: Check the cache for a Blob of data
+            operationId: getCacheByID
+            parameters:
+                - name: rkey
+                  in: path
+                  description: Rkey of Resource
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                '200':
+                    description: successful operation
+                    content:
+                        application/json:
+                            schema:
+                default:
+                    description: Unexpected error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+    /blog/post/{rkey}:
+        get:
+            tags:
+                - blog
+            summary: Fetch a post from the ATProtocol
+            operationId: getPostById
+            parameters:
+                - name: rkey
+                  in: path
+                  description: ATProtocol rkey
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                '200':
+                    description: successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Blog/Post'
+                default:
+                    description: Unexpected error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+    /blog/posts/fetchAllCategories:
+        get:
+            tags:
+                - blog
+            summary: Fetch a list of all categories on posts
+            operationId: getAllCategories
+            responses:
+                '200':
+                    description: successful operation
+                    content:
+                        application/json:
+                default:
+                    description: Unexpected error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+    /blog/posts/fetchAllPosts:
+        get:
+            tags:
+                - blog
+            summary: Fetch a list of all posts
+            operationId: getAllPosts
+            responses:
+                '200':
+                    description: successful operation
+                    content:
+                        application/json:
+                default:
+                    description: Unexpected error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+    /blog/posts/fetchAllTags:
+        get:
+            tags:
+                - blog
+            summary: Fetch a list of all tags on posts
+            operationId: getAllTags
+            responses:
+                '200':
+                    description: successful operation
+                    content:
+                        application/json:
+                default:
+                    description: Unexpected error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+components:
+    schemas:
+        Blog:
+            Author:
+                type: object
+                properties:
+                    avatar:
+                        type: string
+                        examples: ['']
+                    banner:
+                        type: string
+                        examples: ['']
+                    displayName:
+                        type: string
+                        examples: ['']
+                    did:
+                        type: string
+                        examples: ['']
+                    handle:
+                        type: string
+                        examples: ['']
+                    description:
+                        type: string
+                        examples: ['']
+                    pds:
+                        type: string
+                        examples: ['']
+                    url:
+                        type: string
+                        examples: ['']
+                xml:
+                    name: author
+            Post:
+                type: object
+                properties:
+                    type:
+                        type: string
+                        examples: ['blogPost']
+                    content:
+                        type: object
+                        properties:
+                            title:
+                                type: string
+                                examples: ['Blog Post Title']
+                            rkey:
+                                type: string
+                            createdAt:
+                            content:
+                                type: string
+                            visibility:
+                                type: boolean
+                            ogp:
+                            extendedData:
+                                type: object
+                                properties:
+                                    title:
+                                        type: string
+                                    published:
+                                        type: string
+                                    updated:
+                                        type: string
+                                    description:
+                                        type: string
+                                    image:
+                                        type: string
+                                    tags:
+                                        type: array
+                                    category:
+                                        type: string
+                                    authors:
+                                        type: array
+                                    lang:
+                                        type: string
+                                    draft:
+                                        type: boolean
+                                    linkedPost:
+                                        type: object
+                                        properties:
+                                            user:
+                                                type: string
+                                            rkey:
+                                                type: string
+                                    readingTime:
+                                        type: object
+                                        properties:
+                                            text:
+                                                type: string
+                                            minutes:
+                                                type: integer
+                                            time:
+                                                type: integer
+                                            words:
+                                                type: integer
+                                    headings:
+                                        type: array
+                                    nextSlug:
+                                        type: string
+                                    nextTitle:
+                                        type: string
+                                    prevSlug:
+                                        type: string
+                                    prevTitle:
+                                        type: string
+                            nextPost:
+                                type: object
+                                properties:
+                                    title:
+                                        type: string
+                                    slug:
+                                        type: string
+                            prevPost:
+                                type: object
+                                properties:
+                                    title:
+                                        type: string
+                                    slug:
+                                        type: string
+                            readingTime:
+                                type: string
+        Error:
+            type: object
+            properties:
+                code:
+                    type: string
+                message:
+                    type: string
+            required:
+                - code
+                - message

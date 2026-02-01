@@ -1,0 +1,1006 @@
+diff --git a/src/components/ArchivePanel.astro b/src/components/ArchivePanel.astro
+new file mode 100644
+index 0000000..7bbef4b
+--- /dev/null
++++ b/src/components/ArchivePanel.astro
+@@ -0,0 +1,135 @@
++---
++import { UNCATEGORIZED } from '@constants/constants'
++import I18nKey from '../i18n/i18nKey'
++import { i18n } from '../i18n/translation'
++import { getPostUrlBySlug } from '../utils/url-utils'
++import type { Post } from '@/types/posts'
++import { GET as getPosts } from "@/pages/api/posts/fetchAllPosts"
++
++
++interface Props {
++  keyword?: string
++  tags?: string[]
++  categories?: string[]
++}
++const { tags, categories } = Astro.props
++
++const initResponse = await getPosts(Astro);
++const response = await initResponse.json();
++
++let postList: Post[] = []
++
++if (response.success === true) {
++    postList = response.result
++}
++
++let posts: [string, Post][] = []
++
++for (const rkey in postList) {
++  posts.push([rkey, postList[rkey]])
++}
++
++if (Array.isArray(tags) && tags.length > 0) {
++  posts = posts.filter(
++    post =>
++      Array.isArray(post[1].extendedData?.tags) &&
++      post[1].extendedData?.tags.some((tag: string) => tags.includes(tag)),
++  )
++}
++
++if (Array.isArray(categories) && categories.length > 0) {
++  posts = posts.filter(
++    post =>
++      (post[1].extendedData?.category && categories.includes(post[1].extendedData?.category)) ||
++      (!post[1].extendedData?.category && categories.includes(UNCATEGORIZED)),
++  )
++}
++
++// @ts-ignore
++const groups: { year: number; posts: typeof posts }[] = (() => {
++  const groupedPosts: { [year: number]: typeof posts } = {}; // Explicit type for groupedPosts
++
++  for (const post of posts)  {
++    const publishedDate = new Date(post[1].extendedData?.published ?? 0);
++    if (Number.isNaN(publishedDate.getTime())) return;
++
++    const year = publishedDate.getFullYear();
++    if (!groupedPosts[year]) {
++      groupedPosts[year] = [];
++    }
++    groupedPosts[year].push(post);
++  };
++
++  const groupedPostsArray = Object.keys(groupedPosts).map(key => {
++    const year = Number.parseInt(key);
++    groupedPosts[year].sort((a, b) => 
++      new Date(b[1].extendedData?.published ?? 0).getTime() - new Date(a[1].extendedData?.published ?? 0).getTime()
++    );
++    return { year, posts: groupedPosts[year] };
++  });
++
++  return groupedPostsArray.sort((a, b) => b.year - a.year);
++})();
++
++function formatDate(date: Date) {
++  const month = (date.getMonth() + 1).toString().padStart(2, '0')
++  const day = (date.getDate() + 1).toString().padStart(2, '0')
++  return `${month}-${day}`
++}
++
++function formatTag(tag: string[]) {
++  return tag.map(t => `#${t}`).join(' ')
++}
++---
++
++<div class="card-base px-8 py-6">
++    {
++        groups.map(group => (
++            <div>
++                <div class="flex flex-row w-full items-center h-[3.75rem]">
++                    <div class="w-[15%] md:w-[10%] transition text-2xl font-bold text-right text-75">{group.year}</div>
++                    <div class="w-[15%] md:w-[10%]">
++                        <div class="h-3 w-3 bg-none rounded-full outline outline-[var(--primary)] mx-auto -outline-offset-[2px] z-50 outline-3"></div>
++                    </div>
++                    <div class="w-[70%] md:w-[80%] transition text-left text-50">{group.posts.length} {i18n(I18nKey.postsCount)}</div>
++                </div>
++                {group.posts.map(post => (
++                    <a href={getPostUrlBySlug(post[0])}
++                       aria-label={post[1].title}
++                       class="group btn-plain !block h-10 w-full rounded-lg hover:text-[initial]"
++                    >
++                        <div class="flex flex-row justify-start items-center h-full">
++                            <!-- date -->
++                            <div class="w-[15%] md:w-[10%] transition text-sm text-right text-50">
++                                {formatDate(new Date(post[1].extendedData?.published ?? 0))}
++                            </div>
++                            <!-- dot and line -->
++                            <div class="w-[15%] md:w-[10%] relative dash-line h-full flex items-center">
++                                <div class="transition-all mx-auto w-1 h-1 rounded group-hover:h-5
++                                bg-[oklch(0.5_0.05_var(--hue))] group-hover:bg-[var(--primary)]
++                                outline outline-4 z-50
++                                outline-[var(--card-bg)]
++                                group-hover:outline-[var(--btn-plain-bg-hover)]
++                                group-active:outline-[var(--btn-plain-bg-active)]
++                                "
++                                ></div>
++                            </div>
++                            <!-- post title -->
++                            <div class="w-[70%] md:max-w-[65%] md:w-[65%] text-left font-bold
++                                group-hover:translate-x-1 transition-all group-hover:text-[var(--primary)]
++                                text-75 pr-8 whitespace-nowrap overflow-ellipsis overflow-hidden"
++                            >
++                                    {post[1].extendedData?.title}
++                            </div>
++                            <!-- tag list -->
++                            <div class="hidden md:block md:w-[15%] text-left text-sm transition
++                            whitespace-nowrap overflow-ellipsis overflow-hidden
++                            text-30"
++                            >{formatTag(post[1].extendedData?.tags ?? [])}</div>
++                        </div>
++                    </a>
++                ))}
++            </div>
++        ))
++    }
++</div>
+\ No newline at end of file
+diff --git a/src/components/Footer.astro b/src/components/Footer.astro
+index 2963574..0042798 100644
+--- a/src/components/Footer.astro
++++ b/src/components/Footer.astro
+@@ -1,27 +1,27 @@
+----
+-
+-import { profileConfig } from "../config";
+-import { url } from "../utils/url-utils";
+-const currentYear = new Date().getFullYear();
+----
+-
+-<!--<div class="border-t border-[var(&#45;&#45;primary)] mx-16 border-dashed py-8 max-w-[var(&#45;&#45;page-width)] flex flex-col items-center justify-center px-6">-->
+-<div class="transition border-t border-black/10 dark:border-white/15 my-10 border-dashed mx-32"></div>
+-<!--<div class="transition bg-[oklch(92%_0.01_var(&#45;&#45;hue))] dark:bg-black rounded-2xl py-8 mt-4 mb-8 flex flex-col items-center justify-center px-6">-->
+-<div class="transition border-dashed border-[oklch(85%_0.01_var(--hue))] dark:border-white/15 rounded-2xl mb-12 flex-col items-center justify-center px-6">
+-    <div class="transition text-50 text-sm text-center">
+-        &copy; <span id="copyright-year">{currentYear}</span> {profileConfig.name}. All Rights Reserved. /
+-        <a class="transition link text-[var(--primary)] font-medium" target="_blank" href={url('rss.xml')}>RSS</a> /
+-        <a class="transition link text-[var(--primary)] font-medium" target="_blank" href={url('sitemap-index.xml')}>Sitemap</a><br>
+-        In the
+-        <a class="transition link text-[var(--primary)] font-medium" target="_blank" data-umami-event="outbound-link-click" data-umami-event-url="https://atproto.com/" href="https://atproto.com/">Atmosphere</a> /
+-        Posts stored on the
+-        <a class="transition link text-[var(--primary)] font-medium" target="_blank" data-umami-event="outbound-link-click" data-umami-event-url="https://konpeki.solutions/" href="https://konpeki.solutions/">konpeki.solutions PDS</a><br>
+-        Powered by
+-        <a class="transition link text-[var(--primary)] font-medium" target="_blank" data-umami-event="outbound-link-click" data-umami-event-url="https://astro.build" href="https://astro.build">Astro</a> &
+-        <a class="transition link text-[var(--primary)] font-medium" target="_blank" data-umami-event="outbound-link-click" data-umami-event-url="https://github.com/saicaca/fuwari" href="https://github.com/saicaca/fuwari">Fuwari</a><br><br>
+-        <a class="transition link text-[var(--primary)] font-medium" data-umami-event="outbound-link-click" data-umami-event-url="https://ring.purduehackers.com/previous?host=shad.moe" href="https://ring.purduehackers.com/previous?host=shad.moe">← Previous </a> |
+-        <a class="transition link text-[var(--primary)] font-medium" data-umami-event="outbound-link-click" data-umami-event-url="https://ring.purduehackers.com" href="https://ring.purduehackers.com">Purdue Hackers Webring</a> |
+-        <a class="transition link text-[var(--primary)] font-medium" data-umami-event="outbound-link-click" data-umami-event-url="https://ring.purduehackers.com/next?host=shad.moe" href="https://ring.purduehackers.com/next?host=shad.moe"> Next →</a>
+-    </div>
++---
++
++import { profileConfig } from "../config";
++import { url } from "../utils/url-utils";
++const currentYear = new Date().getFullYear();
++---
++
++<!--<div class="border-t border-[var(&#45;&#45;primary)] mx-16 border-dashed py-8 max-w-[var(&#45;&#45;page-width)] flex flex-col items-center justify-center px-6">-->
++<div class="transition border-t border-black/10 dark:border-white/15 my-10 border-dashed mx-32"></div>
++<!--<div class="transition bg-[oklch(92%_0.01_var(&#45;&#45;hue))] dark:bg-black rounded-2xl py-8 mt-4 mb-8 flex flex-col items-center justify-center px-6">-->
++<div class="transition border-dashed border-[oklch(85%_0.01_var(--hue))] dark:border-white/15 rounded-2xl mb-12 flex-col items-center justify-center px-6">
++    <div class="transition text-50 text-sm text-center">
++        &copy; <span id="copyright-year">{currentYear}</span> {profileConfig.name}. All Rights Reserved. /
++        <a class="transition link text-[var(--primary)] font-medium" target="_blank" href={url('rss.xml')}>RSS</a> /
++        <a class="transition link text-[var(--primary)] font-medium" target="_blank" href={url('sitemap-index.xml')}>Sitemap</a><br>
++        In the
++        <a class="transition link text-[var(--primary)] font-medium" target="_blank" data-umami-event="outbound-link-click" data-umami-event-url="https://atproto.com/" href="https://atproto.com/">Atmosphere</a> /
++        Posts stored on the
++        <a class="transition link text-[var(--primary)] font-medium" target="_blank" data-umami-event="outbound-link-click" data-umami-event-url="https://konpeki.solutions/" href="https://konpeki.solutions/">konpeki.solutions PDS</a><br>
++        Powered by
++        <a class="transition link text-[var(--primary)] font-medium" target="_blank" data-umami-event="outbound-link-click" data-umami-event-url="https://astro.build" href="https://astro.build">Astro</a> &
++        <a class="transition link text-[var(--primary)] font-medium" target="_blank" data-umami-event="outbound-link-click" data-umami-event-url="https://github.com/saicaca/fuwari" href="https://github.com/saicaca/fuwari">Fuwari</a><br><br>
++        <a class="transition link text-[var(--primary)] font-medium" data-umami-event="outbound-link-click" data-umami-event-url="https://ring.purduehackers.com/previous?host=shad.moe" href="https://ring.purduehackers.com/previous?host=shad.moe">← Previous </a> |
++        <a class="transition link text-[var(--primary)] font-medium" data-umami-event="outbound-link-click" data-umami-event-url="https://ring.purduehackers.com" href="https://ring.purduehackers.com">Purdue Hackers Webring</a> |
++        <a class="transition link text-[var(--primary)] font-medium" data-umami-event="outbound-link-click" data-umami-event-url="https://ring.purduehackers.com/next?host=shad.moe" href="https://ring.purduehackers.com/next?host=shad.moe"> Next →</a>
++    </div>
+ </div>
+\ No newline at end of file
+diff --git a/src/components/LightDarkSwitch.svelte b/src/components/LightDarkSwitch.svelte
+index 9c39507..b58bbe9 100644
+--- a/src/components/LightDarkSwitch.svelte
++++ b/src/components/LightDarkSwitch.svelte
+@@ -11,49 +11,51 @@ import {
+ } from "@utils/setting-utils.ts";
+ import { onMount } from "svelte";
+ 
+-const seq: LIGHT_DARK_MODE[] = [LIGHT_MODE, DARK_MODE, AUTO_MODE];
+-let mode: LIGHT_DARK_MODE = $state(AUTO_MODE);
++const seq: LIGHT_DARK_MODE[] = [LIGHT_MODE, DARK_MODE, AUTO_MODE]
++let mode: LIGHT_DARK_MODE = $state(AUTO_MODE)
+ 
+ onMount(() => {
+-	mode = getStoredTheme();
+-	const darkModePreference = window.matchMedia("(prefers-color-scheme: dark)");
+-	const changeThemeWhenSchemeChanged: Parameters<
+-		typeof darkModePreference.addEventListener<"change">
+-	>[1] = (_e) => {
+-		applyThemeToDocument(mode);
+-	};
+-	darkModePreference.addEventListener("change", changeThemeWhenSchemeChanged);
+-	return () => {
+-		darkModePreference.removeEventListener(
+-			"change",
+-			changeThemeWhenSchemeChanged,
+-		);
+-	};
+-});
++  mode = getStoredTheme()
++  const darkModePreference = window.matchMedia('(prefers-color-scheme: dark)')
++  const changeThemeWhenSchemeChanged: Parameters<
++    typeof darkModePreference.addEventListener<'change'>
++  >[1] = e => {
++    applyThemeToDocument(mode)
++  }
++  darkModePreference.addEventListener('change', changeThemeWhenSchemeChanged)
++  return () => {
++    darkModePreference.removeEventListener(
++      'change',
++      changeThemeWhenSchemeChanged,
++    )
++  }
++})
+ 
+ function switchScheme(newMode: LIGHT_DARK_MODE) {
+-	mode = newMode;
+-	setTheme(newMode);
++  mode = newMode
++  setTheme(newMode)
+ }
+ 
+ function toggleScheme() {
+-	let i = 0;
+-	for (; i < seq.length; i++) {
+-		if (seq[i] === mode) {
+-			break;
+-		}
+-	}
+-	switchScheme(seq[(i + 1) % seq.length]);
++  let i = 0
++  for (; i < seq.length; i++) {
++    if (seq[i] === mode) {
++      break
++    }
++  }
++  switchScheme(seq[(i + 1) % seq.length])
+ }
+ 
+ function showPanel() {
+-	const panel = document.querySelector("#light-dark-panel");
+-	panel.classList.remove("float-panel-closed");
++  const panel = document.querySelector('#light-dark-panel')
++  // @ts-ignore - Acceptable Ignore, if this is null then we don't need it.
++  panel.classList.remove('float-panel-closed')
+ }
+ 
+ function hidePanel() {
+-	const panel = document.querySelector("#light-dark-panel");
+-	panel.classList.add("float-panel-closed");
++  const panel = document.querySelector('#light-dark-panel')
++  // @ts-ignore - Acceptable Ignore, if this is null then we don't need it.
++  panel.classList.add('float-panel-closed')
+ }
+ </script>
+diff --git a/src/components/control/ButtonTag.astro b/src/components/control/ButtonTag.astro
+index 3af7533..0d0405c 100644
+--- a/src/components/control/ButtonTag.astro
++++ b/src/components/control/ButtonTag.astro
+@@ -1,13 +1,12 @@
+----
+-interface Props {
+-	size?: string;
+-	dot?: boolean;
+-	href?: string;
+-	label?: string;
+-}
+-const { dot, href, label }: Props = Astro.props;
+----
+-<a href={href} aria-label={label} class="btn-regular h-8 text-sm px-3 rounded-lg">
+-    {dot && <div class="h-1 w-1 bg-[var(--btn-content)] dark:bg-[var(--card-bg)] transition rounded-md mr-2"></div>}
+-    <slot></slot>
+-</a>
++---
++interface Props {
++  dot?: boolean
++  href?: string
++  label?: string
++}
++const { dot, href, label }: Props = Astro.props
++---
++<a href={href} aria-label={label} class="btn-regular h-8 text-sm px-3 rounded-lg">
++    {dot && <div class="h-1 w-1 bg-[var(--btn-content)] dark:bg-[var(--card-bg)] transition rounded-md mr-2"></div>}
++    <slot></slot>
++</a>
+diff --git a/src/components/misc/Markdown.astro b/src/components/misc/Markdown.astro
+index a9d201a..3193462 100644
+--- a/src/components/misc/Markdown.astro
++++ b/src/components/misc/Markdown.astro
+@@ -1,42 +1,42 @@
+----
+-import "@fontsource-variable/jetbrains-mono";
+-import "@fontsource-variable/jetbrains-mono/wght-italic.css";
+-
+-interface Props {
+-	class: string;
+-}
+-const className = Astro.props.class;
+----
+-<div data-pagefind-body class={`prose dark:prose-invert prose-base !max-w-none custom-md ${className}`}>
+-    <!--<div class="prose dark:prose-invert max-w-none custom-md">-->
+-    <!--<div class="max-w-none custom-md">-->
+-    <slot/>
+-</div>
+-
+-<script>
+-document.addEventListener("click", function (e: MouseEvent) {
+-    const target = e.target as Element | null;
+-    if (target && target.classList.contains("copy-btn")) {
+-        const preEle = target.closest("pre");
+-        const codeEle = preEle?.querySelector("code");
+-        const code = Array.from(codeEle?.querySelectorAll(".code:not(summary *)") ?? [])
+-            .map(el => el.textContent)
+-            .map(t => t === "\n" ? "" : t)
+-            .join("\n");
+-        navigator.clipboard.writeText(code);
+-
+-        const timeoutId = target.getAttribute("data-timeout-id");
+-        if (timeoutId) {
+-            clearTimeout(parseInt(timeoutId));
+-        }
+-
+-        target.classList.add("success");
+-
+-        const newTimeoutId = setTimeout(() => {
+-            target.classList.remove("success");
+-        }, 1000);
+-
+-        target.setAttribute("data-timeout-id", newTimeoutId.toString());
+-    }
+-});
+-</script>
++---
++import "@fontsource-variable/jetbrains-mono";
++import "@fontsource-variable/jetbrains-mono/wght-italic.css";
++
++interface Props {
++	class: string;
++}
++const className = Astro.props.class;
++---
++<div data-pagefind-body class={`prose dark:prose-invert prose-base !max-w-none custom-md ${className}`}>
++    <!--<div class="prose dark:prose-invert max-w-none custom-md">-->
++    <!--<div class="max-w-none custom-md">-->
++    <slot/>
++</div>
++
++<script>
++document.addEventListener("click", function (e: MouseEvent) {
++    const target = e.target as Element | null;
++    if (target && target.classList.contains("copy-btn")) {
++        const preEle = target.closest("pre");
++        const codeEle = preEle?.querySelector("code");
++        const code = Array.from(codeEle?.querySelectorAll(".code:not(summary *)") ?? [])
++            .map(el => el.textContent)
++            .map(t => t === "\n" ? "" : t)
++            .join("\n");
++        navigator.clipboard.writeText(code);
++
++        const timeoutId = target.getAttribute("data-timeout-id");
++        if (timeoutId) {
++            clearTimeout(parseInt(timeoutId));
++        }
++
++        target.classList.add("success");
++
++        const newTimeoutId = setTimeout(() => {
++            target.classList.remove("success");
++        }, 1000);
++
++        target.setAttribute("data-timeout-id", newTimeoutId.toString());
++    }
++});
++</script>
+diff --git a/src/components/widget/Categories.astro b/src/components/widget/Categories.astro
+index 0e805b0..02c575a 100644
+--- a/src/components/widget/Categories.astro
++++ b/src/components/widget/Categories.astro
+@@ -1,44 +1,44 @@
+----
+-import WidgetLayout from "./WidgetLayout.astro";
+-
+-import { GET as getCategories } from "@/pages/api/v2/posts/fetchAllCategories";
+-import ButtonLink from "@components/control/ButtonLink.astro";
+-import I18nKey from "@i18n/i18nKey";
+-import { i18n } from "@i18n/translation";
+-import { getCategoryUrl } from "@utils/url-utils";
+-
+-const initResponse = await getCategories(Astro);
+-const response = await initResponse.json();
+-
+-let categories: [] = [];
+-
+-if (response.success === true) {
+-	categories = response.result;
+-}
+-
+-const COLLAPSED_HEIGHT = "7.5rem";
+-const COLLAPSE_THRESHOLD = 5;
+-
+-const isCollapsed = categories.length >= COLLAPSE_THRESHOLD;
+-
+-interface Props {
+-	class?: string;
+-	style?: string;
+-}
+-const className = Astro.props.class;
+-const style = Astro.props.style;
+----
+-
+-<WidgetLayout name={i18n(I18nKey.categories)} id="categories" isCollapsed={isCollapsed} collapsedHeight={COLLAPSED_HEIGHT}
+-                class={className} style={style}
+->
+-    {categories.map((c: { name: string; count: any }) =>
+-        <ButtonLink
+-            url={getCategoryUrl(c.name)}
+-            badge={String(c.count)}
+-            label=`View all posts in the ${c.name.trim()} category`
+-        >
+-            {c.name.trim()}
+-        </ButtonLink>
+-    )}
+-</WidgetLayout>
++---
++import WidgetLayout from "./WidgetLayout.astro";
++
++import { GET as getCategories } from "@/pages/api/v2/posts/fetchAllCategories";
++import ButtonLink from "@components/control/ButtonLink.astro";
++import I18nKey from "@i18n/i18nKey";
++import { i18n } from "@i18n/translation";
++import { getCategoryUrl } from "@utils/url-utils";
++
++const initResponse = await getCategories(Astro);
++const response = await initResponse.json();
++
++let categories: [] = [];
++
++if (response.success === true) {
++	categories = response.result;
++}
++
++const COLLAPSED_HEIGHT = "7.5rem";
++const COLLAPSE_THRESHOLD = 5;
++
++const isCollapsed = categories.length >= COLLAPSE_THRESHOLD;
++
++interface Props {
++	class?: string;
++	style?: string;
++}
++const className = Astro.props.class;
++const style = Astro.props.style;
++---
++
++<WidgetLayout name={i18n(I18nKey.categories)} id="categories" isCollapsed={isCollapsed} collapsedHeight={COLLAPSED_HEIGHT}
++                class={className} style={style}
++>
++    {categories.map((c: { name: string; count: any }) =>
++        <ButtonLink
++            url={getCategoryUrl(c.name)}
++            badge={String(c.count)}
++            label=`View all posts in the ${c.name.trim()} category`
++        >
++            {c.name.trim()}
++        </ButtonLink>
++    )}
++</WidgetLayout>
+diff --git a/src/components/widget/Tags.astro b/src/components/widget/Tags.astro
+index de64638..0446ecf 100644
+--- a/src/components/widget/Tags.astro
++++ b/src/components/widget/Tags.astro
+@@ -1,37 +1,37 @@
+----
+-import { GET as getTags } from "@/pages/api/v2/posts/fetchAllTags";
+-import I18nKey from "../../i18n/i18nKey";
+-import { i18n } from "../../i18n/translation";
+-import { url } from "../../utils/url-utils";
+-import ButtonTag from "../control/ButtonTag.astro";
+-import WidgetLayout from "./WidgetLayout.astro";
+-
+-const initResponse = await getTags(Astro);
+-const response = await initResponse.json();
+-
+-let tags: [] = [];
+-
+-if (response.success === true) {
+-	tags = response.result;
+-}
+-
+-const COLLAPSED_HEIGHT = "7.5rem";
+-
+-const isCollapsed = tags.length >= 20;
+-
+-interface Props {
+-	class?: string;
+-	style?: string;
+-}
+-const className = Astro.props.class;
+-const style = Astro.props.style;
+----
+-<WidgetLayout name={i18n(I18nKey.tags)} id="tags" isCollapsed={isCollapsed} collapsedHeight={COLLAPSED_HEIGHT} class={className} style={style}>
+-    <div class="flex gap-2 flex-wrap">
+-        {tags.map((t: string) => (
+-            <ButtonTag href={url(`/archive/tag/${t}/`)} label={`View all posts with the ${t} tag`}>
+-                {t}
+-            </ButtonTag>
+-        ))}
+-    </div>
+-</WidgetLayout>
++---
++import { GET as getTags } from "@/pages/api/v2/posts/fetchAllTags";
++import I18nKey from "../../i18n/i18nKey";
++import { i18n } from "../../i18n/translation";
++import { url } from "../../utils/url-utils";
++import ButtonTag from "../control/ButtonTag.astro";
++import WidgetLayout from "./WidgetLayout.astro";
++
++const initResponse = await getTags(Astro);
++const response = await initResponse.json();
++
++let tags: [] = [];
++
++if (response.success === true) {
++	tags = response.result;
++}
++
++const COLLAPSED_HEIGHT = "7.5rem";
++
++const isCollapsed = tags.length >= 20;
++
++interface Props {
++	class?: string;
++	style?: string;
++}
++const className = Astro.props.class;
++const style = Astro.props.style;
++---
++<WidgetLayout name={i18n(I18nKey.tags)} id="tags" isCollapsed={isCollapsed} collapsedHeight={COLLAPSED_HEIGHT} class={className} style={style}>
++    <div class="flex gap-2 flex-wrap">
++        {tags.map((t: string) => (
++            <ButtonTag href={url(`/archive/tag/${t}/`)} label={`View all posts with the ${t} tag`}>
++                {t}
++            </ButtonTag>
++        ))}
++    </div>
++</WidgetLayout>
+diff --git a/src/constants/constants.ts b/src/constants/constants.ts
+index e8dd8c5..a5ecc7e 100644
+--- a/src/constants/constants.ts
++++ b/src/constants/constants.ts
+@@ -1,3 +1,5 @@
++export const UNCATEGORIZED = "__uncategorized__";
++
+ export const PAGE_SIZE = 8;
+ 
+ export const LIGHT_MODE = 'light',
+diff --git a/src/content/config.ts b/src/content/config.ts
+new file mode 100644
+index 0000000..8bc07fe
+--- /dev/null
++++ b/src/content/config.ts
+@@ -0,0 +1,28 @@
++import { defineCollection, z } from "astro:content";
++
++const postsCollection = defineCollection({
++	schema: z.object({
++		title: z.string(),
++		published: z.date(),
++		updated: z.date().optional(),
++		draft: z.boolean().optional().default(false),
++		description: z.string().optional().default(""),
++		image: z.string().optional().default(""),
++		tags: z.array(z.string()).optional().default([]),
++		category: z.string().optional().nullable().default(""),
++		lang: z.string().optional().default(""),
++
++		/* For internal use */
++		prevTitle: z.string().default(""),
++		prevSlug: z.string().default(""),
++		nextTitle: z.string().default(""),
++		nextSlug: z.string().default(""),
++	}),
++});
++const specCollection = defineCollection({
++	schema: z.object({}),
++});
++export const collections = {
++	posts: postsCollection,
++	spec: specCollection,
++};
+diff --git a/src/content/spec/friends.md b/src/content/spec/friends.md
+new file mode 100644
+index 0000000..b950439
+--- /dev/null
++++ b/src/content/spec/friends.md
+@@ -0,0 +1,5 @@
++﻿# Friends
++
++Edit `src/_data/friends.json` to add sites.
++
++You can also edit `src/content/spec/friends.md` to Change text here.
+\ No newline at end of file
+diff --git a/src/i18n/translation.ts b/src/i18n/translation.ts
+index f2441a8..aa4c135 100644
+--- a/src/i18n/translation.ts
++++ b/src/i18n/translation.ts
+@@ -12,34 +12,29 @@ import { zh_CN } from './languages/zh_CN';
+ import { zh_TW } from './languages/zh_TW';
+ 
+ export type Translation = {
+-	[K in I18nKey]: string;
++  [K in I18nKey]: string;
+ };
+ 
+ const defaultTranslation = en;
+ 
+ const map: { [key: string]: Translation } = {
+-	es: es,
+-	en: en,
+-	en_us: en,
+-	en_gb: en,
+-	en_au: en,
+-	zh_cn: zh_CN,
+-	zh_tw: zh_TW,
+-	ja: ja,
+-	ja_jp: ja,
+-	ko: ko,
+-	ko_kr: ko,
+-	th: th,
+-	th_th: th,
+-	vi: vi,
+-	vi_vn: vi,
+-	id: id,
+-	tr: tr,
+-	tr_tr: tr,
++  es: es,
++  en: en,
++  en_us: en,
++  en_gb: en,
++  en_au: en,
++  zh_cn: zh_CN,
++  zh_tw: zh_TW,
++  ja: ja,
++  ja_jp: ja,
++  ko: ko,
++  ko_kr: ko,
++  th: th,
++  th_th: th,
+ };
+ 
+ export function getTranslation(lang: string): Translation {
+-	return map[lang.toLowerCase()] || defaultTranslation;
++  return map[lang.toLowerCase()] || defaultTranslation;
+ }
+ 
+ export function i18n(key: I18nKey): string {
+diff --git a/src/layouts/Layout.astro b/src/layouts/Layout.astro
+index 8316fbb..ef17528 100644
+--- a/src/layouts/Layout.astro
++++ b/src/layouts/Layout.astro
+@@ -1,7 +1,7 @@
+ ---
+-import "@fontsource/roboto/400.css";
+-import "@fontsource/roboto/500.css";
+-import "@fontsource/roboto/700.css";
++import '@fontsource/roboto/400.css'
++import '@fontsource/roboto/500.css'
++import '@fontsource/roboto/700.css'
+ 
+ import { profileConfig, siteConfig } from "@/config";
+ import ConfigCarrier from "@components/ConfigCarrier.astro";
+@@ -21,55 +21,55 @@ import { url, pathsEqual } from "../utils/url-utils";
+ import "katex/dist/katex.css";
+ 
+ interface Props {
+-	title?: string;
+-	banner?: string;
+-	description?: string;
+-	lang?: string;
+-	setOGTypeArticle?: boolean;
++  title?: string
++  banner?: string
++  description?: string
++  lang?: string
++  setOGTypeArticle?: boolean
+ }
+ 
+-let { title, banner, description, lang, setOGTypeArticle } = Astro.props;
++let { title, banner, description, lang, setOGTypeArticle } = Astro.props
+ 
+ // apply a class to the body element to decide the height of the banner, only used for initial page load
+ // Swup can update the body for each page visit, but it's after the page transition, causing a delay for banner height change
+ // so use Swup hooks instead to change the height immediately when a link is clicked
+-const isHomePage = pathsEqual(Astro.url.pathname, url("/"));
++const isHomePage = pathsEqual(Astro.url.pathname, url('/'))
+ 
+ // defines global css variables
+ // why doing this in Layout instead of GlobalStyles: https://github.com/withastro/astro/issues/6728#issuecomment-1502203757
+-const configHue = siteConfig.themeColor.hue;
+-if (!banner || typeof banner !== "string" || banner.trim() === "") {
+-	banner = siteConfig.banner.src;
++const configHue = siteConfig.themeColor.hue
++if (!banner || typeof banner !== 'string' || banner.trim() === '') {
++  banner = siteConfig.banner.src
+ }
+ 
+ // TODO don't use post cover as banner for now
+-banner = siteConfig.banner.src;
++banner = siteConfig.banner.src
+ 
+-const enableBanner = siteConfig.banner.enable;
++const enableBanner = siteConfig.banner.enable
+ 
+-let pageTitle: string;
++let pageTitle: string
+ if (title) {
+-	pageTitle = `${title} - ${siteConfig.title}`;
++  pageTitle = `${title} - ${siteConfig.title}`
+ } else {
+-	pageTitle = `${siteConfig.title} - ${siteConfig.subtitle}`;
++  pageTitle = `${siteConfig.title} - ${siteConfig.subtitle}`
+ }
+ 
+ const favicons: Favicon[] =
+-	siteConfig.favicon.length > 0 ? siteConfig.favicon : defaultFavicons;
++  siteConfig.favicon.length > 0 ? siteConfig.favicon : defaultFavicons
+ 
+ // const siteLang = siteConfig.lang.replace('_', '-')
+ if (!lang) {
+-	lang = `${siteConfig.lang}`;
++  lang = `${siteConfig.lang}`
+ }
+-const siteLang = lang.replace("_", "-");
++const siteLang = lang.replace('_', '-')
+ 
+ const bannerOffsetByPosition = {
+-	top: `${BANNER_HEIGHT_EXTEND}vh`,
+-	center: `${BANNER_HEIGHT_EXTEND / 2}vh`,
+-	bottom: "0",
+-};
++  top: `${BANNER_HEIGHT_EXTEND}vh`,
++  center: `${BANNER_HEIGHT_EXTEND / 2}vh`,
++  bottom: '0',
++}
+ const bannerOffset =
+-	bannerOffsetByPosition[siteConfig.banner.position || "center"];
++  bannerOffsetByPosition[siteConfig.banner.position || 'center']
+ ---
+ 
+ <!DOCTYPE html>
+@@ -208,9 +208,10 @@ import {
+ 	BANNER_HEIGHT,
+ 	BANNER_HEIGHT_HOME,
+ 	BANNER_HEIGHT_EXTEND,
+-	MAIN_PANEL_OVERLAPS_BANNER_HEIGHT
++	MAIN_PANEL_OVERLAPS_BANNER_HEIGHT,
++	PAGE_WIDTH
+ } from "../constants/constants";
+-import { siteConfig } from '../config';
++import { siteConfig } from '@/config';
+ 
+ /* Preload fonts */
+ // (async function() {
+@@ -305,62 +306,37 @@ function initCustomScrollbar() {
+ 			autoHideSuspend: false,
+ 		},
+ 	});
+-
+-	const katexElements = document.querySelectorAll('.katex-display') as NodeListOf<HTMLElement>;
+-
+-	const katexObserverOptions = {
+-		root: null,
+-		rootMargin: '100px',
+-		threshold: 0.1
+-	};
+-
+-	const processKatexElement = (element: HTMLElement) => {
+-		if (!element.parentNode) return;
+-		if (element.hasAttribute('data-scrollbar-initialized')) return;
+-
+-		const container = document.createElement('div');
+-		container.className = 'katex-display-container';
+-		container.setAttribute('aria-label', 'scrollable container for formulas');
+-
+-		element.parentNode.insertBefore(container, element);
+-		container.appendChild(element);
+-
+-		OverlayScrollbars(container, {
++	const preElements = document.querySelectorAll('pre');
++	preElements.forEach((ele) => {
++		OverlayScrollbars(ele, {
+ 			scrollbars: {
+-				theme: 'scrollbar-base scrollbar-auto',
++				theme: 'scrollbar-base scrollbar-dark px-2',
+ 				autoHide: 'leave',
+ 				autoHideDelay: 500,
+ 				autoHideSuspend: false
+ 			}
+ 		});
+-
+-		element.setAttribute('data-scrollbar-initialized', 'true');
+-	};
+-
+-	const katexObserver = new IntersectionObserver((entries, observer) => {
+-		entries.forEach(entry => {
+-			if (entry.isIntersecting) {
+-			processKatexElement(entry.target as HTMLElement);
+-			observer.unobserve(entry.target);
++	});
++	const katexElements = document.querySelectorAll('.katex-display') as NodeListOf<HTMLElement>;
++	katexElements.forEach((ele) => {
++		OverlayScrollbars(ele, {
++			scrollbars: {
++				theme: 'scrollbar-base scrollbar-auto py-1',
+ 			}
+ 		});
+-	}, katexObserverOptions);
+-
+-	katexElements.forEach(element => {
+-		katexObserver.observe(element);
+ 	});
+ }
+ 
+ function showBanner() {
+-	if (!siteConfig.banner.enable) return;
+-
+-	const banner = document.getElementById('banner');
+-	if (!banner) {
+-		console.error('Banner element not found');
++	if (!siteConfig.banner.enable) {
+ 		return;
+ 	}
+-
+-	banner.classList.remove('opacity-0', 'scale-105');
++	const banner = document.getElementById('banner')
++	if (!banner) {
++		console.error('Failed to find the banner element')
++		return
++	}
++	banner.classList.remove('opacity-0', 'scale-105')
+ }
+ 
+ function init() {
+@@ -433,7 +409,7 @@ const setup = () => {
+ 			heightExtend.classList.remove('hidden')
+ 		}
+ 	});
+-	window.swup.hooks.on('visit:end', (_visit: {to: {url: string}}) => {
++	window.swup.hooks.on('visit:end', (visit: {to: {url: string}}) => {
+ 		setTimeout(() => {
+ 			const heightExtend = document.getElementById('page-height-extend')
+ 			if (heightExtend) {
+@@ -564,4 +540,4 @@ if (window.swup) {
+ } else {
+ 	document.addEventListener("swup:enable", setup)
+ }
+-</script>
++</script>
+\ No newline at end of file
+diff --git a/src/layouts/MainGridLayout.astro b/src/layouts/MainGridLayout.astro
+index 8cfdb58..bf6e247 100644
+--- a/src/layouts/MainGridLayout.astro
++++ b/src/layouts/MainGridLayout.astro
+@@ -7,13 +7,9 @@ import type { Headings } from "@/types/posts";
+ import { Icon } from "astro-icon/components";
+ import ImageWrapper from "../components/misc/ImageWrapper.astro";
+ import TOC from "../components/widget/TOC.astro";
+-import { siteConfig } from "../config";
+-import {
+-	BANNER_HEIGHT,
+-	BANNER_HEIGHT_EXTEND,
+-	MAIN_PANEL_OVERLAPS_BANNER_HEIGHT,
+-} from "../constants/constants";
+-import Layout from "./Layout.astro";
++import ImageWrapper from "../components/misc/ImageWrapper.astro";
++import {BANNER_HEIGHT, BANNER_HEIGHT_EXTEND, MAIN_PANEL_OVERLAPS_BANNER_HEIGHT} from "../constants/constants";
++import type { Headings } from '@/types/posts'
+ 
+ interface Props {
+ 	title?: string;
+@@ -24,21 +20,12 @@ interface Props {
+ 	headings?: Headings[];
+ }
+ 
+-const {
+-	title,
+-	banner,
+-	description,
+-	lang,
+-	setOGTypeArticle,
+-	headings = [],
+-} = Astro.props;
++const { title, banner, description, lang, setOGTypeArticle, headings = [] } = Astro.props
+ const hasBannerCredit =
+-	siteConfig.banner.enable && siteConfig.banner.credit.enable;
+-const hasBannerLink = !!siteConfig.banner.credit.url;
++  siteConfig.banner.enable && siteConfig.banner.credit.enable
++const hasBannerLink = !!siteConfig.banner.credit.url
+ 
+-const mainPanelTop = siteConfig.banner.enable
+-	? `calc(${BANNER_HEIGHT}vh - ${MAIN_PANEL_OVERLAPS_BANNER_HEIGHT}rem)`
+-	: "5.5rem";
++const mainPanelTop = siteConfig.banner.enable ? `calc(${BANNER_HEIGHT}vh - ${MAIN_PANEL_OVERLAPS_BANNER_HEIGHT}rem)` : "5.5rem"
+ ---
+ 
+ <Layout title={title} banner={banner} description={description} lang={lang} setOGTypeArticle={setOGTypeArticle}>
+@@ -52,7 +39,7 @@ const mainPanelTop = siteConfig.banner.enable
+ </div>
+ 
+ <!-- Banner -->
+-{siteConfig.banner.enable && <div id="banner-wrapper" class={`absolute z-10 w-full transition duration-700 overflow-hidden`} style={`top: -${BANNER_HEIGHT_EXTEND}vh`}>
++{siteConfig.banner.enable && <div id="banner-wrapper" class=`absolute z-10 w-full transition duration-700 overflow-hidden` style=`top: -${BANNER_HEIGHT_EXTEND}vh`>
+     <ImageWrapper id="banner" alt="Banner image of the blog" class:list={["object-cover h-full transition duration-700 opacity-0 scale-105"]}
+                   src={siteConfig.banner.src} position={siteConfig.banner.position}
+     >
+@@ -60,7 +47,7 @@ const mainPanelTop = siteConfig.banner.enable
+ </div>}
+ 
+ <!-- Main content -->
+-<div class="absolute w-full z-30 pointer-events-none" style={`top: ${mainPanelTop}`}>
++<div class="absolute w-full z-30 pointer-events-none" style=`top: ${mainPanelTop}`>
+     <!-- The pointer-events-none here prevent blocking the click event of the TOC -->
+     <div class="relative max-w-[var(--page-width)] mx-auto pointer-events-auto">
+         <div id="main-grid" class="transition duration-700 w-full left-0 right-0 grid grid-cols-[17.5rem_auto] grid-rows-[auto_1fr_auto] lg:grid-rows-[auto]
+@@ -80,7 +67,7 @@ const mainPanelTop = siteConfig.banner.enable
+             </a>}
+ 
+ 
+-            <SideBar class="mb-4 row-start-2 row-end-3 col-span-2 lg:row-start-1 lg:row-end-2 lg:col-span-1 lg:max-w-[17.5rem] onload-animation" headings={headings}></SideBar>
++            <SideBar class="mb-4 row-start-2 row-end-3 col-span-2 lg:row-start-1 lg:row-end-2 lg:col-span-1 lg:max-w-[17.5rem] onload-animation"></SideBar>
+ 
+             <main id="swup-container" class="transition-swup-fade col-span-2 lg:col-span-1 overflow-hidden">
+                 <div id="content-wrapper" class="onload-animation">
+@@ -106,7 +93,7 @@ const mainPanelTop = siteConfig.banner.enable
+ <div class="absolute w-full z-0 hidden 2xl:block">
+     <div class="relative max-w-[var(--page-width)] mx-auto">
+         <!-- TOC component -->
+-        {siteConfig.toc.enable && <div id="toc-wrapper" class:list={["hidden lg:block transition absolute top-0 -right-[var(--toc-width)] w-[var(--toc-width)] items-center",
++        {siteConfig.toc.enable && <div id="toc-wrapper" class:list={["lg:block transition absolute top-0 -right-[var(--toc-width)] w-[var(--toc-width)] flex items-center",
+             {"toc-hide": siteConfig.banner.enable}]}
+         >
+             <div id="toc-inner-wrapper" class="fixed top-14 w-[var(--toc-width)] h-[calc(100vh_-_20rem)] overflow-y-scroll overflow-x-hidden hide-scrollbar">
+diff --git a/src/pages/archive/category/uncategorized.astro b/src/pages/archive/category/uncategorized.astro
+new file mode 100644
+index 0000000..f61df6f
+--- /dev/null
++++ b/src/pages/archive/category/uncategorized.astro
+@@ -0,0 +1,11 @@
++---
++import MainGridLayout from '@layouts/MainGridLayout.astro'
++import ArchivePanel from '@components/ArchivePanel.astro'
++import { i18n } from '@i18n/translation'
++import I18nKey from '@i18n/i18nKey'
++import { UNCATEGORIZED } from '@constants/constants'
++---
++
++<MainGridLayout title={i18n(I18nKey.archive)}>
++    <ArchivePanel categories={[UNCATEGORIZED]}></ArchivePanel>
++</MainGridLayout>
+diff --git a/src/pages/archive/index.astro b/src/pages/archive/index.astro
+new file mode 100644
+index 0000000..1c94cbc
+--- /dev/null
++++ b/src/pages/archive/index.astro
+@@ -0,0 +1,10 @@
++---
++import MainGridLayout from '@layouts/MainGridLayout.astro'
++import ArchivePanel from '@components/ArchivePanel.astro'
++import { i18n } from '@i18n/translation'
++import I18nKey from '@i18n/i18nKey'
++---
++
++<MainGridLayout title={i18n(I18nKey.archive)}>
++    <ArchivePanel></ArchivePanel>
++</MainGridLayout>

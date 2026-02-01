@@ -45,7 +45,7 @@ function formatTag(tagList: string[]) {
 
 onMount(async () => {
     try {
-          const response = await fetch('/api/v2/posts/fetchAllPosts');
+          const response = await fetch('/api/v2/blog/protocols/atproto/posts/fetchAllPosts');
           if (!response.ok) {
             throw new Error('Failed to fetch data');
           }

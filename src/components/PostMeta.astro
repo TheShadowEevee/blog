@@ -42,7 +42,7 @@ if (authors && authors.length > 0) {
         // Check if type is string here to persist backwards-compatibility with old string[]/DID based author system
         if (typeof(authors[i]) == "string") {
             const authorResponse = await safeFetch(
-                `${import.meta.env.NEXT_PUBLIC_URL}/api/v1/authors/${authors[i]}`,
+                `${import.meta.env.NEXT_PUBLIC_URL}/api/v1/blog/authors/${authors[i]}`,
             );
             authorsArray.push(authorResponse);
         } else if (authors[i].type == "static") {
@@ -56,7 +56,7 @@ if (authors && authors.length > 0) {
                 )
         } else {
                 const authorResponse = await safeFetch(
-                    `${import.meta.env.NEXT_PUBLIC_URL}/api/v2/protocols/${authors[i].type}/authors/${authors[i].id}`,
+                    `${import.meta.env.NEXT_PUBLIC_URL}/api/v2/blog/protocols/${authors[i].type}/authors/${authors[i].id}`,
                 );
                 authorsArray.push(
                     {
@@ -72,7 +72,7 @@ if (authors && authors.length > 0) {
 if (linkedPost && linkedPost.length > 0) {
     for (const i in linkedPost) {
         const postResponse = await safeFetch(
-            `${import.meta.env.NEXT_PUBLIC_URL}/api/v2/protocols/${linkedPost[i].type}/post/${linkedPost[i].user}-${linkedPost[i].id}`,
+            `${import.meta.env.NEXT_PUBLIC_URL}/api/v2/blog/protocols/${linkedPost[i].type}/post/${linkedPost[i].user}-${linkedPost[i].id}`,
         );
         postsArray.push(postResponse)
     }
