@@ -20,6 +20,7 @@ export const GET: APIRoute = async (Astro) => {
 						replyCount: postResponse.replies_count,
 						repostCount: postResponse.reblogs_count,
 						quoteCount: postResponse.quotes_count,
+						url: `https://infosec.exchange/@${postResponse.account.username}/${rkey}`,
 					})
 				);
 			}

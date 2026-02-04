@@ -21,6 +21,7 @@ export const GET: APIRoute = async (Astro) => {
 						replyCount: postResponse.thread.post.replyCount,
 						repostCount: postResponse.thread.post.repostCount,
 						quoteCount: postResponse.thread.post.quoteCount,
+						url: `https://bsky.app/profile/${user}/post/${rkey}`,
 					})
 				);
 			}
