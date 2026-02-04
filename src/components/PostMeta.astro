@@ -209,7 +209,7 @@ for (const i in postsArray) {
         { (postsArray.length > 1) && (
             <div class:list={["text-neutral-700 dark:text-neutral-600"]}>
                 <!-- This currently only supports two posts lmao : This currently prints posts raw type lmao -->
-                <p>*Post statistics aggregated between {postsArray[0].postType} and {postsArray[1].postType}</p>
+                <p>*Post statistics aggregated between <a href={postsArray[0].url}>{postsArray[0].postType}</a> and <a href={postsArray[1].url}>{postsArray[1].postType}</a></p>
             </div>
         )}
     </div>

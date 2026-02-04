@@ -4,7 +4,7 @@ import Markdown from "@components/misc/Markdown.astro";
 import I18nKey from "../i18n/i18nKey";
 import {i18n} from "../i18n/translation";
 import MainGridLayout from "../layouts/MainGridLayout.astro";
-import { friendsConfig } from "src/config";
+import { friendsConfig, enemiesConfig } from "src/config";
 
 const friendsPage = await getEntry("spec", "friends");
 
@@ -12,24 +12,36 @@ if (!friendsPage) {
     throw new Error("Friends page content not found");
 }
 
-const {Content} = await render(friendsPage);
+const enemiesPage = await getEntry("spec", "enemies");
 
-const items = friendsConfig;
+if (!enemiesPage) {
+    throw new Error("Enemies page content not found");
+}
+
+const {Content: FriendsContent} = await render(friendsPage);
+const {Content: EnemiesContent} = await render(enemiesPage);
+
+const friends = friendsConfig;
+const enemies = enemiesConfig;
 ---
 <MainGridLayout title={i18n(I18nKey.friends)} description={i18n(I18nKey.friends)}>
     <div class="flex w-full rounded-[var(--radius-large)] overflow-hidden relative min-h-32 mb-4">
         <div class="card-base z-10 px-9 py-6 relative w-full ">
+            <Markdown class="mt-2">
+                <FriendsContent/>
+            </Markdown>
+
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-8 my-4">
-                {items.map((item) => (
+                {friends.map((friend) => (
                         <div class="flex flex-nowrap items-stretch h-28 gap-4 rounded-[var(--radius-large)]">
                             <div class="w-28 h-28 flex-shrink-0 rounded-lg overflow-hidden bg-zinc-200 dark:bg-zinc-900">
-                                <img src={item.siteIcon} alt={item.siteTitle} class="w-full h-full object-cover">
+                                <img src={friend.siteIcon} alt={friend.siteTitle} class="w-full h-full object-cover">
                             </div>
                             <div class="grow w-full">
-                                <div class="font-bold transition text-lg text-neutral-900 dark:text-neutral-100 mb-1">{item.siteTitle}</div>
-                                <div class="text-50 text-sm font-medium">{item.siteDesc}</div>
+                                <div class="font-bold transition text-lg text-neutral-900 dark:text-neutral-100 mb-1">{friend.siteTitle}</div>
+                                <div class="text-50 text-sm font-medium">{friend.siteDesc}</div>
                             </div>
-                            <a href={item.siteUrl} target="_blank" rel="noopener noreferrer"
+                            <a href={friend.siteUrl} target="_blank" rel="noopener noreferrer"
                                class="flex btn-regular w-[3.25rem] rounded-lg bg-[var(--enter-btn-bg)] hover:bg-[var(--enter-btn-bg-hover)] active:bg-[var(--enter-btn-bg-active)] active:scale-95">
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                      aria-hidden="true" role="img"
@@ -43,9 +55,35 @@ const items = friendsConfig;
                 ))}
             </div>
 
+            </br>
+
             <Markdown class="mt-2">
-                <Content/>
+                <EnemiesContent/>
             </Markdown>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-8 my-4">
+                {enemies.map((enemy) => (
+                        <div class="flex flex-nowrap items-stretch h-28 gap-4 rounded-[var(--radius-large)]">
+                            <div class="w-28 h-28 flex-shrink-0 rounded-lg overflow-hidden bg-zinc-200 dark:bg-zinc-900">
+                                <img src={enemy.siteIcon} alt={enemy.siteTitle} class="w-full h-full object-cover">
+                            </div>
+                            <div class="grow w-full">
+                                <div class="font-bold transition text-lg text-neutral-900 dark:text-neutral-100 mb-1">{enemy.siteTitle}</div>
+                                <div class="text-50 text-sm font-medium">{enemy.siteDesc}</div>
+                            </div>
+                            <a href={enemy.siteUrl} target="_blank" rel="noopener noreferrer"
+                               class="flex btn-regular w-[3.25rem] rounded-lg bg-[var(--enter-btn-bg)] hover:bg-[var(--enter-btn-bg-hover)] active:bg-[var(--enter-btn-bg-active)] active:scale-95">
+                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                     aria-hidden="true" role="img"
+                                     class="transition text-[var(--primary)] text-4xl mx-auto iconify iconify--material-symbols"
+                                     width="1em" height="1em" viewBox="0 0 24 24">
+                                    <path fill="currentColor"
+                                          d="M12.6 12L8.7 8.1q-.275-.275-.275-.7t.275-.7t.7-.275t.7.275l4.6 4.6q.15.15.213.325t.062.375t-.062.375t-.213.325l-4.6 4.6q-.275.275-.7.275t-.7-.275t-.275-.7t.275-.7z"></path>
+                                </svg>
+                            </a>
+                        </div>
+                ))}
+            </div>
         </div>
     </div>
 </MainGridLayout>

@@ -30,14 +30,14 @@ export const GET: APIRoute = async () => {
 			);
 
 			if (newPostsResponse.records.length != 0) {
-				await fetch(
+				/*await fetch(
 					`${import.meta.env.API_DOMAIN}/api/v2/blog/cache/blob?type=status&id=latestPost`,
 					{
 						method: 'POST',
 						headers: { 'Content-Type': 'application/json' },
 						body: JSON.stringify(newPostsResponse.records[0].uri.split('/')[4]),
 					}
-				);
+				);*/
 
 				for (let i = newPostsResponse.records.length - 1; i >= 0; i--) {
 					cacheKnownPostsResponse.records.unshift(newPostsResponse.records[i]);
@@ -87,14 +87,14 @@ export const GET: APIRoute = async () => {
 					body: JSON.stringify(response),
 				}
 			);
-			await fetch(
+			/*await fetch(
 				`${import.meta.env.API_DOMAIN}/api/v2/blog/cache/blob?type=status&id=latestPost`,
 				{
 					method: 'POST',
 					headers: { 'Content-Type': 'application/json' },
 					body: JSON.stringify(response.records[0].uri.split('/')[4]),
 				}
-			);
+			);*/
 			for (let i in response.records) {
 				let post = await parsePost(response.records[i]);
 

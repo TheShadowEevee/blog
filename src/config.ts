@@ -93,10 +93,35 @@ export const expressiveCodeConfig: ExpressiveCodeConfig = {
 
 export const friendsConfig: FriendsConfig[] = [
 	{
-		siteTitle: 'Lorem Ipsum',
-		siteDesc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-		siteUrl: 'https://github.com/saicaca/fuwari/',
-		siteIcon: '',
+		siteTitle: 'FizzyApple12',
+		siteDesc: '',
+		siteUrl: 'https://fizzyapple12.com/',
+		siteIcon:
+			'https://raw.githubusercontent.com/Fizzy-Engineering/Logo/refs/heads/main/fizzyapple12.svg',
+	},
+	{
+		siteTitle: 'Infinidoge',
+		siteDesc: '',
+		siteUrl: 'https://inx.moe/',
+		siteIcon:
+			'https://medias.meow.social/accounts/avatars/000/193/076/original/1e610602a5c5070d.jpg',
+	},
+	{
+		siteTitle: 'Grace',
+		siteDesc: '',
+		siteUrl: 'https://grace.pink/',
+		siteIcon: 'https://grace.pink/assets/gracepinklogo.png',
+	},
+];
+
+export const enemiesConfig: FriendsConfig[] = [
+	{
+		siteTitle: 'AxoBlu',
+		siteDesc:
+			'My b[r]other and resident artist. Euclid-class anomoly. Can operate a microwave.',
+		siteUrl: 'https://bsky.app/profile/axoblu.konpeki.solutions',
+		siteIcon:
+			'https://cdn.bsky.app/img/avatar/plain/did:plc:qxrvqly74uzia6d5pwgwjxb5/bafkreierfpow4xrgm2tu7dszetw43655npj7bv3oqva4npxfyvkebvvw54@jpeg',
 	},
 ];
 
