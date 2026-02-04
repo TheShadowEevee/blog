@@ -164,7 +164,7 @@ for (const i in postsArray) {
     )}
 </div>
 
-{ (postsArray[0]) && (
+{ (postsArray[0] && Astro.url.pathname.includes("posts")) && (
     <div class:list={["flex flex-wrap text-neutral-500 dark:text-neutral-400 items-center gap-4 gap-x-4 gap-y-2", className]}>
         <!-- linkedPost Metadata -->
         <div class:list={["items-center", {"flex": !hideTagsForMobile, "hidden md:flex": hideTagsForMobile}]}>
