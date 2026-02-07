@@ -7,7 +7,7 @@ export const prerender = false;
 
 export const GET: APIRoute = async (Astro) => {
 	try {
-		const rkey = Astro.params.rkey;
+		const rkey = Astro.params.id;
 
 		if (rkey) {
 			const cacheURL = `${import.meta.env.API_DOMAIN}/api/v2/blog/cache/blob?type=entry&id=${rkey}`;

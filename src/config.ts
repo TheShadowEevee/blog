@@ -108,7 +108,7 @@ export const friendsConfig: FriendsConfig[] = [
 	},
 	{
 		siteTitle: 'Grace',
-		siteDesc: '',
+		siteDesc: 'Wizard of the Isles, Archmage of Infrastructure, Enjoyer of Waffles',
 		siteUrl: 'https://grace.pink/',
 		siteIcon: 'https://grace.pink/assets/gracepinklogo.png',
 	},
