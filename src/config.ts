@@ -101,16 +101,22 @@ export const friendsConfig: FriendsConfig[] = [
 	},
 	{
 		siteTitle: 'Infinidoge',
-		siteDesc: '',
+		siteDesc: 'Wizard of the Isles, Archmage of Infrastructure, Enjoyer of Waffles',
 		siteUrl: 'https://inx.moe/',
 		siteIcon:
-			'https://medias.meow.social/accounts/avatars/000/193/076/original/1e610602a5c5070d.jpg',
+			'https://git.inx.moe/avatars/a70bed4981e9597ef4de1f5cfac584bbcd24b21b07116cf6c50b348674d410dd?size=512',
 	},
 	{
 		siteTitle: 'Grace',
-		siteDesc: 'Wizard of the Isles, Archmage of Infrastructure, Enjoyer of Waffles',
+		siteDesc: '',
 		siteUrl: 'https://grace.pink/',
 		siteIcon: 'https://grace.pink/assets/gracepinklogo.png',
+	},
+	{
+		siteTitle: 'ericswpark',
+		siteDesc: '',
+		siteUrl: 'https://ericswpark.com/',
+		siteIcon: 'https://avatars.githubusercontent.com/u/13326074',
 	},
 ];
 
